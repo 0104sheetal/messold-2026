@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UDD Studio — Shopify Editorial Case Study | MESSOLD</title>
+    <style>
+        /* --- BRAND FOUNDATIONS & VARIABLES --- */
+        :root {
+            --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --c-bg-white: #FFFFFF;
+            --c-bg-grey: #F7F7F5;
+            --c-bg-cream: #EFEDE9;
+            --c-bg-dark: #111111;
+            
+            --c-txt-primary: #111111;
+            --c-txt-secondary: #6F6F6F;
+            --c-txt-white: #FFFFFF;
+            --c-txt-muted: #A0A0A0;
+            
+            --c-border-light: #E5E5E5;
+            --c-border-dark: #2A2A2A;
+            
+            --ease-editorial: cubic-bezier(0.25, 1, 0.5, 1);
+            --ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* --- STRUCTURAL RESET (CLASS BASED) --- */
+        .cs-body-wrapper {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-main);
+            background-color: var(--c-bg-white);
+            color: var(--c-txt-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.8s var(--ease-editorial), color 0.8s var(--ease-editorial);
+        }
+
+        .cs-body-wrapper *, .cs-body-wrapper *::before, .cs-body-wrapper *::after {
+            box-sizing: inherit;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- CORE TYPOGRAPHY UTILITIES --- */
+        .ed-font-thin { font-weight: 300; }
+        .ed-font-regular { font-weight: 400; }
+        .ed-font-medium { font-weight: 500; }
+
+        .ed-lh-generous { line-height: 1.6; }
+        .ed-lh-tight { line-height: 1.2; }
+        
+        .ed-tracking-wide { letter-spacing: 0.05em; }
+        .ed-tracking-caps { letter-spacing: 0.15em; text-transform: uppercase; }
+
+        /* --- GLOBAL UTILITY CONTAINERS --- */
+        .ed-container {
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 60px;
+        }
+
+        @media (max-width: 991px) {
+            .ed-container { padding: 0 40px; }
+        }
+        @media (max-width: 576px) {
+            .ed-container { padding: 0 20px; }
+        }
+
+        .ed-section-spacer {
+            padding: 100px 0;
+            position: relative;
+        }
+        @media (max-width: 768px) {
+            .ed-section-spacer { padding: 60px 0; }
+        }
+
+        /* --- SECTION BACKGROUND CHOREOGRAPHY --- */
+        .bg-white { background-color: var(--c-bg-white); color: var(--c-txt-primary); }
+        .bg-grey { background-color: var(--c-bg-grey); color: var(--c-txt-primary); }
+        .bg-cream { background-color: var(--c-bg-cream); color: var(--c-txt-primary); }
+        .bg-dark { background-color: var(--c-bg-dark); color: var(--c-txt-white); }
+
+        /* --- INTERACTIVE CURSOR MATRIX --- */
+        .ed-cursor-system {
+            width: 8px;
+            height: 8px;
+            background-color: var(--c-txt-primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+        .cs-body-wrapper.theme-dark-active .ed-cursor-system {
+            background-color: var(--c-txt-white);
+        }
+        .ed-cursor-system.hovering {
+            transform: translate(-50%, -50%) scale(4);
+            opacity: 0.15;
+        }
+
+        /* --- SMOOTH INVISIBLE MOTION REVEALS --- */
+        .ed-reveal-trigger {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s var(--ease-fluid), transform 1.2s var(--ease-fluid);
+        }
+        .ed-reveal-trigger.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .ed-mask-image-container {
+            overflow: hidden;
+            position: relative;
+        }
+        .ed-mask-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.08);
+            transition: transform 1.5s var(--ease-fluid);
+        }
+        .ed-mask-image-container.is-visible img {
+            transform: scale(1);
+        }
+
+        /* --- PREMIUM EDITORIAL HERO --- */
+        .hero-layout-grid {
+            display: grid;
+            grid-template-columns: 3.8fr 6.2fr;
+            gap: 60px;
+            align-items: center;
+            min-height: 70vh;
+        }
+
+        .hero-left-narrative {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-title-main {
+            font-size: clamp(2.2rem, 4vw, 3.8rem);
+            margin-bottom: 24px;
+            color: inherit;
+        }
+
+        .hero-intro-text {
+            font-size: 1.05rem;
+            color: var(--c-txt-secondary);
+            margin-bottom: 30px;
+        }
+
+        .hero-specs-brief {
+            border-top: 1px solid var(--c-border-light);
+            padding-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        .hero-spec-row-mini {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+
+        .hero-understated-btn {
+            align-self: flex-start;
+            font-size: 0.75rem;
+            border-bottom: 1px solid var(--c-txt-primary);
+            padding-bottom: 4px;
+            text-decoration: none;
+            color: inherit;
+            transition: opacity 0.3s ease;
+        }
+        .hero-understated-btn:hover {
+            opacity: 0.6;
+        }
+
+        .hero-right-stage {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-depth-blur-1, .hero-depth-blur-2 {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.1;
+            z-index: 1;
+        }
+        .hero-depth-blur-1 { background-color: #A39E93; top: 10%; left: 20%; }
+        .hero-depth-blur-2 { background-color: #C5C2BB; bottom: 10%; right: 10%; }
+
+        .hero-browser-mockup {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 90%;
+            background-color: var(--c-bg-white);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.04);
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--c-border-light);
+            transform: translateY(0);
+            will-change: transform;
+        }
+
+        .browser-header-strip {
+            height: 30px;
+            background-color: var(--c-bg-grey);
+            border-bottom: 1px solid var(--c-border-light);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+        }
+
+        .browser-dots {
+            display: flex;
+            gap: 6px;
+        }
+        .browser-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--c-border-light);
+        }
+
+        .browser-frame-content {
+            width: 100%;
+            height: calc(100% - 30px);
+            background-size: cover;
+            background-position: top center;
+        }
+
+        @media (max-width: 991px) {
+            .hero-layout-grid { grid-template-columns: 1fr; gap: 40px; }
+            .hero-right-stage { height: 400px; }
+        }
+
+        /* --- ARCHITECTURAL SPECIFICATION SHEET --- */
+        .specs-layout-matrix {
+            display: grid;
+            grid-template-columns: 4.5fr 5.5fr;
+            gap: 80px;
+        }
+
+        .specs-left-desc h3 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: inherit;
+        }
+
+        .specs-left-desc p {
+            font-size: 1rem;
+            color: var(--c-txt-secondary);
+        }
+
+        .specs-documentation-sheet {
+            border-top: 1px solid var(--c-border-light);
+        }
+
+        .specs-doc-row {
+            display: grid;
+            grid-template-columns: 4fr 6fr;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--c-border-light);
+            font-size: 0.9rem;
+        }
+
+        .specs-doc-label {
+            color: var(--c-txt-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .specs-layout-matrix { grid-template-columns: 1fr; gap: 40px; }
+        }
+
+        /* --- EDITORIAL BRAND INTERVIEW --- */
+        .brand-fullwidth-spread {
+            display: grid;
+            grid-template-columns: 5.5fr 4.5fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .brand-text-quote-block h2 {
+            font-size: clamp(1.5rem, 2.5vw, 2.3rem);
+            margin-bottom: 30px;
+            color: inherit;
+        }
+
+        .brand-founder-signature {
+            margin-top: 30px;
+            border-left: 2px solid var(--c-txt-primary);
+            padding-left: 16px;
+        }
+
+        .brand-founder-signature p {
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+        
+        .brand-founder-signature span {
+            font-size: 0.8rem;
+            color: var(--c-txt-secondary);
+        }
+
+        .brand-lifestyle-frame {
+            height: 480px;
+            background-color: var(--c-bg-grey);
+        }
+
+        @media (max-width: 991px) {
+            .brand-fullwidth-spread { grid-template-columns: 1fr; gap: 40px; }
+            .brand-lifestyle-frame { height: 350px; }
+        }
+
+        /* --- THE CHALLENGE ACCORDION ENGINE --- */
+        .challenge-accordion-container {
+            max-width: 850px;
+            margin: 40px auto 0 auto;
+        }
+
+        .challenge-accordion-row {
+            border-bottom: 1px solid var(--c-border-light);
+            padding: 24px 0;
+            cursor: pointer;
+            transition: padding 0.4s var(--ease-editorial);
+        }
+
+        .challenge-accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .challenge-title-group {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .challenge-index {
+            font-size: 0.85rem;
+            color: var(--c-txt-secondary);
+            font-family: monospace;
+        }
+
+        .challenge-label-text {
+            font-size: 1.25rem;
+            color: inherit;
+        }
+
+        .challenge-icon-marker {
+            font-size: 1.1rem;
+            transition: transform 0.4s var(--ease-editorial);
+        }
+
+        .challenge-accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.25, 1, 0.5, 1), margin 0.5s ease;
+        }
+
+        .challenge-body-inner {
+            display: grid;
+            grid-template-columns: 6.5fr 3.5fr;
+            gap: 40px;
+            padding-top: 20px;
+        }
+
+        .challenge-body-inner p {
+            font-size: 0.95rem;
+            color: var(--c-txt-secondary);
+        }
+
+        .challenge-body-image {
+            height: 130px;
+            background-color: var(--c-bg-cream);
+        }
+
+        .challenge-accordion-row.is-expanded {
+            padding: 30px 0;
+        }
+        .challenge-accordion-row.is-expanded .challenge-accordion-body {
+            max-height: 250px;
+        }
+        .challenge-accordion-row.is-expanded .challenge-icon-marker {
+            transform: rotate(45deg);
+        }
+
+        @media (max-width: 768px) {
+            .challenge-body-inner { grid-template-columns: 1fr; gap: 20px; }
+            .challenge-body-image { height: 120px; }
+        }
+
+        /* --- VERTICAL CHAPTER NAVIGATION --- */
+        .chapter-sticky-layout {
+            display: grid;
+            grid-template-columns: 3.5fr 6.5fr;
+            gap: 60px;
+            position: relative;
+        }
+
+        .chapter-left-sticky-nav {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .chapter-nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            border-left: 1px solid var(--c-border-light);
+            padding-left: 20px;
+        }
+
+        .chapter-nav-item {
+            font-size: 0.85rem;
+            color: var(--c-txt-secondary);
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .chapter-nav-item.is-active {
+            color: var(--c-txt-primary);
+            transform: translateX(6px);
+            font-weight: 500;
+        }
+
+        .chapter-right-scroll-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+        }
+
+        .chapter-card-block {
+            padding-top: 20px;
+        }
+
+        .chapter-card-meta {
+            font-size: 0.75rem;
+            color: var(--c-txt-secondary);
+            margin-bottom: 12px;
+        }
+
+        .chapter-card-block h3 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+
+        .chapter-card-block p {
+            font-size: 0.95rem;
+            color: var(--c-txt-secondary);
+            margin-bottom: 24px;
+        }
+
+        .chapter-card-asset {
+            height: 300px;
+            background-color: var(--c-bg-white);
+            border: 1px solid var(--c-border-light);
+        }
+
+        @media (max-width: 768px) {
+            .chapter-sticky-layout { grid-template-columns: 1fr; }
+            .chapter-left-sticky-nav { position: relative; top: 0; margin-bottom: 30px; }
+            .chapter-nav-list { flex-direction: row; overflow-x: auto; padding-bottom: 10px; border-left: none; border-bottom: 1px solid var(--c-border-light); padding-left: 0; }
+        }
+
+        /* --- DESIGN PHILOSOPHY VISUAL LAYER --- */
+        .philosophy-visual-composition {
+            position: relative;
+            height: 550px;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .phi-layer {
+            position: absolute;
+            background-color: var(--c-bg-white);
+            border: 1px solid var(--c-border-light);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.02);
+            overflow: hidden;
+            transition: transform 0.4s var(--ease-editorial);
+        }
+
+        .phi-layer-note {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255,255,255,0.95);
+            padding: 10px 14px;
+            font-size: 0.75rem;
+            color: var(--c-txt-primary);
+            border-top: 1px solid var(--c-border-light);
+            transition: bottom 0.3s ease;
+            z-index: 5;
+        }
+
+        .phi-layer:hover .phi-layer-note { bottom: 0; }
+        .phi-layer-1 { top: 5%; left: 5%; width: 42%; height: 50%; z-index: 2; }
+        .phi-layer-2 { top: 15%; right: 5%; width: 38%; height: 65%; z-index: 1; }
+        .phi-layer-3 { bottom: 5%; left: 20%; width: 32%; height: 35%; z-index: 3; }
+
+        @media (max-width: 768px) {
+            .philosophy-visual-composition { height: auto; display: flex; flex-direction: column; gap: 20px; }
+            .phi-layer { position: relative; width: 100% !important; height: 220px !important; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; }
+            .phi-layer-note { bottom: 0; }
+        }
+
+        /* --- IMMERSIVE FEATURE VIEWPORTS --- */
+        .feature-viewport-unit {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--c-border-light);
+        }
+
+        .feature-viewport-layout {
+            display: grid;
+            align-items: center;
+            gap: 60px;
+            width: 100%;
+        }
+
+        .feature-layout-type-A { grid-template-columns: 5.5fr 4.5fr; }
+        .feature-layout-type-B { grid-template-columns: 4.5fr 5.5fr; }
+
+        .feature-panel-text { padding: 20px 0; }
+        .feature-panel-text span {
+            font-size: 0.75rem;
+            color: var(--c-txt-secondary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .feature-panel-text h3 { font-size: 1.6rem; margin-bottom: 16px; }
+        .feature-panel-text p { font-size: 0.95rem; color: var(--c-txt-secondary); }
+        .feature-panel-visual {
+            height: 480px;
+            background-color: var(--c-bg-white);
+            border: 1px solid var(--c-border-light);
+            position: relative;
+        }
+
+        @media (max-width: 991px) {
+            .feature-viewport-layout { grid-template-columns: 1fr !important; gap: 30px; }
+            .feature-panel-visual { height: 350px; }
+        }
+
+        /* --- CLEAN ARCHITECTURAL PERFORMANCE SECTION --- */
+        .perf-clean-layout {
+            display: grid;
+            grid-template-columns: 3.5fr 6.5fr;
+            gap: 60px;
+            align-items: flex-start;
+        }
+        .perf-clean-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            border-top: 1px solid var(--c-border-light);
+            padding-top: 30px;
+        }
+        .perf-clean-node {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .perf-clean-digit {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 200;
+            line-height: 1;
+            color: var(--c-txt-primary);
+        }
+        .perf-clean-label {
+            font-size: 0.75rem;
+            color: var(--c-txt-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        @media (max-width: 991px) {
+            .perf-clean-layout { grid-template-columns: 1fr; gap: 40px; }
+            .perf-clean-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        }
+
+        /* --- SCREEN-ENCOMPASSING IMPACT METRICS --- */
+        .business-impact-viewport-series { position: relative; }
+        .impact-screen-unit {
+            padding: 100px 0;
+            border-bottom: 1px solid var(--c-border-dark);
+        }
+        .impact-colossal-stat {
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 200;
+            line-height: 1;
+            margin-bottom: 16px;
+            color: var(--c-bg-cream);
+        }
+        .impact-stat-explanation {
+            font-size: 1.2rem;
+            color: var(--c-txt-muted);
+            max-width: 550px;
+        }
+
+        /* --- DOCUMENTARY TESTIMONIAL LAYOUT --- */
+        .testimonial-documentary-grid {
+            display: grid;
+            grid-template-columns: 4.5fr 5.5fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .testimonial-cinema-box {
+            height: 380px;
+            background-color: var(--c-bg-dark);
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            border: 1px solid var(--c-border-light);
+        }
+
+        .testimonial-cinema-box video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.75;
+            transition: transform 0.6s ease;
+        }
+        .testimonial-cinema-box:hover video { transform: scale(1.02); }
+
+        .testimonial-cinema-play-overlay {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: #FFF;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            background-color: rgba(17,17,17,0.5);
+        }
+
+        .testimonial-literary-side blockquote {
+            font-size: clamp(1.25rem, 2vw, 1.8rem);
+            line-height: 1.4;
+            font-weight: 300;
+            margin-bottom: 24px;
+        }
+
+        .testimonial-literary-meta { font-size: 0.95rem; }
+        .testimonial-literary-meta span {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--c-txt-secondary);
+            margin-top: 4px;
+        }
+
+        .cinema-theater-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: var(--c-bg-dark);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .cinema-theater-overlay.is-active { display: flex; }
+        .cinema-theater-close {
+            position: absolute;
+            top: 40px; right: 40px;
+            color: #FFF;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        @media (max-width: 991px) {
+            .testimonial-documentary-grid { grid-template-columns: 1fr; gap: 40px; }
+            .testimonial-cinema-box { height: 300px; }
+        }
+
+        /* --- CINEMATIC HORIZONTAL FILM STRIP --- */
+        .filmstrip-overflow-container {
+            width: 100%;
+            overflow-x: auto;
+            display: flex;
+            gap: 30px;
+            padding: 30px 60px;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
+        .filmstrip-overflow-container::-webkit-scrollbar { display: none; }
+        .filmstrip-snapshot-card {
+            flex: 0 0 auto;
+            height: 400px;
+            background-color: var(--c-bg-grey);
+            scroll-snap-align: start;
+            border: 1px solid var(--c-border-light);
+            transition: transform 0.5s var(--ease-editorial);
+        }
+        .filmstrip-snapshot-card:hover { transform: scale(1.01); }
+        .f-width-1 { width: 320px; }
+        .f-width-2 { width: 580px; }
+        .f-width-3 { width: 420px; }
+        .f-width-4 { width: 680px; }
+
+        @media (max-width: 768px) {
+            .filmstrip-snapshot-card { height: 280px; }
+            .filmstrip-overflow-container { padding: 20px; gap: 20px; }
+        }
+
+        /* --- TECHNOLOGY LABELS GRID --- */
+        .tech-editorial-labels-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 4px;
+        }
+        .tech-label-capsule {
+            font-size: clamp(1.2rem, 3vw, 2.5rem);
+            font-weight: 200;
+            letter-spacing: -0.01em;
+            color: var(--c-txt-secondary);
+            border-bottom: 1px solid var(--c-border-light);
+            padding-bottom: 6px;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+        .tech-label-capsule:hover {
+            color: var(--c-txt-primary);
+            border-color: var(--c-txt-primary);
+        }
+
+        /* --- BLUEPRINT DEVELOPMENT WORKFLOW --- */
+        .blueprint-schematic-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .blueprint-node-card {
+            border: 1px dashed var(--c-border-light);
+            padding: 24px;
+            position: relative;
+            background-color: var(--c-bg-white);
+        }
+        .blueprint-node-card::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: 20px; width: 10px; height: 3px;
+            background-color: var(--c-txt-primary);
+        }
+        .blueprint-technical-meta {
+            font-family: monospace;
+            font-size: 0.7rem;
+            color: var(--c-txt-secondary);
+            margin-bottom: 12px;
+            display: block;
+        }
+        .blueprint-node-card h4 { font-size: 1rem; margin-bottom: 8px; }
+        .blueprint-node-card p { font-size: 0.85rem; color: var(--c-txt-secondary); line-height: 1.5; }
+
+        @media (max-width: 991px) {
+            .blueprint-schematic-grid { grid-template-columns: 1fr; gap: 20px; }
+        }
+
+        /* --- NEWSPAPER STYLE SUMMARY --- */
+        .newspaper-layout-spread {
+            border-top: 2px solid var(--c-txt-primary);
+            border-bottom: 2px solid var(--c-txt-primary);
+            padding: 30px 0;
+        }
+        .newspaper-main-statement {
+            font-size: clamp(1.3rem, 2vw, 1.8rem);
+            font-weight: 400;
+            line-height: 1.4;
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+        .newspaper-columns-triad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+        .newspaper-col-item {
+            border-right: 1px solid var(--c-border-light);
+            padding-right: 30px;
+        }
+        .newspaper-col-item:last-child { border-right: none; padding-right: 0; }
+        .newspaper-col-item h4 { font-size: 0.95rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .newspaper-col-item p { font-size: 0.85rem; color: var(--c-txt-secondary); line-height: 1.5; }
+
+        @media (max-width: 768px) {
+            .newspaper-columns-triad { grid-template-columns: 1fr; gap: 24px; }
+            .newspaper-col-item { border-right: none; padding-right: 0; }
+        }
+
+        /* --- HORIZONTAL SCROLLING PROJECTS RIBBON --- */
+        .ribbon-overflow-container {
+            width: 100%;
+            overflow: hidden;
+            border-top: 1px solid var(--c-border-light);
+            border-bottom: 1px solid var(--c-border-light);
+            padding: 24px 0;
+            background-color: var(--c-bg-white);
+        }
+        .ribbon-infinite-track {
+            display: flex;
+            width: max-content;
+            animation: infiniteRibbonTrack 30s linear infinite;
+        }
+        .ribbon-infinite-track:hover { animation-play-state: paused; }
+        .ribbon-project-element {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 0 40px;
+            text-decoration: none;
+            color: inherit;
+        }
+        .ribbon-project-title { font-size: 1.8rem; font-weight: 300; white-space: nowrap; transition: opacity 0.3s ease; }
+        .ribbon-project-thumbnail { width: 60px; height: 40px; overflow: hidden; border: 1px solid var(--c-border-light); }
+        .ribbon-project-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+        .ribbon-project-category { font-size: 0.75rem; color: var(--c-txt-secondary); text-transform: uppercase; letter-spacing: 0.1em; }
+        .ribbon-project-element:hover .ribbon-project-title { opacity: 0.5; }
+
+        @keyframes infiniteRibbonTrack {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* --- PREMIUM EDITORIAL CLOSING PAGE --- */
+        .closing-editorial-layout {
+            display: grid;
+            grid-template-columns: 6fr 4fr;
+            gap: 60px;
+            align-items: flex-end;
+        }
+        .closing-left-callout h2 {
+            font-size: clamp(1.8rem, 4vw, 3.5rem);
+            font-weight: 300;
+            line-height: 1.1;
+        }
+        .closing-right-contact { display: flex; flex-direction: column; gap: 30px; }
+        .closing-address-block p { font-size: 0.95rem; line-height: 1.5; color: var(--c-txt-secondary); }
+        .closing-understated-action-btn {
+            align-self: flex-start;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--c-txt-white);
+            background-color: var(--c-txt-primary);
+            padding: 14px 36px;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+        .closing-understated-action-btn:hover { opacity: 0.8; }
+
+        @media (max-width: 768px) {
+            .closing-editorial-layout { grid-template-columns: 1fr; gap: 40px; }
+        }
+    </style>
+</head>
+<body class="cs-body-wrapper">
+
+    <div class="ed-cursor-system" id="edCursor"></div>
+
+    <section class="ed-section-spacer bg-white" id="sec-hero">
+        <div class="ed-container">
+            <div class="hero-layout-grid">
+                <div class="hero-left-narrative ed-reveal-trigger">
+                    <h1 class="hero-title-main ed-font-thin ed-lh-tight">UDD Studio</h1>
+                    <p class="hero-intro-text ed-lh-generous">Constructing a premium, architectural digital presence for luxury commerce via customized Shopify engineering standards.</p>
+                    
+                    <div class="hero-specs-brief">
+                        <div class="hero-spec-row-mini">
+                            <span class="ed-txt-secondary">Client</span>
+                            <span class="ed-font-medium">UDD Studio Int.</span>
+                        </div>
+                        <div class="hero-spec-row-mini">
+                            <span class="ed-txt-secondary">Framework</span>
+                            <span class="ed-font-medium">Liquid Platform</span>
+                        </div>
+                    </div>
+
+                    <a href="#sec-specs" class="hero-understated-btn ed-tracking-caps">Read Specification Sheets</a>
+                </div>
+                
+                <div class="hero-right-stage">
+                    <div class="hero-depth-blur-1"></div>
+                    <div class="hero-depth-blur-2"></div>
+                    <div class="hero-browser-mockup ed-reveal-trigger" id="heroMockupFrame">
+                        <div class="browser-header-strip">
+                            <div class="browser-dots">
+                                <div class="browser-dot"></div>
+                                <div class="browser-dot"></div>
+                                <div class="browser-dot"></div>
+                            </div>
+                        </div>
+                        <div class="browser-frame-content" style="background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80');"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ed-section-spacer bg-grey" id="sec-specs">
+        <div class="ed-container">
+            <div class="specs-layout-matrix">
+                <div class="specs-left-desc ed-reveal-trigger">
+                    <span class="ed-tracking-caps ed-font-medium" style="font-size:0.75rem; color:var(--c-txt-secondary); display:block; margin-bottom:12px;">Chapter 01</span>
+                    <h3>Project Overview & Structural Limits</h3>
+                    <p class="ed-lh-generous">This architectural registry documents the technical migration and visual transformation of UDD Studio from an unmanaged, brittle theme layer into a rigid modular architecture optimized for retention and scale.</p>
+                </div>
+                
+                <div class="specs-documentation-sheet ed-reveal-trigger" id="specsSheetContainer">
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ed-section-spacer bg-white" id="sec-brand">
+        <div class="ed-container">
+            <div class="brand-fullwidth-spread">
+                <div class="brand-text-quote-block ed-reveal-trigger">
+                    <span class="ed-tracking-caps ed-font-medium" style="font-size:0.75rem; color:var(--c-txt-secondary); display:block; margin-bottom:12px;">The Visionary Spread</span>
+                    <h2 class="ed-font-thin ed-lh-generous">"We envisioned a space where clothes aren't merely added to bags, but explored like permanent exhibitions in a digital museum."</h2>
+                    
+                    <div class="brand-founder-signature">
+                        <p class="ed-font-medium">Elena Vladi</p>
+                        <span>Founder & Creative Director, UDD Studio</span>
+                    </div>
+                </div>
+
+                <div class="brand-lifestyle-frame ed-mask-image-container ed-reveal-trigger">
+                    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1000&q=80" alt="Luxury Conceptual Garment Presentation">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ed-section-spacer bg-cream" id="sec-challenge">
+        <div class="ed-container">
+            <span class="ed-tracking-caps ed-font-medium" style="font-size:0.75rem; color:var(--c-txt-secondary); display:block; margin-bottom:12px;">Chapter 02</span>
+            <h2 class="ed-font-thin" style="font-size:1.8rem; margin-bottom:10px;">Frictional Realities & Core Bottlenecks</h2>
+            
+            <div class="challenge-accordion-container" id="challengeAccordionContainer">
+                </div>
+        </div>
+    </section>
+
+    <section class="ed-section-spacer bg-white" id="sec-chapters">
+        <div class="ed-container">
+            <div class="chapter-sticky-layout">
+                <div class="chapter-left-sticky-nav">
+                    <ul class="chapter-nav-list" id="chapterNavList">
+                        </ul>
+                </div>
+                
+                <div class="chapter-right-scroll-stack" id="chapterScrollStack">
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ed-section-spacer bg-grey" id="sec-philosophy">
+        <div class="ed-container">
+            <span class="ed-tracking-caps ed-font-medium" style="font-size:0.75rem; color:var(--c-txt-secondary); display:block; margin-bottom:12px;">Chapter 03</span>
+            <h2 class="ed-font-thin" style="font-size:1.8rem; max-width:600px; line-height:1.3; margin-bottom:10px;">A Spatial Hierarchy Inspired by Swiss Typography Grid Systems</h2>
+            
+            <div class="philosophy-visual-composition">
+                <div class="phi-layer phi-layer-1 ed-reveal-trigger">
+                    <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=80" alt="Typography Detail UI" style="width:100%; height:100%; object-fit:cover;">
+                    <div class="phi-layer-note">Note 01 / Bold asymmetric editorial scales instead of uniform blocks.</div>
+                </div>
+                <div class="phi-layer phi-layer-2 ed-reveal-trigger">
+                    <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=800&q=80" alt="Product Layout Grid" style="width:100%; height:100%; object-fit:cover;">
+                    <div class="phi-layer-note">Note 02 / Unrestrained white space acts as the primary layout carrier.</div>
+                </div>
+                <div class="phi-layer phi-layer-3 ed-reveal-trigger">
+                    <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=600&q=80" alt="Minimal Interface Control" style="width:100%; height:100%; object-fit:cover;">
+                    <div class="phi-layer-note">Note 03 / Subtle context preservation vectors on alternate hover variables.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sec-features">
+        </section>
+
+    <section class="ed-section-spacer bg-white" id="sec-metrics">
+        <div class="ed-container">
+            <div class="perf-clean-layout">
+                <div class="ed-reveal-trigger">
+                    <span class="ed-tracking-caps ed-font-medium" style="font-size:0.75rem; color:var(--c-txt-secondary); display:block; margin-bottom:12px;">Performance Engine</span>
+                    <h3 class="ed-font-thin" style="font-size:1.6rem; line-height:1.3;">System Architecture Load Metrics</h3>
+                </div>
+                <div class="perf-clean-grid" id="metricsCleanGrid">
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="business-impact-viewport-series bg-dark" id="sec-impact">
+        <div class="ed-container">
+            <div class="impact-screen-unit">
+                <div class="impact-colossal-stat ed-reveal-trigger">+214%</div>
+                <div class="impact-stat-explanation ed-reveal-trigger">Surge in aggregate conversion throughput scaling uniformly across primary mobile devices.</div>
+            </div>
+            <div class="impact-screen-unit">
+                <div class="impact-colossal-stat ed-reveal-trigger">+38%</div>
+                <div class="impact-stat-explanation ed-reveal-trigger">Expansion in Average Order Value via clean contextual cross-sell configuration architecture.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ed-section-spacer bg-white" id="sec-testimonial">
+        <div class="ed-container">
+            <div class="testimonial-documentary-grid">
+                <div class="testimonial-cinema-box ed-reveal-trigger" id="cinemaTrigger">
+                    <video autoplay loop muted playsinline poster="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80">
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-fashion-woman-with-silver-glitter-makeup-40196-large.mp4" type="video/mp4">
+                    </video>
+                    <div class="testimonial-cinema-play-overlay">Expand Stream</div>
+                </div>
+                
+                <div class="testimonial-literary-side ed-reveal-trigger">
+                    <blockquote>"MESSOLD understands the spatial constraints of premium products. They didn't hand over an interactive configuration sheet—they built an operational design system."</blockquote>
+                    <div class="testimonial-literary-meta">
+                        Elena Vladi
+                        <span>Founder — UDD Studio Global</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="cinema-theater-overlay" id="cinemaTheater">
+        <div class="cinema-theater-close" id="cinemaClose">Close Viewport</div>
+        <div style="color: #FFF; font-family: monospace; font-size: 0.9rem; text-align:center;">
+            [ Cinema Stream Component Layer Overlay ]
+        </div>
+    </div>
+
+    <section class="ed-section-spacer bg-grey" id="sec-gallery">
+        <div class="ed-container">
+            <span class="ed-tracking-caps ed-font-medium" style="font-size:0.75rem; color:var(--c-txt-secondary); display:block; margin-bottom:30px;">Asymmetric Asset Filmstrip</span>
+        </div>
+        <div class="filmstrip-overflow-container" id="filmstripContainer">
+            </div>
+    </section>
+
+    <section class="ed-section-spacer bg-white" id="sec-technology">
+        <div class="ed-container">
+            <span class="ed-tracking-caps ed-font-medium" style="font-size:0.75rem; color:var(--c-txt-secondary); display:block; margin-bottom:20px;">Infrastructure Spectrum</span>
+            <div class="tech-editorial-labels-cloud" id="techLabelsCloud">
+                </div>
+        </div>
+    </section>
+
+    <section class="ed-section-spacer bg-cream" id="sec-workflow">
+        <div class="ed-container">
+            <span class="ed-tracking-caps ed-font-medium" style="font-size:0.75rem; color:var(--c-txt-secondary); display:block; margin-bottom:12px;">System Pipeline Documentation</span>
+            <h2 class="ed-font-thin" style="font-size:1.8rem; margin-bottom:16px;">Execution Chapters</h2>
+            
+            <div class="blueprint-schematic-grid" id="blueprintGridContainer">
+                </div>
+        </div>
+    </section>
+
+    <section class="ed-section-spacer bg-white" id="sec-summary">
+        <div class="ed-container">
+            <div class="newspaper-layout-spread">
+                <h3 class="newspaper-main-statement ed-font-thin">UDD Studio achieved architectural validation across transactional domains, recording absolute zero systemic regression during intense commercial cycles.</h3>
+                
+                <div class="newspaper-columns-triad">
+                    <div class="newspaper-col-item">
+                        <h4>Speed Metric</h4>
+                        <p>Total time to interactive reduced past historical limits down to sub-second structural loads globally.</p>
+                    </div>
+                    <div class="newspaper-col-item">
+                        <h4>Scale Variable</h4>
+                        <p>Decoupled content modules through metaobjects protect platform performance during dense traffic bursts.</p>
+                    </div>
+                    <div class="newspaper-col-item">
+                        <h4>UX Integrity</h4>
+                        <p>Fluid spatial positioning prevents sudden structural transformations or broken text viewports entirely.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ribbon-overflow-container" id="sec-related">
+        <div class="ribbon-infinite-track" id="relatedRibbonTrack">
+            </div>
+    </section>
+
+    <section class="ed-section-spacer bg-white" style="padding-bottom: 140px;" id="sec-cta">
+        <div class="ed-container">
+            <div class="closing-editorial-layout">
+                <div class="closing-left-callout ed-reveal-trigger">
+                    <h2 class="ed-font-thin">Let's craft your permanent retrospective.</h2>
+                </div>
+                
+                <div class="closing-right-contact ed-reveal-trigger">
+                    <div class="closing-address-block">
+                        <p class="ed-font-medium">MESSOLD Operations Office</p>
+                        <p>Architecture & Digital Commerce Engineering</p>
+                        <p>inquiry@messold.studio</p>
+                    </div>
+                    
+                    <a href="#contact" class="closing-understated-action-btn ed-tracking-caps">Initiate Consultation</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        /* --- UNIFIED DATA REPOSITORY --- */
+        const UDD_CASE_STUDY_DATA = {
+            specifications: [
+                { label: "Client Partner", value: "UDD Studio Corporation" },
+                { label: "Industry Core", value: "Conceptual Haute Couture" },
+                { label: "Primary Engine", value: "Shopify Standard Ecosystem" },
+                { label: "Production Frame", value: "14 Weeks Timeline Architecture" },
+                { label: "Strategic Focus", value: "Systemic Layouts & Decoupled Meta-Models" },
+                { label: "Core Execution Team", value: "1 UI Architect, 2 Systems Engineers" },
+                { label: "Server Delivery", value: "Liquid Query Optimization" },
+                { label: "Target Status", value: "Verified Active Optimization Layer" }
+            ],
+            challenges: [
+                { index: "01", title: "Navigation Complexity", desc: "Legacy paths grouped high-intent collections into multi-tiered standard select trees, producing structural choice paralysis.", img: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=400&q=80" },
+                { index: "02", title: "Product Discovery Failure", desc: "Absence of dynamic contextual parameters meant high-value lookbook assets isolated users completely from transactional nodes.", img: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=400&q=80" },
+                { index: "03", title: "Mobile UI Fragmentations", desc: "Rigid horizontal scaling formulas caused heavy asset crops and text clipping variants on viewport size changes.", img: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=400&q=80" },
+                { index: "04", title: "Luxury Positioning Void", desc: "Standard template logic degraded premium fashion assets into standard grid grids, destroying artistic authority.", img: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=400&q=80" }
+            ],
+            chapters: [
+                { id: "research", meta: "Phase Alpha", title: "Technical Architecture Exploration", text: "We initiated absolute performance trace testing to track Liquid call latency metrics, isolating unoptimized network execution trees behind the structural paint blocks." },
+                { id: "wireframes", meta: "Phase Beta", title: "Asymmetric Layout Formulation", text: "Discarding standard catalog boxes entirely, we structured design system models tracking layout proportion grids dynamically tailored around negative balance spaces." },
+                { id: "ia", meta: "Phase Gamma", title: "Metaobject Infrastructure Definition", text: "We decoupled visual relationships out of structural code entirely, transferring content properties to custom backend fields for variable layout adjustments." },
+                { id: "prototype", meta: "Phase Delta", title: "Interactive Momentum Simulation", text: "We hand-engineered transition frameworks with absolute precision timing, ensuring every single layout state modification feels natural." }
+            ],
+            features: [
+                { layout: "A", chapter: "Module I", title: "Fluid Collection Spaces", desc: "An architectural browsing view alternating proportion patterns based on creative priorities, keeping user focus intact.", img: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=900&q=80" },
+                { layout: "B", chapter: "Module II", title: "Persistent Context Cart", desc: "A sleek interaction canvas that expands dynamically over active viewports without interrupting the checkout path.", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=80" },
+                { layout: "A", chapter: "Module III", title: "Editorial Lookbook Integration", desc: "High-resolution media spreads mapped with integrated buy nodes, turning visual discovery into friction-free checkouts.", img: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=900&q=80" }
+            ],
+            metrics: [
+                { value: "98", label: "Performance Audit" },
+                { value: "0.8s", label: "Largest Content Paint" },
+                { value: "95+", label: "Mobile Index" },
+                { value: "100", label: "Accessibility" }
+            ],
+            gallery: [
+                { width: "f-width-1", img: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80" },
+                { width: "f-width-2", img: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=900&q=80" },
+                { width: "f-width-3", img: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=700&q=80" },
+                { width: "f-width-4", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1000&q=80" }
+            ],
+            technologies: ["Shopify Core", "Liquid Layouts", "Metaobjects Data Engine", "Custom Sections API", "Vanilla ES6 Engine", "Asynchronous Paint Modules"],
+            workflow: [
+                { ref: "SYS-01", title: "Extraction Pipeline", text: "Clean isolation of legacy structural elements and metadata assets without altering active transactional history layers." },
+                { ref: "SYS-02", title: "Decoupled Building", text: "Isolating structural UI presentation scripts cleanly from operational data fields to ensure lightning-fast parallel asset painting." },
+                { ref: "SYS-03", title: "Automated Stress Testing", text: "Subjecting visual configuration paths to automated peak activity scripts to guarantee robust conversion infrastructure under pressure." }
+            ],
+            related: [
+                { name: "Leaf Studios", cat: "Luxury Design", img: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=150&q=80" },
+                { name: "Craftsmith Workspace", cat: "Minimal Architecture", img: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=150&q=80" },
+                { name: "Power Sutra", cat: "Premium Corporate", img: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=150&q=80" },
+                { name: "Silk Berry", cat: "ECommerce Space", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=150&q=80" }
+            ]
+        };
+
+        /* --- INITIALIZATION CONTROLLER ROUTINES --- */
+        document.addEventListener("DOMContentLoaded", () => {
+            hydrateSpecificationSheet();
+            hydrateChallengeAccordion();
+            hydrateChaptersSystem();
+            hydrateFeatureViewports();
+            hydrateCleanMetrics();
+            hydrateCinematicFilmstrip();
+            hydrateTechnologyCloud();
+            hydrateWorkflowBlueprints();
+            hydrateRelatedRibbon();
+
+            initPointerSystem();
+            initScrollChoreography();
+            initAccordionInteractions();
+            initCinemaTheater();
+        });
+
+        /* --- HYDRATION ENGINES --- */
+        function hydrateSpecificationSheet() {
+            const el = document.getElementById("specsSheetContainer");
+            el.innerHTML = UDD_CASE_STUDY_DATA.specifications.map(s => `
+                <div class="specs-doc-row">
+                    <span class="specs-doc-label ed-font-thin">${s.label}</span>
+                    <span class="specs-doc-value ed-font-medium">${s.value}</span>
+                </div>
+            `).join('');
+        }
+
+        function hydrateChallengeAccordion() {
+            const el = document.getElementById("challengeAccordionContainer");
+            el.innerHTML = UDD_CASE_STUDY_DATA.challenges.map((c, idx) => `
+                <div class="challenge-accordion-row ${idx === 0 ? 'is-expanded' : ''}" data-index="${idx}">
+                    <div class="challenge-accordion-header">
+                        <div class="challenge-title-group">
+                            <span class="challenge-index">${c.index}</span>
+                            <span class="challenge-label-text ed-font-thin">${c.title}</span>
+                        </div>
+                        <span class="challenge-icon-marker ed-font-thin">+</span>
+                    </div>
+                    <div class="challenge-accordion-body">
+                        <div class="challenge-body-inner">
+                            <p class="ed-lh-generous">${c.desc}</p>
+                            <div class="challenge-body-image ed-mask-image-container">
+                                <img src="${c.img}" alt="${c.title} context visual">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function hydrateChaptersSystem() {
+            const navEl = document.getElementById("chapterNavList");
+            const stackEl = document.getElementById("chapterScrollStack");
+
+            navEl.innerHTML = UDD_CASE_STUDY_DATA.chapters.map((ch, idx) => `
+                <li class="chapter-nav-item ed-tracking-caps ${idx === 0 ? 'is-active' : ''}" data-target="${ch.id}">${ch.title.split(' ')[0]}</li>
+            `).join('');
+
+            stackEl.innerHTML = UDD_CASE_STUDY_DATA.chapters.map(ch => `
+                <div class="chapter-card-block ed-reveal-trigger" id="ch-block-${ch.id}" data-id="${ch.id}">
+                    <div class="chapter-card-meta ed-tracking-caps">${ch.meta}</div>
+                    <h3 class="ed-font-thin">${ch.title}</h3>
+                    <p class="ed-lh-generous">${ch.text}</p>
+                    <div class="chapter-card-asset">
+                        <div style="width:100%; height:100%; background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center;"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function hydrateFeatureViewports() {
+            const container = document.getElementById("sec-features");
+            container.innerHTML = UDD_CASE_STUDY_DATA.features.map(f => `
+                <div class="feature-viewport-unit bg-white">
+                    <div class="ed-container">
+                        <div class="feature-viewport-layout feature-layout-type-${f.layout}">
+                            ${f.layout === 'A' ? renderTextPanel(f) + renderVisualPanel(f) : renderVisualPanel(f) + renderTextPanel(f)}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            function renderTextPanel(feat) {
+                return `
+                    <div class="feature-panel-text ed-reveal-trigger">
+                        <span class="ed-tracking-caps ed-font-medium">${feat.chapter}</span>
+                        <h3 class="ed-font-thin">${feat.title}</h3>
+                        <p class="ed-lh-generous">${feat.desc}</p>
+                    </div>
+                `;
+            }
+            function renderVisualPanel(feat) {
+                return `
+                    <div class="feature-panel-visual ed-mask-image-container ed-reveal-trigger">
+                        <img src="${feat.img}" alt="${feat.title} visual display">
+                    </div>
+                `;
+            }
+        }
+
+        function hydrateCleanMetrics() {
+            const el = document.getElementById("metricsCleanGrid");
+            el.innerHTML = UDD_CASE_STUDY_DATA.metrics.map(m => `
+                <div class="perf-clean-node ed-reveal-trigger">
+                    <div class="perf-clean-digit ed-font-thin" data-value="${parseInt(m.value) || m.value}">0</div>
+                    <div class="perf-clean-label ed-font-medium">${m.label}</div>
+                </div>
+            `).join('');
+        }
+
+        function hydrateCinematicFilmstrip() {
+            const el = document.getElementById("filmstripContainer");
+            el.innerHTML = UDD_CASE_STUDY_DATA.gallery.map(g => `
+                <div class="filmstrip-snapshot-card ${g.width} ed-mask-image-container ed-reveal-trigger">
+                    <img src="${g.img}" alt="Cinematic Case Viewport Layout">
+                </div>
+            `).join('');
+        }
+
+        function hydrateTechnologyCloud() {
+            const el = document.getElementById("techLabelsCloud");
+            el.innerHTML = UDD_CASE_STUDY_DATA.technologies.map(t => `
+                <div class="tech-label-capsule ed-font-thin ed-tracking-wide">${t.toUpperCase()}</div>
+            `).join('');
+        }
+
+        function hydrateWorkflowBlueprints() {
+            const el = document.getElementById("blueprintGridContainer");
+            el.innerHTML = UDD_CASE_STUDY_DATA.workflow.map(w => `
+                <div class="blueprint-node-card ed-reveal-trigger">
+                    <span class="blueprint-technical-meta">${w.ref} // SECURED</span>
+                    <h4 class="ed-font-medium">${w.title}</h4>
+                    <p>${w.text}</p>
+                </div>
+            `).join('');
+        }
+
+        function hydrateRelatedRibbon() {
+            const el = document.getElementById("relatedRibbonTrack");
+            const structuralList = [...UDD_CASE_STUDY_DATA.related, ...UDD_CASE_STUDY_DATA.related];
+            el.innerHTML = structuralList.map(r => `
+                <a href="#related-project" class="ribbon-project-element">
+                    <span class="ribbon-project-title ed-font-thin">${r.name}</span>
+                    <div class="ribbon-project-thumbnail">
+                        <img src="${r.img}" alt="${r.name} mini frame">
+                    </div>
+                    <span class="ribbon-project-category ed-font-thin">${r.cat}</span>
+                </a>
+            `).join('');
+        }
+
+        /* --- POINTER INTERACTIVE ENGINE --- */
+        function initPointerSystem() {
+            const cursor = document.getElementById("edCursor");
+            document.addEventListener("mousemove", (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+
+            document.querySelectorAll("a, .challenge-accordion-row, #cinemaTrigger, .tech-label-capsule").forEach(item => {
+                item.addEventListener("mouseenter", () => cursor.classList.add("hovering"));
+                item.addEventListener("mouseleave", () => cursor.classList.remove("hovering"));
+            });
+        }
+
+        /* --- ADVANCED SCROLL CHOREOGRAPHY ENGINE --- */
+        function initScrollChoreography() {
+            const elementsToReveal = document.querySelectorAll(".ed-reveal-trigger, .ed-mask-image-container, .perf-clean-node");
+            
+            const intersectionController = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("is-visible");
+                        
+                        if (entry.target.classList.contains("perf-clean-node")) {
+                            const counterDisplay = entry.target.querySelector(".perf-clean-digit");
+                            triggerIntenseCounter(counterDisplay);
+                        }
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
+
+            elementsToReveal.forEach(el => intersectionController.observe(el));
+
+            const heroMockup = document.getElementById("heroMockupFrame");
+            
+            window.addEventListener("scroll", () => {
+                const scrollVector = window.scrollY;
+
+                // Hero Parallax Scale
+                if (scrollVector < window.innerHeight) {
+                    const heroScaleRatio = 1 - (scrollVector * 0.0002);
+                    const heroTranslateRatio = scrollVector * -0.04;
+                    if (heroMockup) {
+                        heroMockup.style.transform = `scale(${Math.max(0.92, heroScaleRatio)}) translateY(${heroTranslateRatio}px)`;
+                    }
+                }
+
+                // Dark Section Detection Mode
+                const darkSection = document.getElementById("sec-impact");
+                if (darkSection) {
+                    const darkTop = darkSection.offsetTop;
+                    const darkBottom = darkTop + darkSection.offsetHeight;
+                    if (scrollVector >= darkTop - 200 && scrollVector <= darkBottom - 200) {
+                        document.body.classList.add("theme-dark-active");
+                    } else {
+                        document.body.classList.remove("theme-dark-active");
+                    }
+                }
+
+                // Vertical Navigation Sync Module
+                const chapters = document.querySelectorAll(".chapter-card-block");
+                chapters.forEach(ch => {
+                    const chTop = ch.offsetTop + document.getElementById("sec-chapters").offsetTop;
+                    if (scrollVector >= chTop - 220 && scrollVector < chTop + ch.offsetHeight) {
+                        const id = ch.getAttribute("data-id");
+                        document.querySelectorAll(".chapter-nav-item").forEach(item => {
+                            if (item.getAttribute("data-target") === id) {
+                                item.classList.add("is-active");
+                            } else {
+                                item.classList.remove("is-active");
+                            }
+                        });
+                    }
+                });
+            });
+        }
+
+        function triggerIntenseCounter(displayElement) {
+            if (displayElement.classList.contains("animated-done")) return;
+            const targetRaw = displayElement.getAttribute("data-value");
+            const isPlus = targetRaw.includes("+");
+            const isSeconds = targetRaw.includes("s");
+            const cleanTarget = parseFloat(targetRaw);
+
+            if (isNaN(cleanTarget)) {
+                displayElement.textContent = targetRaw;
+                return;
+            }
+
+            displayElement.classList.add("animated-done");
+            let initialStart = 0;
+            const stepSpeed = 25;
+            const duration = 800;
+            const incrementalStep = cleanTarget / (duration / stepSpeed);
+
+            const counterLoop = setInterval(() => {
+                initialStart += incrementalStep;
+                if (initialStart >= cleanTarget) {
+                    clearInterval(counterLoop);
+                    displayElement.textContent = (isSeconds ? cleanTarget.toFixed(1) : Math.floor(cleanTarget)) + (isPlus ? "+" : "") + (isSeconds ? "s" : "");
+                } else {
+                    displayElement.textContent = (isSeconds ? initialStart.toFixed(1) : Math.floor(initialStart)) + (isSeconds ? "s" : "");
+                }
+            }, stepSpeed);
+        }
+
+        /* --- ACCORDION CORE LOGIC --- */
+        function initAccordionInteractions() {
+            const rows = document.querySelectorAll(".challenge-accordion-row");
+            rows.forEach(row => {
+                row.addEventListener("click", () => {
+                    rows.forEach(r => r.classList.remove("is-expanded"));
+                    row.classList.add("is-expanded");
+                });
+            });
+        }
+
+        /* --- THEATER MODAL ENGINE --- */
+        function initCinemaTheater() {
+            const trigger = document.getElementById("cinemaTrigger");
+            const theater = document.getElementById("cinemaTheater");
+            const close = document.getElementById("cinemaClose");
+
+            if(trigger) {
+                trigger.addEventListener("click", () => {
+                    theater.classList.add("is-active");
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+            if(close) {
+                close.addEventListener("click", () => {
+                    theater.classList.remove("is-active");
+                    document.body.style.overflow = '';
+                });
+            }
+        }
+    </script>
+</body>
+</html>

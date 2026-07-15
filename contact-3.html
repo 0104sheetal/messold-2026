@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MESSOLD — Signature Contact Experience</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           MESSOLD DESIGN SYSTEM (V3)
+           Component-Based Architecture & Micro-Typography
+           ========================================================================== */
+        
+        :root {
+            /* Palette Constants */
+            --color-charcoal: #18181B;
+            --color-surface: #202020;
+            --color-soft-white: #FAFAFA;
+            --color-pure-white: #FFFFFF;
+            
+            --text-primary-light: #111111;
+            --text-secondary-light: #6B6B6B;
+            --border-light: #E8E8E8;
+            
+            --text-primary-dark: #FAFAFA;
+            --text-secondary-dark: #A1A1AA;
+            --border-dark: #2E2E33;
+
+            /* Type Mechanics */
+            --font-signature: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+            
+            /* Motion Profiles */
+            --ease-signature: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-drift: cubic-bezier(0.44, 0, 0.56, 1);
+        }
+
+        /* Foundation Structural Scoping (No html, body, * selectors) */
+        .v3-runtime-canvas {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-signature);
+            background-color: var(--color-soft-white);
+            color: var(--text-primary-light);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .v3-runtime-canvas div,
+        .v3-runtime-canvas section,
+        .v3-runtime-canvas h1,
+        .v3-runtime-canvas h2,
+        .v3-runtime-canvas h3,
+        .v3-runtime-canvas p,
+        .v3-runtime-canvas span,
+        .v3-runtime-canvas label,
+        .v3-runtime-canvas input,
+        .v3-runtime-canvas textarea,
+        .v3-runtime-canvas button {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .v3-runtime-canvas button {
+            background: none;
+            border: none;
+            font-family: inherit;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* --------------------------------------------------------------------------
+           PERSISTENT GLOBAL INTERACTION FRAMEWORK
+           -------------------------------------------------------------------------- */
+        .v3-navigation-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6vw;
+            z-index: 100;
+            background: rgba(250, 250, 250, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+            transition: background 0.5s var(--ease-signature), border-color 0.5s var(--ease-signature);
+        }
+        
+        .v3-navigation-bar.theme-dark {
+            background: rgba(24, 24, 27, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .v3-brand-signature {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            color: var(--text-primary-light);
+            transition: color 0.5s var(--ease-signature);
+        }
+        .v3-navigation-bar.theme-dark .v3-brand-signature {
+            color: var(--text-primary-dark);
+        }
+
+        .v3-nav-action-trigger {
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            color: var(--text-secondary-light);
+            border: 1px solid var(--border-light);
+            padding: 10px 20px;
+            border-radius: 100px;
+            transition: all 0.4s var(--ease-signature);
+        }
+        .v3-navigation-bar.theme-dark .v3-nav-action-trigger {
+            color: var(--text-secondary-dark);
+            border-color: var(--border-dark);
+        }
+        .v3-nav-action-trigger:hover {
+            color: var(--color-charcoal);
+            border-color: var(--color-charcoal);
+        }
+        .v3-navigation-bar.theme-dark .v3-nav-action-trigger:hover {
+            color: var(--color-pure-white);
+            border-color: var(--color-pure-white);
+        }
+
+        /* Performance Optimized Animation Engine */
+        .v3-scroll-animate { opacity: 0; will-change: transform, opacity, filter; }
+        
+        .v3-anim-fade.v3-state-visible { animation: v3FadeIn 1.4s var(--ease-signature) forwards; }
+        .v3-anim-slide.v3-state-visible { animation: v3SlideUp 1.4s var(--ease-signature) forwards; }
+        .v3-anim-scale.v3-state-visible { animation: v3ScaleCompact 1.6s var(--ease-signature) forwards; }
+        .v3-anim-crossfade.v3-state-visible { animation: v3CrossfadeReveal 1.2s var(--ease-signature) forwards; }
+        .v3-anim-reveal.v3-state-visible { animation: v3AtmosphericReveal 1.8s var(--ease-signature) forwards; }
+
+        @keyframes v3FadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes v3SlideUp { from { opacity: 0; transform: translateY(60px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes v3ScaleCompact { from { opacity: 0; transform: scale(0.97) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        @keyframes v3CrossfadeReveal { from { opacity: 0; filter: saturate(0.5) contrast(0.9); } to { opacity: 1; filter: saturate(1) contrast(1); } }
+        @keyframes v3AtmosphericReveal { 0% { opacity: 0; filter: blur(8px); transform: translateY(30px); } 100% { opacity: 1; filter: blur(0); transform: translateY(0); } }
+
+        /* --------------------------------------------------------------------------
+           SCENE 1: THE ASYMMETRIC OPENING SCENE
+           -------------------------------------------------------------------------- */
+        .v3-scene-hero {
+            position: relative;
+            min-height: 100vh;
+            padding: 220px 6vw 120px;
+            background-color: var(--color-soft-white);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            overflow: hidden;
+        }
+
+        .v3-hero-micro-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary-light);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 50px;
+            align-self: flex-start;
+        }
+
+        .v3-hero-statement {
+            font-size: clamp(36px, 5.5vw, 76px);
+            font-weight: 300;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            max-width: 900px;
+            margin-bottom: 70px;
+            color: var(--text-primary-light);
+        }
+
+        .v3-hero-isolation-block {
+            align-self: flex-end;
+            width: 100%;
+            max-width: 360px;
+            margin-right: 25%;
+            margin-bottom: 60px;
+        }
+
+        .v3-hero-narrative {
+            font-size: 15px;
+            color: var(--text-secondary-light);
+            line-height: 1.65;
+            font-weight: 400;
+        }
+
+        .v3-hero-action-sandbox {
+            align-self: flex-start;
+            margin-left: 8%;
+        }
+
+        .v3-interactive-anchor {
+            display: inline-flex;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--color-charcoal);
+            border-bottom: 1px solid var(--color-charcoal);
+            padding-bottom: 4px;
+            transition: opacity 0.3s var(--ease-signature);
+        }
+        .v3-interactive-anchor:hover { opacity: 0.6; }
+
+        /* Organic Workspace Reference Previews */
+        .v3-hero-reference-space {
+            position: absolute;
+            top: 0;
+            right: -2vw;
+            width: 55vw;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .v3-reference-node {
+            position: absolute;
+            background: var(--color-pure-white);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.03);
+            overflow: hidden;
+            will-change: transform;
+            animation: v3OrganicDrift 16s var(--ease-drift) infinite alternate;
+        }
+
+        .v3-node-alpha { top: 18%; left: 10%; width: 340px; height: 240px; --rotation-base: -3deg; animation-delay: 0s; }
+        .v3-node-beta { top: 42%; left: 45%; width: 260px; height: 360px; --rotation-base: 4deg; animation-delay: -4s; }
+        .v3-node-gamma { top: 62%; left: 5%; width: 310px; height: 210px; --rotation-base: -1.5deg; animation-delay: -8s; }
+
+        /* Internal Simulated Compositions */
+        .v3-simulated-canvas { padding: 18px; height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
+        .v3-simulated-header { display: flex; gap: 6px; margin-bottom: 16px; }
+        .v3-simulated-dot { width: 6px; height: 6px; border-radius: 50%; background: #E4E4E7; }
+        .v3-simulated-strip { height: 8px; background: #F4F4F5; border-radius: 2px; margin-bottom: 8px; }
+        .v3-simulated-block { flex-grow: 1; background: #FAFAFA; border: 1px dashed #E4E4E7; border-radius: 4px; }
+
+        @keyframes v3OrganicDrift {
+            0% { transform: translateY(0px) rotate(var(--rotation-base)); }
+            100% { transform: translateY(-25px) rotate(calc(var(--rotation-base) + 1.5deg)); }
+        }
+
+        /* --------------------------------------------------------------------------
+           SCENE 2: THE NOTEBOOK ARCHITECTURE (FORM)
+           -------------------------------------------------------------------------- */
+        .v3-scene-document {
+            background-color: var(--color-charcoal);
+            color: var(--text-primary-dark);
+            padding: 160px 6vw;
+        }
+
+        .v3-document-container {
+            max-width: 840px;
+            margin: 0 auto;
+        }
+
+        .v3-document-meta-header {
+            font-size: 22px;
+            font-weight: 300;
+            margin-bottom: 70px;
+            color: var(--text-secondary-dark);
+            letter-spacing: -0.01em;
+        }
+
+        /* Notion-like Modular Selection Control */
+        .v3-segmented-control-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 90px;
+            border-bottom: 1px solid var(--border-dark);
+            padding-bottom: 24px;
+        }
+
+        .v3-segment-trigger {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--text-secondary-dark);
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s var(--ease-signature);
+        }
+        .v3-segment-trigger:hover, .v3-segment-trigger.v3-active-segment {
+            color: var(--color-pure-white);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Notebook Micro-Form Construction */
+        .v3-notebook-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            column-gap: 50px;
+            row-gap: 65px;
+        }
+
+        .v3-field-cell {
+            position: relative;
+            width: 100%;
+        }
+        .v3-field-cell-span-all { grid-column: 1 / -1; }
+
+        .v3-field-cell input,
+        .v3-field-cell textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border-dark);
+            color: var(--color-pure-white);
+            font-size: 15px;
+            font-family: inherit;
+            padding: 10px 0;
+            outline: none;
+            resize: none;
+            transition: border-color 0.4s var(--ease-signature);
+        }
+
+        .v3-field-cell label {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            font-size: 15px;
+            color: var(--text-secondary-dark);
+            pointer-events: none;
+            transition: all 0.4s var(--ease-signature);
+        }
+
+        .v3-field-cell input:focus,
+        .v3-field-cell textarea:focus {
+            border-bottom-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .v3-field-cell input:focus ~ label,
+        .v3-field-cell input:not(:placeholder-shown) ~ label,
+        .v3-field-cell textarea:focus ~ label,
+        .v3-field-cell textarea:not(:placeholder-shown) ~ label {
+            top: -18px;
+            font-size: 11px;
+            color: var(--text-secondary-dark);
+            letter-spacing: 0.05em;
+        }
+
+        /* Dynamic Field Append Mechanism */
+        .v3-dynamic-append-matrix {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            column-gap: 50px;
+            row-gap: 65px;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.7s var(--ease-signature), opacity 0.5s var(--ease-signature);
+        }
+        .v3-dynamic-append-matrix.v3-matrix-expanded {
+            max-height: 400px;
+            opacity: 1;
+        }
+
+        .v3-form-dispatch-hub {
+            margin-top: 80px;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .v3-btn-dispatch {
+            background: var(--color-pure-white);
+            color: var(--color-charcoal);
+            padding: 14px 36px;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 4px;
+            transition: opacity 0.3s var(--ease-signature);
+        }
+        .v3-btn-dispatch:hover { opacity: 0.9; }
+
+        /* --------------------------------------------------------------------------
+           SCENE 3: THE STREAMING ENGINE (CINEMATIC GALLERY)
+           -------------------------------------------------------------------------- */
+        .v3-scene-cinema {
+            background-color: var(--color-pure-white);
+            padding: 160px 0 160px 6vw;
+            overflow: hidden;
+        }
+
+        .v3-cinema-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-right: 6vw;
+            margin-bottom: 70px;
+        }
+
+        .v3-cinema-context-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary-light);
+        }
+
+        .v3-cinema-navigation {
+            display: flex;
+            gap: 12px;
+        }
+
+        .v3-cinema-arrow {
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--border-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary-light);
+            transition: all 0.3s var(--ease-signature);
+        }
+        .v3-cinema-arrow:hover { background: var(--color-soft-white); }
+
+        .v3-cinema-view-track {
+            display: flex;
+            gap: 28px;
+            transition: transform 0.8s var(--ease-signature);
+            will-change: transform;
+        }
+
+        .v3-cinema-asset-wrapper {
+            position: relative;
+            flex-shrink: 0;
+            border-radius: 4px;
+            overflow: hidden;
+            background: var(--color-soft-white);
+            transition: transform 0.5s var(--ease-signature);
+        }
+        .v3-cinema-asset-wrapper:hover {
+            transform: scale(1.015);
+        }
+        
+        .v3-cinema-asset-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(0.2);
+            transition: filter 0.5s var(--ease-signature);
+        }
+        .v3-cinema-asset-wrapper:hover img { filter: grayscale(0); }
+
+        /* Asymmetric Dimensions Configuration */
+        .v3-dim-landscape { width: 44vw; height: 26vw; }
+        .v3-dim-portrait { width: 24vw; height: 34vw; }
+        .v3-dim-square { width: 30vw; height: 30vw; }
+
+        .v3-asset-overlay-details {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: var(--color-pure-white);
+            background: rgba(24, 24, 27, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 11px;
+            letter-spacing: 0.02em;
+        }
+
+        /* Immersive Cinema Modal */
+        .v3-cinema-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(24, 24, 27, 0.96);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s var(--ease-signature);
+        }
+        .v3-cinema-modal-overlay.v3-modal-active { opacity: 1; pointer-events: all; }
+        .v3-modal-dismiss { position: absolute; top: 35px; right: 6vw; color: white; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+        .v3-modal-viewport { width: 75vw; height: 42vw; background: #0F0F11; border-radius: 4px; }
+
+        /* --------------------------------------------------------------------------
+           SCENE 4: THE EDITORIAL STORY (PROCESS)
+           -------------------------------------------------------------------------- */
+        .v3-scene-editorial {
+            background-color: var(--color-charcoal);
+            color: var(--color-pure-white);
+            padding: 180px 6vw;
+        }
+
+        .v3-editorial-narrative-flow {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .v3-editorial-chapter {
+            border-bottom: 1px solid var(--border-dark);
+            padding: 65px 0;
+            display: grid;
+            grid-template-columns: 4fr 5fr;
+            align-items: flex-start;
+            gap: 40px;
+        }
+        .v3-editorial-chapter:first-child { border-top: 1px solid var(--border-dark); }
+
+        .v3-chapter-heading {
+            font-size: clamp(22px, 3.5vw, 36px);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            color: var(--text-primary-dark);
+        }
+
+        .v3-chapter-exposition {
+            font-size: 15px;
+            color: var(--text-secondary-dark);
+            line-height: 1.7;
+            max-width: 440px;
+        }
+
+        /* --------------------------------------------------------------------------
+           SCENE 5: TRIPLE LOOPS (BRAND SHOWCASE)
+           -------------------------------------------------------------------------- */
+        .v3-scene-showcase {
+            background-color: var(--color-soft-white);
+            padding: 140px 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 45px;
+            position: relative;
+        }
+
+        .v3-scene-showcase::before,
+        .v3-scene-showcase::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 18vw;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+        }
+        .v3-scene-showcase::before { left: 0; background: linear-gradient(to right, var(--color-soft-white), transparent); }
+        .v3-scene-showcase::after { right: 0; background: linear-gradient(to left, var(--color-soft-white), transparent); }
+
+        .v3-marquee-strip-container {
+            display: flex;
+            width: max-content;
+        }
+        .v3-marquee-strip-container:hover .v3-marquee-segment { animation-play-state: paused; }
+
+        .v3-marquee-segment {
+            display: flex;
+            align-items: center;
+            gap: 130px;
+            padding-right: 130px;
+            will-change: transform;
+        }
+
+        .v3-brand-identity-text {
+            font-size: 20px;
+            font-weight: 400;
+            color: #CCCCCC;
+            letter-spacing: -0.01em;
+        }
+
+        .v3-loop-left-normal { animation: v3ScrollLeft 32s linear infinite; }
+        .v3-loop-right-normal { animation: v3ScrollRight 36s linear infinite; }
+        .v3-loop-left-rapid { animation: v3ScrollLeft 24s linear infinite; }
+
+        @keyframes v3ScrollLeft { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+        @keyframes v3ScrollRight { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+
+        /* --------------------------------------------------------------------------
+           SCENE 6: ASYMMETRIC KNOWLEDGE BASE (FAQ)
+           -------------------------------------------------------------------------- */
+        .v3-scene-knowledge {
+            background-color: var(--color-surface);
+            color: var(--color-pure-white);
+            padding: 160px 6vw;
+        }
+
+        .v3-knowledge-matrix {
+            display: grid;
+            grid-template-columns: 5fr 6fr;
+            gap: 8vw;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .v3-knowledge-index-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .v3-index-trigger {
+            text-align: left;
+            font-size: 18px;
+            font-weight: 300;
+            color: var(--text-secondary-dark);
+            transition: color 0.3s var(--ease-signature);
+            padding-bottom: 20px;
+            border-bottom: 1px solid transparent;
+        }
+        .v3-index-trigger:hover, .v3-index-trigger.v3-active-index {
+            color: var(--color-pure-white);
+        }
+
+        .v3-knowledge-exhibit-pane {
+            position: relative;
+            padding-top: 6px;
+        }
+
+        .v3-exhibit-delivery-text {
+            font-size: 16px;
+            line-height: 1.75;
+            color: var(--text-secondary-dark);
+            opacity: 1;
+            transition: opacity 0.3s var(--ease-signature);
+        }
+
+        /* Mobile Structural Fallback Accordion Blocks */
+        .v3-knowledge-inline-response {
+            display: none;
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-secondary-dark);
+            padding: 0 10px 30px 10px;
+        }
+
+        /* --------------------------------------------------------------------------
+           SCENE 7: THE QUIET INVITATION
+           -------------------------------------------------------------------------- */
+        .v3-scene-termination {
+            background-color: var(--color-pure-white);
+            padding: 220px 6vw 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .v3-termination-capsule {
+            max-width: 650px;
+        }
+
+        .v3-termination-call {
+            font-size: clamp(28px, 4.5vw, 56px);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            margin-bottom: 30px;
+            color: var(--text-primary-light);
+        }
+
+        .v3-termination-subtext {
+            font-size: 16px;
+            color: var(--text-secondary-light);
+            line-height: 1.6;
+            margin-bottom: 60px;
+        }
+
+        .v3-termination-anchor {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-pure-white);
+            background: var(--color-charcoal);
+            padding: 16px 36px;
+            border-radius: 100px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .v3-terminal-meta-directory {
+            margin-top: 140px;
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            font-size: 12px;
+            letter-spacing: 0.02em;
+            color: var(--text-secondary-light);
+        }
+
+        /* --------------------------------------------------------------------------
+           RESPONSIVE CONFIGURATION MATRIX
+           -------------------------------------------------------------------------- */
+        @media (max-width: 1024px) {
+            .v3-scene-hero { padding-top: 160px; }
+            .v3-hero-reference-space { display: none; }
+            .v3-hero-isolation-block { margin-right: 0; max-width: 100%; }
+            .v3-hero-action-sandbox { margin-left: 0; }
+            
+            .v3-notebook-form { grid-template-columns: 1fr; row-gap: 50px; }
+            .v3-dynamic-append-matrix { grid-template-columns: 1fr; row-gap: 50px; }
+            
+            .v3-dim-landscape { width: 75vw; height: 48vw; }
+            .v3-dim-portrait { width: 60vw; height: 80vw; }
+            .v3-dim-square { width: 65vw; height: 65vw; }
+            
+            .v3-editorial-chapter { grid-template-columns: 1fr; gap: 16px; }
+            .v3-chapter-exposition { max-width: 100%; }
+            
+            .v3-knowledge-matrix { grid-template-columns: 1fr; gap: 0; }
+            .v3-knowledge-exhibit-pane { display: none; }
+            .v3-index-trigger { border-bottom: 1px solid var(--border-dark); width: 100%; margin-bottom: 10px; font-size: 16px; }
+            .v3-knowledge-inline-response { display: none; }
+            .v3-knowledge-inline-response.v3-accordion-open { display: block; }
+        }
+    </style>
+</head>
+<body class="v3-runtime-canvas">
+
+    <nav class="v3-navigation-bar" id="v3GlobalNav">
+        <div class="v3-brand-signature">MESSOLD</div>
+        <button class="v3-nav-action-trigger" onclick="document.getElementById('document-vault').scrollIntoView({behavior:'smooth'})">Initiate Build</button>
+    </nav>
+
+    <section class="v3-scene-hero v3-scroll-animate v3-anim-fade">
+        <span class="v3-hero-micro-label">Consulting Infrastructure</span>
+        <h1 class="v3-hero-statement">We build immutable systems for high-velocity commerce.</h1>
+        
+        <div class="v3-hero-isolation-block">
+            <p class="v3-hero-narrative">Engineering engineered products. MESSOLD aligns high-performance storefront micro-architectures with data-driven allocation.</p>
+        </div>
+        
+        <div class="v3-hero-action-sandbox">
+            <button class="v3-interactive-anchor" onclick="document.getElementById('document-vault').scrollIntoView({behavior:'smooth'})">Explore Framework</button>
+        </div>
+        
+        <div class="v3-hero-reference-space">
+            <div class="v3-reference-node v3-node-alpha">
+                <div class="v3-simulated-canvas">
+                    <div class="v3-simulated-header"><div class="v3-simulated-dot"></div><div class="v3-simulated-dot"></div><div class="v3-simulated-dot"></div></div>
+                    <div class="v3-simulated-strip" style="width: 70%"></div>
+                    <div class="v3-simulated-block"></div>
+                </div>
+            </div>
+            <div class="v3-reference-node v3-node-beta">
+                <div class="v3-simulated-canvas">
+                    <div class="v3-simulated-strip" style="width: 40%"></div>
+                    <div class="v3-simulated-strip" style="width: 90%"></div>
+                    <div class="v3-simulated-block"></div>
+                    <div class="v3-simulated-strip" style="width: 30%; margin-top: 10px;"></div>
+                </div>
+            </div>
+            <div class="v3-reference-node v3-node-gamma">
+                <div class="v3-simulated-canvas">
+                    <div class="v3-simulated-block"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="document-vault" class="v3-scene-document">
+        <div class="v3-document-container v3-scroll-animate v3-anim-slide">
+            <h2 class="v3-document-meta-header">Project Blueprint Formulation</h2>
+            
+            <div class="v3-segmented-control-wrapper" id="v3ServiceRouter">
+                <button class="v3-segment-trigger" data-block="web">Website Development</button>
+                <button class="v3-segment-trigger" data-block="perf">Performance Marketing</button>
+                <button class="v3-segment-trigger" data-block="social">Social Media</button>
+                <button class="v3-segment-trigger" data-block="growth">Complete Growth Partner</button>
+            </div>
+
+            <form class="v3-notebook-form" onsubmit="event.preventDefault();">
+                <div class="v3-field-cell">
+                    <input type="text" id="v3_prime_identity" placeholder=" ">
+                    <label for="v3_prime_identity">Corporate Entity / Identity</label>
+                </div>
+                <div class="v3-field-cell">
+                    <input type="email" id="v3_prime_contact" placeholder=" ">
+                    <label for="v3_prime_contact">Secure Communication Endpoint</label>
+                </div>
+                
+                <div class="v3-dynamic-append-matrix" id="v3DynamicMatrix"></div>
+
+                <div class="v3-field-cell v3-field-cell-span-all">
+                    <textarea id="v3_prime_objectives" rows="1" placeholder=" " oninput="this.style.height = '';this.style.height = this.scrollHeight + 'px'"></textarea>
+                    <label for="v3_prime_objectives">Core Structural Demands & Parameters</label>
+                </div>
+
+                <div class="v3-field-cell i-v3-field-cell-span-all v3-form-dispatch-hub">
+                    <button type="button" class="v3-btn-dispatch">Transmit Specifications</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="v3-scene-cinema">
+        <div class="v3-cinema-header-row v3-scroll-animate v3-anim-scale">
+            <h2 class="v3-cinema-context-title">Production Releases</h2>
+            <div class="v3-cinema-navigation">
+                <button class="v3-cinema-arrow" id="v3TrackLeft">←</button>
+                <button class="v3-cinema-arrow" id="v3TrackRight">→</button>
+            </div>
+        </div>
+        
+        <div class="v3-cinema-view-track v3-scroll-animate v3-anim-scale" id="v3CinemaTrack">
+            <div class="v3-cinema-asset-wrapper v3-dim-landscape" onclick="v3LaunchCinema()">
+                <img src="https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&w=1000&q=80" alt="Engine Release Alpha">
+                <div class="v3-asset-overlay-details">Architecture Deployment 01 // Aura</div>
+            </div>
+            <div class="v3-cinema-asset-wrapper v3-dim-portrait" onclick="v3LaunchCinema()">
+                <img src="https://images.unsplash.com/photo-1541462608141-ad4979e408c9?auto=format&fit=crop&w=700&q=80" alt="Engine Release Beta">
+                <div class="v3-asset-overlay-details">Growth Structure // Vector</div>
+            </div>
+            <div class="v3-cinema-asset-wrapper v3-dim-square" onclick="v3LaunchCinema()">
+                <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800&q=80" alt="Engine Release Gamma">
+                <div class="v3-asset-overlay-details">Data Systems // Nexus</div>
+            </div>
+            <div class="v3-cinema-asset-wrapper v3-dim-landscape" onclick="v3LaunchCinema()">
+                <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1000&q=80" alt="Engine Release Delta">
+                <div class="v3-asset-overlay-details">Ecosystem Scale // Core</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="v3-scene-editorial">
+        <div class="v3-editorial-narrative-flow">
+            <div class="v3-editorial-chapter v3-scroll-animate v3-anim-slide">
+                <h3 class="v3-chapter-heading">You Tell Us.</h3>
+                <p class="v3-chapter-exposition">We run down raw logic parameters without standard corporate templates. Your architectural operational realities define our scope baseline.</p>
+            </div>
+            <div class="v3-editorial-chapter v3-scroll-animate v3-anim-slide">
+                <h3 class="v3-chapter-heading">We Learn.</h3>
+                <p class="v3-chapter-exposition">Deep analysis inside application codebases and retention telemetry. We locate critical bottlenecks and performance opportunities.</p>
+            </div>
+            <div class="v3-editorial-chapter v3-scroll-animate v3-anim-slide">
+                <h3 class="v3-chapter-heading">We Recommend.</h3>
+                <p class="v3-chapter-exposition">A structural layout recommendation containing actionable implementation directives. Pure strategic insight devoid of generic agency noise.</p>
+            </div>
+            <div class="v3-editorial-chapter v3-scroll-animate v3-anim-slide">
+                <h3 class="v3-chapter-heading">We Build.</h3>
+                <p class="v3-chapter-exposition">Engineering cleanly deployed solutions. We craft front-end assets and optimize underlying data pipelines for clean, responsive speed.</p>
+            </div>
+            <div class="v3-editorial-chapter v3-scroll-animate v3-anim-slide">
+                <h3 class="v3-chapter-heading">We Grow Together.</h3>
+                <p class="v3-chapter-exposition">Sustained system performance optimizations. As structural baselines expand, we continue realigning elements to secure absolute efficiency.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="v3-scene-showcase v3-scroll-animate v3-anim-fade">
+        <div class="v3-marquee-strip-container">
+            <div class="v3-marquee-segment v3-loop-left-normal">
+                <span class="v3-brand-identity-text">KRYPTON // SYSTEM</span>
+                <span class="v3-brand-identity-text">HELIOS LABS</span>
+                <span class="v3-brand-identity-text">ATLAS INC</span>
+                <span class="v3-brand-identity-text">ZEPHYR DISTRO</span>
+                <span class="v3-brand-identity-text">CHRONO GLOBAL</span>
+            </div>
+            <div class="v3-marquee-segment v3-loop-left-normal">
+                <span class="v3-brand-identity-text">KRYPTON // SYSTEM</span>
+                <span class="v3-brand-identity-text">HELIOS LABS</span>
+                <span class="v3-brand-identity-text">ATLAS INC</span>
+                <span class="v3-brand-identity-text">ZEPHYR DISTRO</span>
+                <span class="v3-brand-identity-text">CHRONO GLOBAL</span>
+            </div>
+        </div>
+        <div class="v3-marquee-strip-container" style="transform: translateX(-15%);">
+            <div class="v3-marquee-segment v3-loop-right-normal">
+                <span class="v3-brand-identity-text">IONIC CO</span>
+                <span class="v3-brand-identity-text">MATRIX DIGITAL</span>
+                <span class="v3-brand-identity-text">VALENCE STUDIOS</span>
+                <span class="v3-brand-identity-text">APEX FLUIDICS</span>
+                <span class="v3-brand-identity-text">THETA GROUP</span>
+            </div>
+            <div class="v3-marquee-segment v3-loop-right-normal">
+                <span class="v3-brand-identity-text">IONIC CO</span>
+                <span class="v3-brand-identity-text">MATRIX DIGITAL</span>
+                <span class="v3-brand-identity-text">VALENCE STUDIOS</span>
+                <span class="v3-brand-identity-text">APEX FLUIDICS</span>
+                <span class="v3-brand-identity-text">THETA GROUP</span>
+            </div>
+        </div>
+        <div class="v3-marquee-strip-container" style="transform: translateX(-5%);">
+            <div class="v3-marquee-segment v3-loop-left-rapid">
+                <span class="v3-brand-identity-text">OXYGEN D2C</span>
+                <span class="v3-brand-identity-text">PRISM STOREFRONTS</span>
+                <span class="v3-brand-identity-text">VORTEX NETWORKS</span>
+                <span class="v3-brand-identity-text">SIDERIUS TECH</span>
+                <span class="v3-brand-identity-text">ECHO INTELLIGENCE</span>
+            </div>
+            <div class="v3-marquee-segment v3-loop-left-rapid">
+                <span class="v3-brand-identity-text">OXYGEN D2C</span>
+                <span class="v3-brand-identity-text">PRISM STOREFRONTS</span>
+                <span class="v3-brand-identity-text">VORTEX NETWORKS</span>
+                <span class="v3-brand-identity-text">SIDERIUS TECH</span>
+                <span class="v3-brand-identity-text">ECHO INTELLIGENCE</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="v3-scene-knowledge v3-scroll-animate v3-anim-crossfade">
+        <div class="v3-knowledge-matrix">
+            <div class="v3-knowledge-index-stack" id="v3FaqControllerStack">
+                </div>
+            <div class="v3-knowledge-exhibit-pane">
+                <div class="v3-exhibit-delivery-text" id="v3FaqStageDesktop">
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="v3-scene-termination v3-scroll-animate v3-anim-reveal">
+        <div class="v3-termination-capsule">
+            <h2 class="v3-termination-call">Let's talk scale.</h2>
+            <p class="v3-termination-subtext">No marketing cycles, no follow-up arrays. Connect with an engineering specialist directly whenever you are ready.</p>
+            <a href="mailto:hello@messold.com" class="v3-termination-anchor">hello@messold.com</a>
+            
+            <div class="v3-terminal-meta-directory">
+                <span>+1 800 555 0142</span>
+                <span>MESSOLD Engineering Hub — Worldwide</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="v3-cinema-modal-overlay" id="v3CinemaModal" onclick="v3CloseCinema(event)">
+        <button class="v3-modal-dismiss" onclick="v3CloseCinema(event)">Close Window</button>
+        <div class="v3-modal-viewport" onclick="event.stopPropagation()"></div>
+    </div>
+
+    <script>
+        /* --------------------------------------------------------------------------
+           INTERSECTION VIEWPORT MONITOR
+           -------------------------------------------------------------------------- */
+        document.addEventListener("DOMContentLoaded", () => {
+            const architecturalObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('v3-state-visible');
+                    }
+                });
+            }, { threshold: 0.12 });
+
+            document.querySelectorAll('.v3-scroll-animate').forEach(element => architecturalObserver.observe(element));
+        });
+
+        /* --------------------------------------------------------------------------
+           DYNAMIC NAVIGATION CHROMATIC BALANCER
+           -------------------------------------------------------------------------- */
+        window.addEventListener('scroll', () => {
+            const navigationBar = document.getElementById('v3GlobalNav');
+            const targetDocumentScene = document.getElementById('document-vault').getBoundingClientRect();
+            const targetEditorialScene = document.querySelector('.v3-scene-editorial').getBoundingClientRect();
+            const targetKnowledgeScene = document.querySelector('.v3-scene-knowledge').getBoundingClientRect();
+
+            // Evaluate if global barrier rests on dark space
+            const interfaceIntersection = 
+                (targetDocumentScene.top <= 45 && targetDocumentScene.bottom >= 45) ||
+                (targetEditorialScene.top <= 45 && targetEditorialScene.bottom >= 45) ||
+                (targetKnowledgeScene.top <= 45 && targetKnowledgeScene.bottom >= 45);
+
+            if (interfaceIntersection) {
+                navigationBar.classList.add('theme-dark');
+            } else {
+                navigationBar.classList.remove('theme-dark');
+            }
+        });
+
+        /* --------------------------------------------------------------------------
+           DOCUMENT FORM CONTROLLER (NOTION-STYLE INJECTION)
+           -------------------------------------------------------------------------- */
+        const structuralMatrixDefinition = {
+            web: [
+                { id: 'v3_node_platform', label: 'Ecosystem Foundation (e.g., Shopify Plus Architecture)' },
+                { id: 'v3_node_delta', label: 'Target System Infrastructure Deployment Date' }
+            ],
+            perf: [
+                { id: 'v3_node_allocation', label: 'Expected Monthly Strategic Media Allocation' },
+                { id: 'v3_node_efficiency', label: 'Target Efficiency Parameters (ROAS / MER)' }
+            ],
+            social: [
+                { id: 'v3_node_outlets', label: 'Intended Structural Communication Networks' },
+                { id: 'v3_node_cadence', label: 'Asset Intake Delivery Requirements' }
+            ],
+            growth: [
+                { id: 'v3_node_runrate', label: 'Current Enterprise Gross Volume Run Rate' },
+                { id: 'v3_node_friction', label: 'Primary Structural Friction Point' }
+            ]
+        };
+
+        const interactionTriggers = document.querySelectorAll('.v3-segment-trigger');
+        const appendMatrixContainer = document.getElementById('v3DynamicMatrix');
+
+        interactionTriggers.forEach(trigger => {
+            trigger.addEventListener('click', (event) => {
+                event.preventDefault();
+                
+                interactionTriggers.forEach(btn => btn.classList.remove('v3-active-segment'));
+                trigger.classList.add('v3-active-segment');
+
+                const targetBlockKey = trigger.getAttribute('data-block');
+                const targetFields = structuralMatrixDefinition[targetBlockKey];
+
+                appendMatrixContainer.classList.remove('v3-matrix-expanded');
+                
+                setTimeout(() => {
+                    appendMatrixContainer.innerHTML = targetFields.map(field => `
+                        <div class="v3-field-cell">
+                            <input type="text" id="${field.id}" placeholder=" ">
+                            <label for="${field.id}">${field.label}</label>
+                        </div>
+                    `).join('');
+                    
+                    appendMatrixContainer.classList.add('v3-matrix-expanded');
+                }, 350); 
+            });
+        });
+
+        /* --------------------------------------------------------------------------
+           CINEMATIC ASSET COMPONENT SLIDER
+           -------------------------------------------------------------------------- */
+        const galleryTrackElement = document.getElementById('v3CinemaTrack');
+        let operationalDisplacement = 0;
+        
+        document.getElementById('v3TrackRight').addEventListener('click', () => {
+            operationalDisplacement -= 28; 
+            if (operationalDisplacement < -56) operationalDisplacement = -56; 
+            galleryTrackElement.style.transform = `translateX(${operationalDisplacement}vw)`;
+        });
+
+        document.getElementById('v3TrackLeft').addEventListener('click', () => {
+            operationalDisplacement += 28;
+            if (operationalDisplacement > 0) operationalDisplacement = 0;
+            galleryTrackElement.style.transform = `translateX(${operationalDisplacement}vw)`;
+        });
+
+        const videoOverlayLightbox = document.getElementById('v3CinemaModal');
+        function v3LaunchCinema() { videoOverlayLightbox.classList.add('v3-modal-active'); }
+        function v3CloseCinema(event) { videoOverlayLightbox.classList.remove('v3-modal-active'); }
+
+        /* --------------------------------------------------------------------------
+           ASYMMETRIC KNOWLEDGE STORAGE MAPPING (FAQ)
+           -------------------------------------------------------------------------- */
+        const systemKnowledgeDatabase = [
+            { q: "What parameters dictate MESSOLD's client alignment profile?", a: "We sync exclusively with enterprise setups needing precise custom codebase refactoring or structured hyper-growth management. We bypass standard configurations to construct dedicated system tooling." },
+            { q: "Can we retain existing design frameworks while migrating systems?", a: "Yes. Our front-end environments layer seamlessly onto decoupled system architectures, isolating back-end optimization upgrades from your front-end aesthetic logic." },
+            { q: "How do your optimization cycles maintain execution continuity?", a: "We work directly inside staging environments without impacting live run rates. Iterative stress tests go live only after passing zero-latency validation pipelines." },
+            { q: "What are your structural performance terms?", a: "Contracts deploy strictly on flat operational scope metrics or transparent recurring retainers. No variable scale penalties, complex backend tracking hooks, or platform revenue cuts." }
+        ];
+
+        const controlStackParent = document.getElementById('v3FaqControllerStack');
+        const primaryDesktopStage = document.getElementById('v3FaqStageDesktop');
+
+        function bootstrapKnowledgeBase() {
+            systemKnowledgeDatabase.forEach((item, pointer) => {
+                const elementIndexTrigger = document.createElement('button');
+                elementIndexTrigger.className = `v3-index-trigger ${pointer === 0 ? 'v3-active-index' : ''}`;
+                elementIndexTrigger.innerText = item.q;
+                
+                const elementInlinePayload = document.createElement('div');
+                elementInlinePayload.className = `v3-knowledge-inline-response ${pointer === 0 ? 'v3-accordion-open' : ''}`;
+                elementInlinePayload.innerText = item.a;
+
+                elementIndexTrigger.addEventListener('click', () => {
+                    document.querySelectorAll('.v3-index-trigger').forEach(trigger => trigger.classList.remove('v3-active-index'));
+                    elementIndexTrigger.classList.add('v3-active-index');
+                    
+                    primaryDesktopStage.style.opacity = 0;
+                    setTimeout(() => {
+                        primaryDesktopStage.innerText = item.a;
+                        primaryDesktopStage.style.opacity = 1;
+                    }, 220);
+
+                    document.querySelectorAll('.v3-knowledge-inline-response').forEach(responseBox => responseBox.classList.remove('v3-accordion-open'));
+                    elementInlinePayload.classList.add('v3-accordion-open');
+                });
+
+                controlStackParent.appendChild(elementIndexTrigger);
+                controlStackParent.appendChild(elementInlinePayload);
+            });
+
+            primaryDesktopStage.innerText = systemKnowledgeDatabase[0].a;
+        }
+
+        bootstrapKnowledgeBase();
+    </script>
+</body>
+</html>

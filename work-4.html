@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en" class="ms-html-context">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MESSOLD — Selected Editorial Work & Case Archive</title>
+    <!-- Elegant Font Integration -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap">
+    <style>
+        /* ==========================================================================
+           1. CSS ARCHITECTURE & RESET SYSTEM
+           ========================================================================== */
+        .ms-html-context {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .ms-editorial-body {
+            margin: 0;
+            padding: 0;
+            background-color: #FFFFFF;
+            color: #111111;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            letter-spacing: -0.01em;
+        }
+
+        .ms-reset-box,
+        .ms-editorial-body *,
+        .ms-editorial-body *::before,
+        .ms-editorial-body *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ==========================================================================
+           2. BRAND THEME TOKENS
+           ========================================================================== */
+        .ms-theme-dark-accent {
+            background-color: #111111;
+            color: #FFFFFF;
+        }
+
+        .ms-theme-alt-bg {
+            background-color: #F8F8F8;
+        }
+
+        /* ==========================================================================
+           3. COMMON UTILITIES & LAYOUT MODULES
+           ========================================================================== */
+        .ms-container-editorial {
+            max-width: 1360px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 60px;
+            padding-right: 60px;
+            width: 100%;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .ms-container-editorial {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+        }
+
+        .ms-typo-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #707070;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+
+        .ms-typo-label-dark {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .ms-typo-chapter-num {
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            color: #707070;
+            margin-bottom: 12px;
+        }
+
+        .ms-typo-chapter-num-dark {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .ms-heading-editorial-h1 {
+            font-size: clamp(2.4rem, 4.5vw, 4.5rem);
+            font-weight: 300;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            color: #111111;
+        }
+
+        .ms-heading-editorial-h2 {
+            font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+            font-weight: 300;
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+            color: #111111;
+        }
+
+        .ms-heading-editorial-h2-dark {
+            color: #FFFFFF;
+        }
+
+        .ms-para-editorial {
+            font-size: clamp(1rem, 1.15vw, 1.2rem);
+            line-height: 1.65;
+            font-weight: 300;
+            color: #707070;
+        }
+
+        .ms-btn-underlined {
+            background: none;
+            border: none;
+            outline: none;
+            color: #111111;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding-bottom: 6px;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ms-btn-underlined::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: #111111;
+            transform: scaleX(0.2);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ms-btn-underlined:hover {
+            color: #707070;
+        }
+
+        .ms-btn-underlined:hover::after {
+            transform: scaleX(1);
+        }
+
+        .ms-btn-underlined-dark {
+            color: #FFFFFF;
+        }
+        .ms-btn-underlined-dark::after {
+            background-color: #FFFFFF;
+        }
+        .ms-btn-underlined-dark:hover {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* ==========================================================================
+           4. NAVIGATION MENU
+           ========================================================================== */
+        .ms-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-left: 60px;
+            padding-right: 60px;
+            z-index: 500;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid #E7E7E7;
+        }
+
+        .ms-nav-logo {
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #111111;
+            text-decoration: none;
+        }
+
+        .ms-nav-menu {
+            display: flex;
+            gap: 40px;
+        }
+
+        .ms-nav-link {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #707070;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .ms-nav-link:hover {
+            color: #111111;
+        }
+
+        @media (max-width: 768px) {
+            .ms-navbar {
+                padding-left: 24px;
+                padding-right: 24px;
+                height: 70px;
+            }
+            .ms-nav-menu {
+                display: none;
+            }
+        }
+
+        /* ==========================================================================
+           5. EDITORIAL OPENING (HERO)
+           ========================================================================== */
+        .ms-hero-opening {
+            padding-top: 200px;
+            padding-bottom: 100px;
+            background-color: #FFFFFF;
+        }
+
+        .ms-hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: flex-end;
+            margin-bottom: 80px;
+        }
+
+        .ms-hero-paragraph-wrap {
+            padding-bottom: 15px;
+        }
+
+        .ms-hero-intro-text {
+            margin-bottom: 40px;
+            max-width: 420px;
+        }
+
+        .ms-hero-downward-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #707070;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-decoration: none;
+            margin-top: 60px;
+        }
+
+        .ms-hero-downward-arrow {
+            width: 12px;
+            height: 12px;
+            stroke: currentColor;
+            fill: none;
+            transform: translateY(0);
+            transition: transform 0.4s ease;
+        }
+
+        .ms-hero-downward-indicator:hover .ms-hero-downward-arrow {
+            transform: translateY(4px);
+        }
+
+        .ms-hero-mask-wrapper {
+            width: 100%;
+            height: 80vh;
+            overflow: hidden;
+            background-color: #F8F8F8;
+            position: relative;
+        }
+
+        .ms-hero-mask-frame {
+            width: 100%;
+            height: 100%;
+            clip-path: inset(10% 10% 10% 10%);
+            transition: clip-path 0.1s linear;
+            will-change: clip-path;
+        }
+
+        .ms-hero-mask-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.1);
+            transition: transform 0.1s linear;
+            will-change: transform;
+        }
+
+        @media (max-width: 991px) {
+            .ms-hero-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .ms-hero-opening {
+                padding-top: 150px;
+                padding-bottom: 60px;
+            }
+            .ms-hero-mask-wrapper {
+                height: 50vh;
+            }
+        }
+
+        /* ==========================================================================
+           6. PROJECT INDEX STICKY BAR
+           ========================================================================== */
+        .ms-project-index-bar {
+            position: sticky;
+            top: 90px;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid #E7E7E7;
+            z-index: 400;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .ms-index-scroller {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding-top: 24px;
+            padding-bottom: 24px;
+        }
+
+        .ms-index-scroller::-webkit-scrollbar {
+            display: none;
+        }
+
+        .ms-index-track {
+            display: flex;
+            gap: 60px;
+            padding-right: 60px;
+        }
+
+        .ms-index-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #707070;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            position: relative;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .ms-index-num {
+            font-size: 0.65rem;
+            opacity: 0.6;
+        }
+
+        .ms-index-item.is-active {
+            color: #111111;
+        }
+
+        .ms-index-item.is-active::after {
+            content: '';
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #111111;
+        }
+
+        .ms-index-preview-box {
+            position: fixed;
+            width: 140px;
+            height: 180px;
+            background-color: #E7E7E7;
+            border: 1px solid #E7E7E7;
+            pointer-events: none;
+            z-index: 450;
+            opacity: 0;
+            transform: translate(-50%, -100%) scale(0.9);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .ms-index-preview-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+            .ms-project-index-bar {
+                top: 70px;
+            }
+            .ms-index-scroller {
+                padding-top: 16px;
+                padding-bottom: 16px;
+            }
+            .ms-index-track {
+                gap: 30px;
+            }
+            .ms-index-item.is-active::after {
+                bottom: -17px;
+            }
+        }
+
+        /* ==========================================================================
+           7. EDITORIAL CHAPTER LAYOUTS
+           ========================================================================== */
+        .ms-chapter-section {
+            padding-top: 140px;
+            padding-bottom: 140px;
+            border-bottom: 1px solid #E7E7E7;
+            position: relative;
+        }
+
+        .ms-chapter-section-dark {
+            border-bottom: none;
+        }
+
+        .ms-editorial-grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        @media (max-width: 991px) {
+            .ms-editorial-grid-2col {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+            .ms-chapter-section {
+                padding-top: 80px;
+                padding-bottom: 80px;
+            }
+        }
+
+        .ms-img-editorial-wrap {
+            overflow: hidden;
+            background-color: #F8F8F8;
+            position: relative;
+            width: 100%;
+        }
+
+        .ms-img-reveal-on-scroll {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.05);
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+            will-change: transform, opacity;
+        }
+
+        .ms-details-col {
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .ms-detail-meta-list {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #E7E7E7;
+            padding-bottom: 24px;
+        }
+
+        .ms-detail-meta-list-dark {
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .ms-detail-meta-item-title {
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #707070;
+            margin-bottom: 6px;
+        }
+
+        .ms-detail-meta-item-title-dark {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .ms-detail-meta-item-value {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #111111;
+        }
+
+        .ms-detail-meta-item-value-dark {
+            color: #FFFFFF;
+        }
+
+        .ms-detail-block {
+            margin-bottom: 30px;
+        }
+
+        .ms-detail-block-title {
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #707070;
+            margin-bottom: 8px;
+        }
+
+        .ms-detail-block-title-dark {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .ms-detail-block-desc {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #111111;
+            font-weight: 400;
+        }
+
+        .ms-detail-block-desc-dark {
+            color: #FFFFFF;
+        }
+
+        .ms-layout-a-img { height: 680px; }
+        .ms-layout-b-hero-box { width: 100%; height: 600px; margin-bottom: 60px; }
+        .ms-layout-b-understats { display: grid; grid-template-columns: 1.22fr 0.78fr; gap: 60px; align-items: center; }
+        .ms-layout-c-visuals { position: relative; height: 650px; }
+        .ms-layout-c-img-back { position: absolute; left: 0; top: 0; width: 75%; height: 75%; z-index: 1; }
+        .ms-layout-c-img-front { position: absolute; right: 0; bottom: 0; width: 55%; height: 60%; z-index: 2; border: 8px solid #FFFFFF; }
+        .ms-layout-d-toptext { max-width: 800px; margin-bottom: 60px; }
+        .ms-layout-d-img-box { width: 100%; height: 550px; margin-bottom: 40px; }
+        .ms-layout-d-bottom-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+        .ms-layout-e-split { display: grid; grid-template-columns: 0.45fr 0.55fr; gap: 40px; height: 500px; }
+        .ms-layout-e-quote-box { border-left: 2px solid #E7E7E7; padding-left: 30px; margin-top: 40px; max-width: 700px; }
+        .ms-layout-e-quote { font-size: 1.25rem; line-height: 1.6; font-weight: 300; color: #707070; font-style: italic; }
+        .ms-layout-f-cinematic { width: 100%; height: 75vh; margin-bottom: 50px; }
+        .ms-layout-f-bottom-details { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+
+        @media (max-width: 768px) {
+            .ms-layout-a-img, .ms-layout-b-hero-box, .ms-layout-c-visuals, .ms-layout-d-img-box { height: 380px; }
+            .ms-layout-b-understats, .ms-layout-d-bottom-grid, .ms-layout-f-bottom-details { grid-template-columns: 1fr; gap: 30px; }
+            .ms-layout-e-split { grid-template-columns: 1fr; height: auto; }
+            .ms-layout-e-split img { height: 300px; }
+            .ms-layout-f-cinematic { height: 45vh; }
+        }
+
+        /* ==========================================================================
+           8. PREMIUM CASE ARCHIVE (VIEW MORE) SECTION
+           ========================================================================== */
+        .ms-archive-section {
+            padding-top: 140px;
+            padding-bottom: 140px;
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #E7E7E7;
+        }
+
+        .ms-archive-filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .ms-filter-btn {
+            background: none;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #707070;
+            cursor: pointer;
+            padding-bottom: 4px;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .ms-filter-btn.is-active, .ms-filter-btn:hover {
+            color: #111111;
+            border-bottom-color: #111111;
+        }
+
+        .ms-archive-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .ms-archive-cell {
+            background-color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+            group: hover;
+        }
+
+        .ms-archive-img-wrap {
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+            background-color: #F8F8F8;
+            margin-bottom: 20px;
+            border: 1px solid #E7E7E7;
+        }
+
+        .ms-archive-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ms-archive-cell:hover .ms-archive-img {
+            transform: scale(1.04);
+        }
+
+        .ms-archive-cell-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .ms-archive-brand {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #111111;
+        }
+
+        @media (max-width: 1100px) {
+            .ms-archive-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .ms-archive-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .ms-archive-img-wrap { height: 180px; }
+        }
+        @media (max-width: 480px) {
+            .ms-archive-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ==========================================================================
+           9. PREMIUM RUNNING TESTIMONIAL TICKER
+           ========================================================================== */
+        .ms-ticker-section {
+            padding-top: 120px;
+            padding-bottom: 120px;
+            background-color: #111111;
+            color: #FFFFFF;
+            overflow: hidden;
+            border-bottom: 1px solid #222222;
+        }
+
+        .ms-ticker-header {
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .ms-ticker-row {
+            display: flex;
+            width: max-content;
+            animation: ms-marquee 45s linear infinite;
+            margin-bottom: 30px;
+        }
+        
+        .ms-ticker-row-reverse {
+            display: flex;
+            width: max-content;
+            animation: ms-marquee-reverse 45s linear infinite;
+        }
+
+        .ms-ticker-container:hover .ms-ticker-row,
+        .ms-ticker-container:hover .ms-ticker-row-reverse {
+            animation-play-state: paused;
+        }
+
+        .ms-ticker-card {
+            width: 480px;
+            padding: 50px;
+            background-color: #1A1A1A;
+            border: 1px solid #2A2A2A;
+            margin-right: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-radius: 2px;
+        }
+
+        .ms-ticker-quote {
+            font-size: 1.05rem;
+            line-height: 1.65;
+            color: #E0E0E0;
+            font-weight: 300;
+            margin-bottom: 35px;
+            position: relative;
+        }
+
+        .ms-ticker-quote::before {
+            content: "“";
+            font-size: 3rem;
+            position: absolute;
+            left: -20px;
+            top: -25px;
+            opacity: 0.15;
+            font-family: serif;
+        }
+
+        .ms-ticker-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-top: 1px solid #2A2A2A;
+            padding-top: 20px;
+        }
+
+        .ms-ticker-avatar {
+            width: 36px;
+            height: 36px;
+            background-color: #333333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #FFFFFF;
+            letter-spacing: 0;
+        }
+
+        @keyframes ms-marquee {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        @keyframes ms-marquee-reverse {
+            0% { transform: translate3d(-50%, 0, 0); }
+            100% { transform: translate3d(0, 0, 0); }
+        }
+
+        @media (max-width: 768px) {
+            .ms-ticker-card { width: 360px; padding: 30px; }
+            .ms-ticker-section { padding-top: 80px; padding-bottom: 80px; }
+        }
+
+        /* ==========================================================================
+           10. EDITORIAL FAQS
+           ========================================================================== */
+        .ms-faq-section {
+            padding-top: 140px;
+            padding-bottom: 140px;
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #E7E7E7;
+        }
+
+        .ms-faq-layout {
+            display: grid;
+            grid-template-columns: 0.7fr 1.3fr;
+            gap: 80px;
+        }
+
+        .ms-faq-item {
+            border-bottom: 1px solid #E7E7E7;
+            padding-top: 28px;
+            padding-bottom: 28px;
+        }
+
+        .ms-faq-trigger {
+            width: 100%;
+            background: none;
+            border: none;
+            outline: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1.15rem;
+            font-weight: 400;
+            color: #111111;
+            padding: 0;
+            gap: 20px;
+        }
+
+        .ms-faq-icon {
+            font-size: 1.2rem;
+            font-weight: 200;
+            color: #707070;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .ms-faq-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding-top 0.4s ease;
+        }
+
+        .ms-faq-content {
+            font-size: 0.95rem;
+            line-height: 1.65;
+            color: #707070;
+            font-weight: 300;
+            padding-top: 16px;
+            padding-bottom: 8px;
+        }
+
+        .ms-faq-item.is-open .ms-faq-icon {
+            transform: rotate(45deg);
+        }
+
+        @media (max-width: 991px) {
+            .ms-faq-layout { grid-template-columns: 1fr; gap: 40px; }
+            .ms-faq-section { padding-top: 80px; padding-bottom: 80px; }
+        }
+
+        /* ==========================================================================
+           11. PREMIUM SPLIT IMMERSIVE OUTRO (YOUR STORY COULD BE NEXT)
+           ========================================================================== */
+        .ms-immersive-outro {
+            background-color: #111111;
+            color: #FFFFFF;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ms-outro-split-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 85vh;
+        }
+
+        .ms-outro-visual-side {
+            position: relative;
+            background-color: #1A1A1A;
+            overflow: hidden;
+        }
+
+        .ms-outro-bg-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.45;
+            filter: grayscale(100%);
+            transition: transform 1.2s ease;
+        }
+
+        .ms-outro-split-grid:hover .ms-outro-bg-image {
+            transform: scale(1.05);
+        }
+
+        .ms-outro-content-side {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 100px;
+            border-left: 1px solid #222222;
+            position: relative;
+        }
+
+        .ms-outro-massive-title {
+            font-size: clamp(2.5rem, 5vw, 4.8rem);
+            font-weight: 200;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            margin-bottom: 40px;
+        }
+
+        .ms-outro-massive-title span {
+            display: block;
+        }
+
+        .ms-outro-p {
+            font-size: 1.15rem;
+            line-height: 1.65;
+            color: #A0A0A0;
+            font-weight: 300;
+            max-width: 460px;
+            margin-bottom: 50px;
+        }
+
+        @media (max-width: 991px) {
+            .ms-outro-split-grid { grid-template-columns: 1fr; min-height: auto; }
+            .ms-outro-visual-side { height: 350px; }
+            .ms-outro-content-side { padding: 60px 24px; }
+        }
+
+        /* ==========================================================================
+           12. OUTRO & MODAL OVERLAY
+           ========================================================================== */
+        .ms-overlay-modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #FFFFFF; z-index: 1000; display: none; overflow-y: auto; transform: translateY(100%); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .ms-overlay-modal.is-active { transform: translateY(0); }
+        .ms-modal-nav-header { position: sticky; top: 0; left: 0; width: 100%; height: 90px; display: flex; align-items: center; justify-content: space-between; padding-left: 60px; padding-right: 60px; border-bottom: 1px solid #E7E7E7; background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 1100; }
+        .ms-modal-close-btn { background: none; border: none; outline: none; font-family: inherit; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; cursor: pointer; color: #111111; display: flex; align-items: center; gap: 12px; }
+        .ms-modal-content-wrap { padding-top: 60px; padding-bottom: 120px; }
+        .ms-modal-top-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 80px; margin-bottom: 80px; align-items: flex-end; }
+        .ms-modal-editorial-columns { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 80px; margin-bottom: 80px; }
+        .ms-modal-meta-box { background-color: #F8F8F8; padding: 40px; border: 1px solid #E7E7E7; }
+        .ms-modal-navigation-row { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #E7E7E7; padding-top: 60px; }
+
+        @media (max-width: 991px) {
+            .ms-modal-top-grid, .ms-modal-editorial-columns { grid-template-columns: 1fr; gap: 45px; }
+            .ms-modal-nav-header { padding-left: 24px; padding-right: 24px; height: 70px; }
+        }
+    </style>
+</head>
+<body class="ms-editorial-body">
+
+    <!-- NAVIGATION HEADER -->
+    <header class="ms-navbar">
+        <a href="#" class="ms-nav-logo">MESSOLD</a>
+        <nav class="ms-nav-menu">
+            <a href="#intro-section" class="ms-nav-link">Selected Work</a>
+            <a href="#chapters-wrapper" class="ms-nav-link">Chapters</a>
+            <a href="#case-archive" class="ms-nav-link">View More Cases</a>
+            <a href="#faq-section" class="ms-nav-link">FAQs</a>
+        </nav>
+        <div>
+            <a href="mailto:growth@messold.com" class="ms-btn-underlined" style="font-size: 0.75rem;">Get In Touch</a>
+        </div>
+    </header>
+
+    <div class="ms-index-preview-box" id="hoverPreviewBox">
+        <img src="" alt="Preview" class="ms-index-preview-img" id="hoverPreviewImg">
+    </div>
+
+    <!-- 1. HERO OPENING -->
+    <section class="ms-hero-opening" id="intro-section">
+        <div class="ms-container-editorial">
+            <div class="ms-hero-grid">
+                <div>
+                    <span class="ms-typo-label">Selected Editorial Work</span>
+                    <h1 class="ms-heading-editorial-h1">Every Brand Has<br>A Different Story.</h1>
+                </div>
+                <div class="ms-hero-paragraph-wrap">
+                    <p class="ms-para-editorial ms-hero-intro-text">
+                        A curated anthology of custom systems, high-velocity checkout architectures, and performance frameworks built for leading digital merchants.
+                    </p>
+                    <a href="#chapters-wrapper" class="ms-btn-underlined">Turn the Page</a>
+                </div>
+            </div>
+            <a href="#chapters-wrapper" class="ms-hero-downward-indicator">
+                <span>Begin Chapters</span>
+                <svg class="ms-hero-downward-arrow" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+        <div class="ms-hero-mask-wrapper">
+            <div class="ms-hero-mask-frame" id="heroMaskFrame">
+                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=2000" alt="Cinematic Hero" class="ms-hero-mask-img" id="heroMaskImg">
+            </div>
+        </div>
+    </section>
+
+    <!-- STICKY HORIZONTAL NAVIGATION BAR -->
+    <div class="ms-project-index-bar">
+        <div class="ms-container-editorial">
+            <div class="ms-index-scroller">
+                <div class="ms-index-track" id="projectNavTrack"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MAIN CHAPTERS PRESENTATION -->
+    <main id="chapters-wrapper"></main>
+
+    <!-- 3. PREMIUM ARCHIVE GRID (VIEW MORE CASE STUDIES WITH VISUAL ENHANCEMENT) -->
+    <section class="ms-archive-section" id="case-archive">
+        <div class="ms-container-editorial">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <span class="ms-typo-label">Extended Compendium</span>
+                <h2 class="ms-heading-editorial-h2">Archive Index</h2>
+            </div>
+            
+            <div class="ms-archive-filter-bar">
+                <button class="ms-filter-btn is-active" data-filter="all">All Ecosystems</button>
+                <button class="ms-filter-btn" data-filter="development">Website Development</button>
+                <button class="ms-filter-btn" data-filter="marketing">Performance Marketing</button>
+            </div>
+
+            <div class="ms-archive-grid" id="archiveGridContainer"></div>
+        </div>
+    </section>
+
+    <!-- 4. DUAL-ROW HIGH-END AUTOSCROLLING TESTIMONIAL TICKER -->
+    <section class="ms-ticker-section">
+        <div class="ms-ticker-header">
+            <span class="ms-typo-label ms-typo-label-dark">Validated Integrations</span>
+            <h2 class="ms-heading-editorial-h2 ms-heading-editorial-h2-dark" style="font-weight:200;">Client Perspectives</h2>
+        </div>
+        <div class="ms-ticker-container">
+            <!-- Row 1: Forward Motion -->
+            <div class="ms-ticker-row" id="tickerTrack1"></div>
+            <!-- Row 2: Backward Motion -->
+            <div class="ms-ticker-row-reverse" id="tickerTrack2"></div>
+        </div>
+    </section>
+
+    <!-- 5. EDITORIAL ARCHITECTURAL FAQS -->
+    <section class="ms-faq-section" id="faq-section">
+        <div class="ms-container-editorial">
+            <div class="ms-faq-layout">
+                <div>
+                    <span class="ms-typo-label">Inquiries Answered</span>
+                    <h2 class="ms-heading-editorial-h2" style="position: sticky; top: 140px;">Frequently<br>Observed<br>Dynamics.</h2>
+                </div>
+                <div id="faqContainer"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. PREMIUM IMMERSIVE OUTRO GRID -->
+    <section class="ms-immersive-outro">
+        <div class="ms-outro-split-grid">
+            <div class="ms-outro-visual-side">
+                <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=1500" alt="Bespoke Workspace Atmosphere" class="ms-outro-bg-image">
+            </div>
+            <div class="ms-outro-content-side">
+                <span class="ms-typo-label ms-typo-label-dark" style="margin-bottom: 16px;">Future Iterations</span>
+                <h2 class="ms-outro-massive-title">
+                    <span>Your Story</span>
+                    <span style="font-style: italic; font-weight: 200; color: #707070;">Could Be</span>
+                    <span>Next.</span>
+                </h2>
+                <p class="ms-outro-p">
+                    We accept a limited selection of active brand structural transformations each quarter. Connect with our technical strategy team to evaluate current availability.
+                </p>
+                <div>
+                    <a href="mailto:growth@messold.com" class="ms-btn-underlined ms-btn-underlined-dark">Inquire Privately</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FULLSCREEN SYSTEM OVERLAY -->
+    <div class="ms-overlay-modal" id="editorialOverlay">
+        <div class="ms-modal-nav-header">
+            <span class="ms-nav-logo">MESSOLD // ARTIFACT ARCHIVE</span>
+            <button class="ms-modal-close-btn" id="modalCloseBtn">
+                <span>Exit Chapter</span>
+                <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none;" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+        </div>
+        <div class="ms-modal-content-wrap">
+            <div class="ms-container-editorial" id="modalDynamicContent"></div>
+        </div>
+    </div>
+
+    <script>
+        /* ==========================================================================
+           DATA LAYER DEFINITIONS
+           ========================================================================== */
+        const MAIN_CHAPTERS = [
+            { id: "chapter-01", chapter: "01", brand: "Power Sutra", industry: "Premium Fashion", services: "Headless Shopify Dev / CRO", categoryLabel: "SHOPIFY DEVELOPMENT", metricNum: "+212%", metricLabel: "Direct Checkout Volume Boost", challenge: "Standard checkout pipelines suffered substantial drop-offs under concurrent launch volumes.", solution: "Designed custom multi-pass checkout architecture bypassing conventional shop delays completely.", quote: "The conversion metrics transitioned directly to an exponential track.", images: ["https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=1200", "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=1200"], strategy: "Streamlined single-page checkouts configured to dynamically preload screens.", techStack: ["Shopify Plus API", "Liquid Template Framework"], liveUrl: "#" },
+            { id: "chapter-02", chapter: "02", brand: "Leaf Studios", industry: "Consumer Electronics", services: "Performance Media Spend", categoryLabel: "PERFORMANCE MARKETING", metricNum: "4.8x", metricLabel: "Sustained Return on Ad Spend", challenge: "Uncoordinated performance media networks inflated individual customer acquisition expenses.", solution: "Developed custom content-routing hubs aligned perfectly with targeted social media segments.", quote: "MESSOLD resolved programmatic inefficiencies, structuring clear predictable margin returns.", images: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=1200", "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=1200"], strategy: "Targeted audience groupings directed dynamically to variant layouts.", techStack: ["Server-Side Graph Integrations", "Attribution Engines"], liveUrl: "#" },
+            { id: "chapter-03", chapter: "03", brand: "Noise Systems", industry: "Wearable Tech", services: "Funnel Systems / Scaling", categoryLabel: "RETENTION & FUNNELS", metricNum: "₹120Cr+", metricLabel: "Attributed Conversion Scale", challenge: "Dynamic user metrics became decoupled during explosive growth campaigns.", solution: "Integrated structural diagnostic platforms across checking screens to capture precise actions.", quote: "Their performance framework provided granular clarity across channels.", images: ["https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?auto=format&fit=crop&q=80&w=1200", "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=1200"], strategy: "Constructed deep visual behavioral maps isolating transactional halts.", techStack: ["React Layout Frameworks", "Node Event Dispatchers"], liveUrl: "#" },
+            { id: "chapter-04", chapter: "04", brand: "Craftsmith", industry: "Luxury Living Spaces", services: "Front-End UX Refinements", categoryLabel: "CRO SYSTEMS", metricNum: "60 FPS", metricLabel: "High-End Animation Fluidity", challenge: "Heavy aesthetic media files degraded loading speed, pushing premium shoppers off catalog layouts.", solution: "Synthesized multi-layered file distribution logic alongside custom UI transitions.", quote: "The interface navigates as effortlessly as turning pages of an elite design publication.", images: ["https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=1200", "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=1200"], strategy: "Executed intelligent loading loops that delay asset loads dynamically.", techStack: ["Intelligent Loading Systems", "Next-Gen Image Formats"], liveUrl: "#" },
+            { id: "chapter-05", chapter: "05", brand: "Silk Berry", industry: "Cosmetic Wellness", services: "Customer LTV Engine Dev", categoryLabel: "RETENTION SYSTEMS", metricNum: "+98%", metricLabel: "Repeat Value Escalation", challenge: "First-time consumers had zero integrated pathways back, resulting in low recurring lifetime metrics.", solution: "Integrated intelligent, profile-based repeat purchase mechanics right into checkout screens.", quote: "MESSOLD mapped the repeat behavior pathway, building real-time organic user frequency.", images: ["https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&q=80&w=1200", "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&q=80&w=1200"], strategy: "Automated direct feedback structures mapping repeat actions.", techStack: ["Klaviyo Automation Engines", "Shopify Recurring Database APIs"], liveUrl: "#" },
+            { id: "chapter-06", chapter: "06", brand: "Janasya Pure", industry: "Bespoke Textiles", services: "Dynamic Infrastructure Architecture", categoryLabel: "SHOPIFY DEVELOPMENT", metricNum: "5.2x", metricLabel: "Conversion Path Optimization", challenge: "Uncoordinated templates led to a cluttered look that disconnected buyers from native products.", solution: "Architected a minimalist editorial presentation structure highlighting product textures via pure layouts.", quote: "Our complete web infrastructure presents our heritage narrative with modern structural efficiency.", images: ["https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=1200", "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=1200"], strategy: "Balanced product spacing to provide comfortable whitespace structures.", techStack: ["Bespoke Liquid Theme Builds", "Dynamic Webpack Environments"], liveUrl: "#" }
+        ];
+
+        const EXTENDED_ARCHIVE = [
+            { id: "arch-01", brand: "Kultist Beauty", tag: "development", industry: "Cosmetics", services: "Headless Ecosystem Architecture", metric: "+140% Velocity", challenge: "High latency drop-offs during international collection product launches.", solution: "Migrated presentation stacks into edge-rendered nodes.", images: ["https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&q=80&w=600"] },
+            { id: "arch-02", brand: "Amara Linens", tag: "development", industry: "Home Decor", services: "Shopify Custom Cart Engines", metric: "18% Recovery", challenge: "Standard cart slide-outs introduced frictional checkout delays.", solution: "Programmed pre-computed discount rules instantly inside localized browser runtimes.", images: ["https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=600"] },
+            { id: "arch-03", brand: "Velo Apparel", tag: "marketing", industry: "Athleisure", services: "Scale Strategy Engineering", metric: "5.1x Unified ROAS", challenge: "Fragmented acquisition tags scrambled primary data attribution accuracy.", solution: "Configured reliable server-side analytical schemas.", images: ["https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=600"] },
+            { id: "arch-04", brand: "Siren Optics", tag: "development", industry: "Eyewear", services: "Interactive Configurator Dev", metric: "+33% Conv Rate", challenge: "Shoppers struggled to match frame sizes virtualizing dimensional scale configurations.", solution: "Engineered ultra-lightweight dynamic layer matrices.", images: ["https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80&w=600"] },
+            { id: "arch-05", brand: "Hana Botanicals", tag: "marketing", industry: "Skincare", services: "Retention Funnel Scaling", metric: "42% LTV Growth", challenge: "Heavy structural emphasis on discovery layouts neglected existing client repurchase cycles.", solution: "Deployed systematic email workflows paired with contextual account profiles.", images: ["https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&q=80&w=600"] },
+            { id: "arch-06", brand: "Nordic Atelier", tag: "development", industry: "Furniture", services: "Bespoke Component Design", metric: "88ms TTI Scale", challenge: "Standard design modules felt uninspired and loaded too slowly.", solution: "Hand-rendered interactive systems without relying on bulky libraries.", images: ["https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&q=80&w=600"] },
+            { id: "arch-07", brand: "Ora Timepieces", tag: "marketing", industry: "Luxury Watches", services: "High-Intent Acquisition", metric: "6.2x Meta Scale", challenge: "Paid media targets frequently reached saturated horizons quickly.", solution: "Re-architected creative distribution setups built around product variations.", images: ["https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=600"] },
+            { id: "arch-08", brand: "Elysian Gems", tag: "development", industry: "Fine Jewelry", services: "Custom Vault Systems", metric: "Zero Error Routing", challenge: "High-value single orders triggered false security rejections.", solution: "Created bespoke fraud validation routing filters directly within checkout modules.", images: ["https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=600"] },
+            { id: "arch-09", brand: "Marrow Foods", tag: "marketing", industry: "Organic Nutrition", services: "Subscription Engine Scaling", metric: "+115% ARR Growth", challenge: "Subscription retention dropped due to complex modification steps.", solution: "Built single-click customer hub modifications directly into customer accounts.", images: ["https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=600"] },
+            { id: "arch-10", brand: "Aura Essentials", tag: "development", industry: "Wellness", services: "Localized Multi-Currency", metric: "+45% Cross-Border", challenge: "Geographic redirection scripts caused cart abandonment anomalies.", solution: "Re-engineered clean country routing mapping directly over unified checkout layers.", images: ["https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&q=80&w=600"] },
+            { id: "arch-11", brand: "Sombre Leather", tag: "marketing", industry: "Luxury Goods", services: "Omnichannel Attribution", metric: "96% Precision Sync", challenge: "Offline store events broke alignment with digital acquisition campaign metrics.", solution: "Constructed standard server event streams connecting all endpoints.", images: ["https://images.unsplash.com/photo-1530745342582-0795f23ec976?auto=format&fit=crop&q=80&w=600"] },
+            { id: "arch-12", brand: "Zenith Active", tag: "development", industry: "Fitness Tech", services: "Performance App Panels", metric: "12x User Engage", challenge: "Slow dashboard interfaces reduced active customer usage levels.", solution: "Rebuilt presentation panels utilizing direct canvas layers.", images: ["https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&q=80&w=600"] }
+        ];
+
+        const FAQS = [
+            { q: "How does MESSOLD approach high-volume transactional scale?", a: "We bypass standard template dependencies entirely. By creating clean headless frontends and optimized liquid logic paths, setups can handle immense traffic spikes seamlessly." },
+            { q: "Can performance marketing data sync perfectly with engineering revisions?", a: "Yes. We configure specialized server tracking protocols that send immediate buyer behavior inputs straight back into performance media ecosystems for hyper-precise validation." },
+            { q: "What parameters separate Version 2 from traditional portfolio designs?", a: "We prioritize deliberate spacing configurations, structural asymmetrical grids, and clean typographic details to make your site feel like a premium print publication rather than a standard template layout." },
+            { q: "Do you build custom APIs for third-party ERP integrations?", a: "Absolutely. We routinely architect middleware endpoints using Node.js and AWS edge functions to translate legacy corporate ERP data cleanly into headless frontend platforms." },
+            { q: "What is your typical turnaround phase for an end-to-end frontend overhaul?", a: "Comprehensive architectural production typically spans 8 to 12 weeks. This includes detailed diagnostic testing, system asset pre-loading architecture setup, and validation checks." }
+        ];
+
+        const TESTIMONIALS_ROW1 = [
+            { q: "MESSOLD resolved programmatic inefficiencies, structuring clear predictable margin returns.", a: "Vikram Sen", c: "Craftsmith" },
+            { q: "The structural conversion acceleration was immediate. We engineered an entirely new platform.", a: "Ananya Mehra", c: "Leaf Studios" },
+            { q: "Their performance framework provided granular clarity across tracking parameters.", a: "Rohan Das", c: "Noise Systems" },
+            { q: "The checkout speed shift allowed us to manage flash drop volumes smoothly.", a: "Priya Nair", c: "Power Sutra" }
+        ];
+
+        const TESTIMONIALS_ROW2 = [
+            { q: "The interface navigates as effortlessly as turning pages of an elite architecture journal.", a: "Clara Vance", c: "Kultist" },
+            { q: "Technical strategy execution matched our internal design directives precisely.", a: "Marcus Thorne", c: "Nordic Atelier" },
+            { q: "We observed a sustained reduction in analytical discrepancies within the first month.", a: "Devendra Singh", c: "Ora Timepieces" },
+            { q: "They operate like an internal product team rather than an outside implementation vendor.", a: "Sarah Jenkins", c: "Amara Linens" }
+        ];
+
+        /* ==========================================================================
+           CORE ENGINE ARCHITECTURE
+           ========================================================================== */
+        document.addEventListener("DOMContentLoaded", () => {
+            renderProjectIndex();
+            renderChapters();
+            renderArchiveGrid("all");
+            renderTestimonialTracks();
+            renderFAQs();
+            
+            initMaskRevealEngine();
+            initIndexScrollerTrack();
+            initImageRevealOnScroll();
+            initArchiveFilters();
+            initFAQAccordion();
+        });
+
+        function renderProjectIndex() {
+            const track = document.getElementById("projectNavTrack");
+            MAIN_CHAPTERS.forEach(proj => {
+                const item = document.createElement("a");
+                item.href = `#${proj.id}`;
+                item.className = "ms-index-item";
+                item.setAttribute("data-id", proj.id);
+                item.setAttribute("data-img", proj.images[0]);
+                item.innerHTML = `<span class="ms-index-num">${proj.chapter}</span><span>${proj.brand}</span>`;
+                track.appendChild(item);
+            });
+        }
+
+        function renderChapters() {
+            const container = document.getElementById("chapters-wrapper");
+            MAIN_CHAPTERS.forEach((proj, idx) => {
+                const section = document.createElement("section");
+                section.id = proj.id;
+                section.className = `ms-chapter-section ${idx === 5 ? 'ms-chapter-section-dark ms-theme-dark-accent' : ''} ${idx === 1 || idx === 3 ? 'ms-theme-alt-bg' : ''}`;
+                
+                let layoutHtml = '';
+                if(idx === 0) {
+                    layoutHtml = `
+                        <div class="ms-container-editorial"><div class="ms-editorial-grid-2col">
+                            <div class="ms-img-editorial-wrap ms-layout-a-img"><img src="${proj.images[0]}" alt="${proj.brand}" class="ms-img-reveal-on-scroll"></div>
+                            <div class="ms-details-col">
+                                <span class="ms-typo-chapter-num">Chapter ${proj.chapter}</span><span class="ms-typo-label">${proj.categoryLabel}</span>
+                                <h2 class="ms-heading-editorial-h2" style="margin-bottom: 30px;">${proj.brand}</h2>
+                                <div class="ms-detail-meta-list">
+                                    <div><div class="ms-detail-meta-item-title">Industry</div><div class="ms-detail-meta-item-value">${proj.industry}</div></div>
+                                    <div><div class="ms-detail-meta-item-title">Services</div><div class="ms-detail-meta-item-value">${proj.services}</div></div>
+                                </div>
+                                <div class="ms-detail-block"><div class="ms-detail-block-title">The Challenge</div><div class="ms-detail-block-desc">${proj.challenge}</div></div>
+                                <div class="ms-detail-block" style="margin-bottom: 40px;"><div class="ms-detail-block-title">The Realization</div><div class="ms-detail-block-desc">${proj.solution}</div></div>
+                                <div><button class="ms-btn-underlined" onclick="triggerCaseStudyOpen('${proj.id}', false)">Explore Chapter</button></div>
+                            </div>
+                        </div></div>`;
+                } else if(idx === 1 || idx === 3) {
+                    layoutHtml = `
+                        <div class="ms-container-editorial">
+                            <div style="margin-bottom: 50px;">
+                                <span class="ms-typo-chapter-num">Chapter ${proj.chapter}</span><br><span class="ms-typo-label">${proj.categoryLabel}</span>
+                                <h2 class="ms-heading-editorial-h2">${proj.brand}</h2>
+                            </div>
+                            <div class="ms-img-editorial-wrap ms-layout-b-hero-box"><img src="${proj.images[0]}" alt="${proj.brand}" class="ms-img-reveal-on-scroll"></div>
+                            <div class="ms-layout-b-understats">
+                                <div><p class="ms-para-editorial" style="max-width: 580px;">${proj.solution}</p></div>
+                                <div style="text-align: right; border-left: 1px solid #E7E7E7; padding-left: 40px;">
+                                    <span style="font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 200; line-height: 1; display: block; color: #111111;">${proj.metricNum}</span>
+                                    <span class="ms-typo-label" style="margin-bottom: 24px;">${proj.metricLabel}</span>
+                                    <div><button class="ms-btn-underlined" onclick="triggerCaseStudyOpen('${proj.id}', false)">View Execution</button></div>
+                                </div>
+                            </div>
+                        </div>`;
+                } else if(idx === 2 || idx === 4) {
+                    layoutHtml = `
+                        <div class="ms-container-editorial"><div class="ms-editorial-grid-2col">
+                            <div class="ms-details-col">
+                                <span class="ms-typo-chapter-num">Chapter ${proj.chapter}</span><span class="ms-typo-label">${proj.categoryLabel}</span>
+                                <h2 class="ms-heading-editorial-h2" style="margin-bottom: 30px;">${proj.brand}</h2>
+                                <div class="ms-detail-block"><div class="ms-detail-block-title">The Challenge</div><div class="ms-detail-block-desc">${proj.challenge}</div></div>
+                                <div class="ms-detail-block" style="margin-bottom: 40px;"><div class="ms-detail-block-title">The Realization</div><div class="ms-detail-block-desc">${proj.solution}</div></div>
+                                <div><button class="ms-btn-underlined" onclick="triggerCaseStudyOpen('${proj.id}', false)">View Analysis</button></div>
+                            </div>
+                            <div class="ms-layout-c-visuals">
+                                <div class="ms-img-editorial-wrap ms-layout-c-img-back"><img src="${proj.images[0]}" alt="${proj.brand}" class="ms-img-reveal-on-scroll"></div>
+                                <div class="ms-img-editorial-wrap ms-layout-c-img-front"><img src="${proj.images[1] ? proj.images[1] : proj.images[0]}" alt="${proj.brand}" class="ms-img-reveal-on-scroll"></div>
+                            </div>
+                        </div></div>`;
+                } else {
+                    layoutHtml = `
+                        <div class="ms-container-editorial">
+                            <div style="margin-bottom: 60px;">
+                                <span class="ms-typo-chapter-num ms-typo-chapter-num-dark">Chapter ${proj.chapter}</span><br><span class="ms-typo-label ms-typo-label-dark">${proj.categoryLabel}</span>
+                                <h2 class="ms-heading-editorial-h2 ms-heading-editorial-h2-dark">${proj.brand}</h2>
+                            </div>
+                            <div class="ms-img-editorial-wrap ms-layout-f-cinematic"><img src="${proj.images[0]}" alt="${proj.brand}" class="ms-img-reveal-on-scroll"></div>
+                            <div class="ms-layout-f-bottom-details">
+                                <div>
+                                    <div class="ms-detail-block"><div class="ms-detail-block-title ms-detail-block-title-dark">The Challenge</div><div class="ms-detail-block-desc ms-detail-block-desc-dark">${proj.challenge}</div></div>
+                                    <div class="ms-detail-block"><div class="ms-detail-block-title ms-detail-block-title-dark">The Realization</div><div class="ms-detail-block-desc ms-detail-block-desc-dark">${proj.solution}</div></div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start;">
+                                    <div>
+                                        <span style="font-size: clamp(3rem, 6vw, 5rem); font-weight: 200; line-height: 1; display: block; color: #FFFFFF;">${proj.metricNum}</span>
+                                        <span class="ms-typo-label ms-typo-label-dark">${proj.metricLabel}</span>
+                                    </div>
+                                    <button class="ms-btn-underlined ms-btn-underlined-dark" style="margin-top: 24px;" onclick="triggerCaseStudyOpen('${proj.id}', false)">Explore Architecture</button>
+                                </div>
+                            </div>
+                        </div>`;
+                }
+                section.innerHTML = layoutHtml;
+                container.appendChild(section);
+            });
+        }
+
+        function renderArchiveGrid(filterValue) {
+            const container = document.getElementById("archiveGridContainer");
+            container.innerHTML = "";
+            
+            const filteredData = filterValue === "all" ? EXTENDED_ARCHIVE : EXTENDED_ARCHIVE.filter(item => item.tag === filterValue);
+            
+            filteredData.forEach(item => {
+                const cell = document.createElement("div");
+                cell.className = "ms-archive-cell";
+                cell.onclick = () => triggerCaseStudyOpen(item.id, true);
+                cell.innerHTML = `
+                    <div class="ms-archive-img-wrap">
+                        <img src="${item.images[0]}" alt="${item.brand}" class="ms-archive-img" loading="lazy">
+                    </div>
+                    <div class="ms-archive-cell-top">
+                        <h3 class="ms-archive-brand">${item.brand}</h3>
+                        <span style="font-size:0.75rem; color:#707070; font-weight:500;">${item.metric}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #F0F0F0; padding-top: 12px;">
+                        <span class="ms-typo-label" style="margin:0; font-size:0.6rem;">${item.industry}</span>
+                        <span style="font-size:0.65rem; color:#999; text-transform:uppercase; letter-spacing:0.05em;">${item.services}</span>
+                    </div>
+                `;
+                container.appendChild(cell);
+            });
+        }
+
+        function initArchiveFilters() {
+            const buttons = document.querySelectorAll(".ms-filter-btn");
+            buttons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    buttons.forEach(b => b.classList.remove("is-active"));
+                    btn.classList.add("is-active");
+                    renderArchiveGrid(btn.getAttribute("data-filter"));
+                });
+            });
+        }
+
+        function renderTestimonialTracks() {
+            const t1 = document.getElementById("tickerTrack1");
+            const t2 = document.getElementById("tickerTrack2");
+
+            // Loop twice for smooth infinite layout calculations
+            [...TESTIMONIALS_ROW1, ...TESTIMONIALS_ROW1].forEach(t => {
+                const card = document.createElement("div");
+                card.className = "ms-ticker-card";
+                card.innerHTML = `
+                    <p class="ms-ticker-quote">${t.q}</p>
+                    <div class="ms-ticker-meta">
+                        <div class="ms-ticker-avatar">${t.a.split(' ').map(n => n[0]).join('')}</div>
+                        <div>
+                            <div style="font-size: 0.8rem; font-weight:500; color:#FFFFFF;">${t.a}</div>
+                            <div style="font-size: 0.7rem; color:#707070; margin-top: 2px;">${t.c}</div>
+                        </div>
+                    </div>
+                `;
+                t1.appendChild(card);
+            });
+
+            [...TESTIMONIALS_ROW2, ...TESTIMONIALS_ROW2].forEach(t => {
+                const card = document.createElement("div");
+                card.className = "ms-ticker-card";
+                card.innerHTML = `
+                    <p class="ms-ticker-quote">${t.q}</p>
+                    <div class="ms-ticker-meta">
+                        <div class="ms-ticker-avatar">${t.a.split(' ').map(n => n[0]).join('')}</div>
+                        <div>
+                            <div style="font-size: 0.8rem; font-weight:500; color:#FFFFFF;">${t.a}</div>
+                            <div style="font-size: 0.7rem; color:#707070; margin-top: 2px;">${t.c}</div>
+                        </div>
+                    </div>
+                `;
+                t2.appendChild(card);
+            });
+        }
+
+        function renderFAQs() {
+            const container = document.getElementById("faqContainer");
+            FAQS.forEach(f => {
+                const item = document.createElement("div");
+                item.className = "ms-faq-item";
+                item.innerHTML = `
+                    <button class="ms-faq-trigger">
+                        <span>${f.q}</span>
+                        <span class="ms-faq-icon">+</span>
+                    </button>
+                    <div class="ms-faq-panel">
+                        <div class="ms-faq-content"><p>${f.a}</p></div>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function initFAQAccordion() {
+            const triggers = document.querySelectorAll(".ms-faq-trigger");
+            triggers.forEach(trigger => {
+                trigger.addEventListener("click", () => {
+                    const parent = trigger.parentElement;
+                    const panel = trigger.nextElementSibling;
+                    const isOpen = parent.classList.contains("is-open");
+                    
+                    document.querySelectorAll(".ms-faq-item").forEach(item => {
+                        item.classList.remove("is-open");
+                        item.querySelector(".ms-faq-panel").style.maxHeight = null;
+                    });
+
+                    if (!isOpen) {
+                        parent.classList.add("is-open");
+                        panel.style.maxHeight = panel.scrollHeight + "px";
+                    }
+                });
+            });
+        }
+
+        /* ==========================================================================
+           ANIMATIONS & INTERACTIVE SYSTEMS
+           ========================================================================== */
+        function initMaskRevealEngine() {
+            const frame = document.getElementById("heroMaskFrame");
+            const img = document.getElementById("heroMaskImg");
+            window.addEventListener("scroll", () => {
+                const scrolled = window.scrollY;
+                const threshold = window.innerHeight * 0.8;
+                if (scrolled <= threshold) {
+                    const percentage = (scrolled / threshold);
+                    frame.style.clipPath = `inset(${10 - (percentage * 10)}% ${10 - (percentage * 10)}% ${10 - (percentage * 10)}% ${10 - (percentage * 10)}%)`;
+                    img.style.transform = `scale(${1.1 - (percentage * 0.1)})`;
+                }
+            });
+        }
+
+        function initIndexScrollerTrack() {
+            const previewBox = document.getElementById("hoverPreviewBox");
+            const previewImg = document.getElementById("hoverPreviewImg");
+            const navItems = document.querySelectorAll(".ms-index-item");
+            
+            navItems.forEach(item => {
+                item.addEventListener("mousemove", (e) => {
+                    previewImg.src = item.getAttribute("data-img");
+                    previewBox.style.opacity = "1";
+                    previewBox.style.transform = `translate(${e.clientX + 20}px, ${e.clientY - 100}px) scale(1)`;
+                });
+                item.addEventListener("mouseleave", () => {
+                    previewBox.style.opacity = "0";
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navItems.forEach(link => {
+                            if (link.getAttribute("data-id") === entry.target.id) {
+                                link.classList.add("is-active");
+                                link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                            } else {
+                                link.classList.remove("is-active");
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-25% 0px -55% 0px" });
+
+            document.querySelectorAll("section[id^='chapter-']").forEach(ch => observer.observe(ch));
+        }
+
+        function initImageRevealOnScroll() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.transform = "scale(1)";
+                        entry.target.style.opacity = "1";
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll(".ms-img-reveal-on-scroll").forEach(img => observer.observe(img));
+        }
+
+        /* ==========================================================================
+           MODAL SYSTEM RENDER LAYER
+           ========================================================================== */
+        function triggerCaseStudyOpen(id, isArchive) {
+            const proj = isArchive ? EXTENDED_ARCHIVE.find(p => p.id === id) : MAIN_CHAPTERS.find(p => p.id === id);
+            if (!proj) return;
+
+            const modal = document.getElementById("editorialOverlay");
+            const content = document.getElementById("modalDynamicContent");
+
+            content.innerHTML = `
+                <div class="ms-modal-top-grid">
+                    <div>
+                        <span class="ms-typo-label">${proj.industry}</span>
+                        <h1 class="ms-heading-editorial-h1" style="margin-top:15px;">${proj.brand}</h1>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-size: clamp(2rem, 4vw, 4rem); font-weight: 200; color: #111111;">${isArchive ? proj.metric : proj.metricNum}</span>
+                    </div>
+                </div>
+                <div class="ms-img-editorial-wrap" style="height:60vh; margin-bottom:60px;">
+                    <img src="${proj.images[0]}" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="ms-modal-editorial-columns">
+                    <div>
+                        <div class="ms-detail-block">
+                            <span class="ms-typo-label">Analysis Narrative</span>
+                            <p class="ms-para-editorial" style="color:#111111; font-size:1.3rem; font-weight:300;">${proj.challenge}</p>
+                            <p class="ms-para-editorial" style="margin-top:20px;">${proj.solution}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="ms-modal-meta-box">
+                            <div class="ms-detail-meta-item-title">Execution Context</div>
+                            <div class="ms-detail-meta-item-value" style="margin-top:8px;">${proj.services}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById("modalCloseBtn").onclick = () => {
+                modal.classList.remove("is-active");
+                setTimeout(() => modal.style.display = "none", 600);
+            };
+
+            modal.style.display = "block";
+            setTimeout(() => {
+                modal.classList.add("is-active");
+                modal.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 50);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services — MESSOLD Technologies</title>
+    
+    <!-- Ultra-Premium Geist Typeface Integration -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist-sans@1.0.1/dist/geist-sans.css">
+    
+    <style>
+        /* --- BRAND MONOCHROME DESIGN SYSTEM --- */
+        :root {
+            --clr-black: #000000;
+            --clr-dark: #0D0D0E;
+            --clr-white: #FFFFFF;
+            --clr-silver: #F5F5F7;
+            --clr-muted: #707073;
+            --border-light: rgba(255, 255, 255, 0.08);
+            --border-dark: rgba(0, 0, 0, 0.08);
+            --font-geist: 'Geist Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-geist);
+            background-color: var(--clr-black);
+            color: var(--clr-white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- STYLISH DUST & GRAIN FILTER OVERLAY --- */
+        .ms-film-grain {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            opacity: 0.03;
+            z-index: 9999;
+            pointer-events: none;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* --- CUSTOM FLOATING CURSOR --- */
+        #msCursor {
+            width: 8px;
+            height: 8px;
+            background-color: var(--clr-white);
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 99999;
+            mix-blend-mode: difference;
+            transition: width 0.25s var(--ease-premium), height 0.25s var(--ease-premium);
+        }
+
+        .hovering-link #msCursor {
+            width: 32px;
+            height: 32px;
+            background-color: transparent;
+            border: 1px solid var(--clr-white);
+        }
+
+        /* --- GLOBAL CONTAINERS --- */
+        .ms-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 6%;
+        }
+
+        .ms-section {
+            padding: 14vh 0;
+            border-bottom: 1px solid var(--border-light);
+            position: relative;
+        }
+
+        /* --- TYPOGRAPHY PRESETS --- */
+        .ms-meta {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--clr-muted);
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .ms-hero-heading {
+            font-size: clamp(2.5rem, 6.5vw, 5.5rem);
+            font-weight: 200;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            margin: 0;
+        }
+
+        .ms-hero-heading span {
+            font-weight: 700;
+            color: var(--clr-white);
+        }
+
+        .ms-section-title {
+            font-size: clamp(2rem, 4.5vw, 3rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            margin-bottom: 3rem;
+            line-height: 1.1;
+        }
+
+        /* --- KINETIC ASSEMBLY ANIMATION CLASS --- */
+        .ms-kinetic-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s var(--ease-premium), transform 1.2s var(--ease-premium);
+        }
+
+        .ms-kinetic-reveal.triggered {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- PREMIUM HEADER --- */
+        .ms-nav {
+            padding: 2rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .ms-logo {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .ms-menu-btn {
+            background: none;
+            border: none;
+            color: var(--clr-white);
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-light);
+            transition: background-color 0.3s;
+        }
+
+        .ms-menu-btn:hover {
+            background-color: var(--clr-white);
+            color: var(--clr-black);
+        }
+
+        /* --- INFINITE BRAND MARQUEE --- */
+        .ms-marquee-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border-light);
+            position: relative;
+        }
+
+        .ms-marquee-track {
+            display: inline-block;
+            animation: marqueeRoll 25s linear infinite;
+        }
+
+        .ms-marquee-item {
+            display: inline-block;
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-right: 5rem;
+            color: var(--clr-muted);
+            transition: color 0.3s;
+        }
+
+        .ms-marquee-item:hover {
+            color: var(--clr-white);
+        }
+
+        @keyframes marqueeRoll {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        /* --- HERO SPLIT GRID --- */
+        .ms-hero-grid {
+            display: grid;
+            grid-template-columns: 8fr 4fr;
+            align-items: end;
+            gap: 4rem;
+            padding: 10vh 0;
+        }
+
+        @media (max-width: 968px) {
+            .ms-hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+        }
+
+        /* --- INTERACTIVE SPLIT SERVICES ZONE --- */
+        .ms-services-split {
+            display: grid;
+            grid-template-columns: 5fr 7fr;
+            gap: 6%;
+            position: relative;
+        }
+
+        @media (max-width: 968px) {
+            .ms-services-split { grid-template-columns: 1fr; }
+        }
+
+        .ms-sticky-canvas {
+            position: sticky;
+            top: 20vh;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 968px) {
+            .ms-sticky-canvas { display: none; }
+        }
+
+        /* Kinetic SVG wireframe object */
+        .ms-geometric-wireframe {
+            width: 320px;
+            height: 320px;
+            transition: transform 1.2s var(--ease-premium);
+        }
+
+        .ms-geometric-wireframe circle,
+        .ms-geometric-wireframe path,
+        .ms-geometric-wireframe rect {
+            stroke: var(--clr-white);
+            stroke-width: 0.75;
+            fill: none;
+            transition: all 1s var(--ease-premium);
+        }
+
+        /* Right Scroll Details */
+        .ms-service-card {
+            padding: 5rem 0;
+            border-bottom: 1px solid var(--border-light);
+            transition: opacity 0.5s ease;
+        }
+
+        .ms-service-card:last-child {
+            border-bottom: none;
+        }
+
+        .ms-service-num {
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            color: var(--clr-muted);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .ms-service-title {
+            font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+        }
+
+        .ms-service-intro {
+            font-size: 1.15rem;
+            line-height: 1.5;
+            font-weight: 300;
+            color: var(--clr-white);
+            margin-bottom: 1.5rem;
+        }
+
+        .ms-service-bullets {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .ms-service-bullets li {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--clr-muted);
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .ms-service-bullets li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 6px;
+            height: 1px;
+            background-color: var(--clr-white);
+        }
+
+        .ms-btn-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: none;
+            border: 1px solid var(--clr-white);
+            color: var(--clr-white);
+            padding: 0.8rem 1.8rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .ms-btn-pill:hover {
+            background-color: var(--clr-white);
+            color: var(--clr-black);
+        }
+
+        /* --- STILL CONFUSED / CALL BOOKER --- */
+        .ms-confused-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            background-color: var(--clr-dark);
+            border: 1px solid var(--border-light);
+            padding: 6rem;
+        }
+
+        @media (max-width: 968px) {
+            .ms-confused-grid { grid-template-columns: 1fr; padding: 3rem; }
+        }
+
+        .ms-interactive-panel {
+            border-left: 1px solid var(--border-light);
+            padding-left: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @media (max-width: 968px) {
+            .ms-interactive-panel { border-left: none; padding-left: 0; }
+        }
+
+        /* --- PREMIER LINE-ACCORDION FAQS --- */
+        .ms-faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .ms-faq-item {
+            border-bottom: 1px solid var(--border-light);
+            padding: 2rem 0;
+            cursor: pointer;
+        }
+
+        .ms-faq-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ms-faq-question {
+            font-size: 1.15rem;
+            font-weight: 300;
+            letter-spacing: -0.01em;
+        }
+
+        .ms-faq-icon {
+            font-size: 1.5rem;
+            font-weight: 200;
+            transition: transform 0.5s var(--ease-premium);
+        }
+
+        .ms-faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s var(--ease-premium);
+        }
+
+        .ms-faq-answer {
+            padding-top: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--clr-muted);
+        }
+
+        .faq-active .ms-faq-icon {
+            transform: rotate(45deg);
+        }
+
+        /* --- FOOTER GRID SYSTEM --- */
+        footer {
+            background-color: #050505;
+            padding: 10vh 0 6vh 0;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .footer-split {
+            display: grid;
+            grid-template-columns: 3fr 2fr 2fr 3fr;
+            gap: 3rem;
+            margin-bottom: 6rem;
+        }
+
+        @media (max-width: 968px) {
+            .footer-split { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 600px) {
+            .footer-split { grid-template-columns: 1fr; }
+        }
+
+        .footer-heading {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--clr-muted);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .footer-link {
+            display: block;
+            color: var(--clr-white);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .footer-link:hover {
+            opacity: 1;
+        }
+
+        .email-field-container {
+            display: flex;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .email-field-container input {
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--clr-white);
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .email-field-container button {
+            background: none;
+            border: none;
+            color: var(--clr-white);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .footer-bottom-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-light);
+            padding-top: 3rem;
+            font-size: 0.8rem;
+            color: var(--clr-muted);
+        }
+
+        @media (max-width: 768px) {
+            .footer-bottom-info { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body id="bodyRoot">
+
+    <div class="ms-film-grain"></div>
+    <div id="msCursor"></div>
+
+    <!-- MAIN NAV HEADER -->
+    <nav class="ms-container ms-nav">
+        <div class="ms-logo link-trg">Messold</div>
+        <button class="ms-menu-btn link-trg">Menu</button>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="ms-section">
+        <div class="ms-container ms-hero-grid">
+            <div class="ms-kinetic-reveal ms-init-load">
+                <span class="ms-meta">Service Blueprint</span>
+                <h1 class="ms-hero-heading">Systems Built<br>To <span>Scale & Conquer</span>.</h1>
+            </div>
+            <div class="ms-kinetic-reveal ms-init-load" style="transition-delay: 0.2s;">
+                <p style="font-size: 0.95rem; line-height: 1.7; color: var(--clr-muted);">
+                    We build functional pipelines converting engagement into core financial metrics. Zero guesswork, maximum telemetry.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- BRANDS WORKING TRUST MARQUEE -->
+    <section class="ms-marquee-container">
+        <div class="ms-marquee-track">
+            <span class="ms-marquee-item">Google Partner</span>
+            <span class="ms-marquee-item">Meta Authorized</span>
+            <span class="ms-marquee-item">Shopify Experts</span>
+            <span class="ms-marquee-item">IIT Network</span>
+            <span class="ms-marquee-item">Y-Combinator Scale</span>
+            <span class="ms-marquee-item">Unicorn Metrics</span>
+            <!-- Duplicated row for smooth continuous scroll loop -->
+            <span class="ms-marquee-item">Google Partner</span>
+            <span class="ms-marquee-item">Meta Authorized</span>
+            <span class="ms-marquee-item">Shopify Experts</span>
+            <span class="ms-marquee-item">IIT Network</span>
+            <span class="ms-marquee-item">Y-Combinator Scale</span>
+            <span class="ms-marquee-item">Unicorn Metrics</span>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE SPLIT CHASSIS FOR SERVICES -->
+    <section class="ms-container ms-section ms-services-split">
+        <!-- Sticky Geometric Side Object -->
+        <div class="ms-sticky-canvas">
+            <svg class="ms-geometric-wireframe" viewBox="0 0 100 100" id="morphingWireframe">
+                <!-- Frame 01 Shape defaults -->
+                <circle cx="50" cy="50" r="35" />
+                <path d="M 50,15 L 50,85" />
+                <path d="M 15,50 L 85,50" />
+                <rect x="30" y="30" width="40" height="40" transform="rotate(45 50 50)" />
+            </svg>
+        </div>
+
+        <!-- Scrollable Service List -->
+        <div>
+            <!-- 01 Web Development -->
+            <div class="ms-service-card ms-kinetic-reveal" data-wireframe-mode="circle">
+                <span class="ms-service-num">01 / CAPABILITY</span>
+                <h2 class="ms-service-title">Web-Development</h2>
+                <p class="ms-service-intro">Welcome to the digital renaissance.</p>
+                <ul class="ms-service-bullets">
+                    <li>Custom websites designed to match your brand.</li>
+                    <li>Optimized for speed, SEO, and mobile use.</li>
+                    <li>Built to be secure, scalable, and reliable.</li>
+                </ul>
+                <button class="ms-btn-pill link-trg">Inquire Strategy</button>
+            </div>
+
+            <!-- 02 Performance Marketing -->
+            <div class="ms-service-card ms-kinetic-reveal" data-wireframe-mode="diamond">
+                <span class="ms-service-num">02 / CAPABILITY</span>
+                <h2 class="ms-service-title">Performance Marketing</h2>
+                <p class="ms-service-intro">From concepts to conversions.</p>
+                <ul class="ms-service-bullets">
+                    <li>Data-driven campaigns focused on measurable results.</li>
+                    <li>Optimized ads to maximize ROI and conversions.</li>
+                    <li>Real-time tracking for smarter growth decisions.</li>
+                </ul>
+                <button class="ms-btn-pill link-trg">Deploy Pipeline</button>
+            </div>
+
+            <!-- 03 AI & Automation -->
+            <div class="ms-service-card ms-kinetic-reveal" data-wireframe-mode="hexagon">
+                <span class="ms-service-num">03 / CAPABILITY</span>
+                <h2 class="ms-service-title">AI and Automation</h2>
+                <p class="ms-service-intro">Automate the boring, scale the exciting.</p>
+                <ul class="ms-service-bullets">
+                    <li>AI handles the busywork, you handle the profits.</li>
+                    <li>No more "out of stock" nightmares.</li>
+                    <li>Abandoned carts no more abandoned.</li>
+                </ul>
+                <button class="ms-btn-pill link-trg">Build Automations</button>
+            </div>
+
+            <!-- 04 Graphic Design -->
+            <div class="ms-service-card ms-kinetic-reveal" data-wireframe-mode="cross">
+                <span class="ms-service-num">04 / CAPABILITY</span>
+                <h2 class="ms-service-title">Graphic Design</h2>
+                <p class="ms-service-intro">Stark visual communication assets.</p>
+                <ul class="ms-service-bullets">
+                    <li>Brand Identity Design – logos, colors, and visuals that set you apart.</li>
+                    <li>Marketing Collaterals – from social media creatives to billboards.</li>
+                    <li>Creative campaigns that make your brand shareable.</li>
+                </ul>
+                <button class="ms-btn-pill link-trg">Design Brand</button>
+            </div>
+
+            <!-- 05 Social Media -->
+            <div class="ms-service-card ms-kinetic-reveal" data-wireframe-mode="star">
+                <span class="ms-service-num">05 / CAPABILITY</span>
+                <h2 class="ms-service-title">Social Media</h2>
+                <p class="ms-service-intro">Engaging Content – scroll-stoppers your thumb can't skip.</p>
+                <ul class="ms-service-bullets">
+                    <li>Community Building – fans so loyal they'd join your group chat.</li>
+                    <li>Performance Driven – metrics sharper than your morning espresso.</li>
+                </ul>
+                <button class="ms-btn-pill link-trg">Initialize Engine</button>
+            </div>
+
+            <!-- 06 UGC & Influencers -->
+            <div class="ms-service-card ms-kinetic-reveal" data-wireframe-mode="nested">
+                <span class="ms-service-num">06 / CAPABILITY</span>
+                <h2 class="ms-service-title">UGC & Influencers</h2>
+                <p class="ms-service-intro">Authentic Voices – content created by real people, for real trust.</p>
+                <ul class="ms-service-bullets">
+                    <li>Influencer Partnerships – tap into audiences that already love what they love.</li>
+                    <li>Scalable Impact – campaigns that turn engagement into conversions.</li>
+                </ul>
+                <button class="ms-btn-pill link-trg">Integrate Creators</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- STILL CONFUSED SECTION -->
+    <section class="ms-container ms-section">
+        <div class="ms-confused-grid ms-kinetic-reveal">
+            <div>
+                <span class="ms-meta" style="color: var(--clr-white);">Consultancy</span>
+                <h2 class="ms-v5-hero-heading" style="font-size: 3rem; font-family: var(--font-geist); font-weight: 300;">Still Confused?</h2>
+                <p style="font-size: 1rem; color: var(--clr-muted); margin-top: 1rem; line-height: 1.6;">
+                    Not sure which performance pipeline aligns perfectly with your immediate quarter projections? Connect directly with our lead system designers.
+                </p>
+            </div>
+            <div class="ms-interactive-panel">
+                <h3 style="font-size: 1.3rem; font-weight: 300; margin-bottom: 1.5rem;">Book a 15 Minute call with us</h3>
+                <button class="ms-btn-pill link-trg" style="background-color: var(--clr-white); color: var(--clr-black);">Book a Call Now</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ ACCORDION SECTION -->
+    <section class="ms-container ms-section">
+        <span class="ms-meta">System Clarifications</span>
+        <h2 class="ms-section-title">Frequently Asked Questions</h2>
+        
+        <div class="ms-faq-container">
+            <div class="ms-faq-item link-trg">
+                <div class="ms-faq-header">
+                    <span class="ms-faq-question">How does performance-based marketing operate?</span>
+                    <span class="ms-faq-icon">+</span>
+                </div>
+                <div class="ms-faq-content">
+                    <p class="ms-faq-answer">
+                        We tie marketing initiatives directly to measurable telemetry metrics. We establish clean key indicators (such as ROAS or conversions) and continuously optimize campaigns using machine learning algorithms.
+                    </p>
+                </div>
+            </div>
+
+            <div class="ms-faq-item link-trg">
+                <div class="ms-faq-header">
+                    <span class="ms-faq-question">Do you offer custom code environments or template frameworks?</span>
+                    <span class="ms-faq-icon">+</span>
+                </div>
+                <div class="ms-faq-content">
+                    <p class="ms-faq-answer">
+                        Everything we deploy is custom-engineered. We build tailored architectures optimized for high page speeds, clean security protocols, and maximum structural scalability.
+                    </p>
+                </div>
+            </div>
+
+            <div class="ms-faq-item link-trg">
+                <div class="ms-faq-header">
+                    <span class="ms-faq-question">What is your typical onboarding timeline for new services?</span>
+                    <span class="ms-faq-icon">+</span>
+                </div>
+                <div class="ms-faq-content">
+                    <p class="ms-faq-answer">
+                        Onboarding generally takes 2 to 4 weeks. This includes in-depth telemetry research, platform audits, design system conceptualization, and strategic pipeline structuring before launch.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="ms-container">
+            <div class="footer-split">
+                <div>
+                    <div class="ms-logo" style="margin-bottom: 1.5rem;">Messold</div>
+                    <p style="font-size: 0.85rem; color: var(--clr-muted); line-height: 1.6;">
+                        Messold Technologies, founded by IIT alumni in 2016, empowers e-commerce growth through innovative, performance-driven advertising and marketing solutions.
+                    </p>
+                </div>
+                <div>
+                    <span class="footer-heading">Navigation</span>
+                    <a href="#" class="footer-link link-trg">Home</a>
+                    <a href="#" class="footer-link link-trg">Our Work</a>
+                    <a href="#" class="footer-link link-trg">Services</a>
+                    <a href="#" class="footer-link link-trg">Careers</a>
+                    <a href="#" class="footer-link link-trg">Contact Us</a>
+                </div>
+                <div>
+                    <span class="footer-heading">Legal</span>
+                    <a href="#" class="footer-link link-trg">Agency</a>
+                    <a href="#" class="footer-link link-trg">Parallels</a>
+                    <a href="#" class="footer-link link-trg">Starlight</a>
+                    <a href="#" class="footer-link link-trg">Privacy Policy</a>
+                    <a href="#" class="footer-link link-trg">Terms of Service</a>
+                </div>
+                <div>
+                    <span class="footer-heading">Stay in the Loop</span>
+                    <p style="font-size: 0.8rem; color: var(--clr-muted); line-height: 1.5;">
+                        Stay informed about our latest news, updates and strategic insights by subscribing to our newsletter.
+                    </p>
+                    <div class="email-field-container">
+                        <input type="email" placeholder="Your email" class="link-trg">
+                        <button class="link-trg">→</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom-info">
+                <div>
+                    <p style="margin-bottom: 0.5rem;"><strong>Address 1:</strong> Synergy Building, IIT Delhi, Hauz Khas-110016</p>
+                    <p><strong>Address 2:</strong> J-6, Block J, Reserve Bank Enclave, Paschim Vihar, Delhi, 110063</p>
+                    <p style="margin-top: 0.5rem; font-weight: 600; color: var(--clr-white);">+91 7291988880</p>
+                </div>
+                <div>
+                    © 2026 Messold Technologies. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE ANIMATION CONTROLLER ENGINE -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Initial Page Load Reveal Transitions
+            setTimeout(() => {
+                document.querySelectorAll(".ms-init-load").forEach(el => el.classList.add("triggered"));
+            }, 100);
+
+            // 2. Interactive Custom Cursor Operations
+            const cursor = document.getElementById("msCursor");
+            document.addEventListener("mousemove", (e) => {
+                cursor.style.left = `${e.clientX}px`;
+                cursor.style.top = `${e.clientY}px`;
+            });
+
+            document.querySelectorAll(".link-trg").forEach(elem => {
+                elem.addEventListener("mouseenter", () => document.body.classList.add("hovering-link"));
+                elem.addEventListener("mouseleave", () => document.body.classList.remove("hovering-link"));
+            });
+
+            // 3. Scroll Reveal System (Intersection Observer)
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("triggered");
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll(".ms-kinetic-reveal").forEach(el => scrollObserver.observe(el));
+
+            // 4. Kinetic SVG Morph Matrix matching scroll interactions
+            const morphingWireframe = document.getElementById("morphingWireframe");
+            
+            const wireframeRotations = {
+                circle: "rotate(0deg) scale(1.0)",
+                diamond: "rotate(45deg) scale(1.1)",
+                hexagon: "rotate(90deg) scale(0.9)",
+                cross: "rotate(135deg) scale(1.15)",
+                star: "rotate(180deg) scale(0.85)",
+                nested: "rotate(225deg) scale(1.05)"
+            };
+
+            const cardObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const mode = entry.target.getAttribute("data-wireframe-mode");
+                        if (mode && wireframeRotations[mode]) {
+                            morphingWireframe.style.transform = wireframeRotations[mode];
+                        }
+                    }
+                });
+            }, { threshold: 0.5, rootMargin: "-10% 0px -40% 0px" });
+
+            document.querySelectorAll(".ms-service-card").forEach(card => cardObserver.observe(card));
+
+            // 5. High-End FAQ Accordion Mechanics
+            const faqItems = document.querySelectorAll(".ms-faq-item");
+            faqItems.forEach(item => {
+                item.addEventListener("click", () => {
+                    const isActive = item.classList.contains("faq-active");
+                    // Close all FAQs first
+                    faqItems.forEach(i => {
+                        i.classList.remove("faq-active");
+                        i.querySelector(".ms-faq-content").style.maxHeight = "0";
+                    });
+
+                    // If not active before, expand this one
+                    if (!isActive) {
+                        item.classList.add("faq-active");
+                        const content = item.querySelector(".ms-faq-content");
+                        content.style.maxHeight = `${content.scrollHeight}px`;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

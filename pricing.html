@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MESSOLD — Premium Conversion Platform Architecture</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist-sans@1.0.1/dist/geist-sans.css">
+    <style>
+        :root {
+            --prem-bg-white: #FFFFFF;
+            --prem-bg-soft: #F4F4F5;
+            --prem-bg-card: #FAFAFA;
+            --prem-bg-black: #000000;
+            --prem-bg-dark-card: #18181B;
+            --prem-txt-primary: #000000;
+            --prem-txt-secondary: #27272A;
+            --prem-txt-muted: #71717A;
+            --prem-txt-white: #FFFFFF;
+            --prem-txt-white-muted: #A1A1AA;
+            --prem-border: #E4E4E7;
+            --prem-border-dark: #27272A;
+            --prem-font: 'Geist Sans', -apple-system, sans-serif;
+            --prem-pad-desktop: 64px;
+            --prem-pad-mobile: 24px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--prem-font);
+            background-color: var(--prem-bg-white);
+            color: var(--prem-txt-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            letter-spacing: -0.02em;
+        }
+
+        /* STRICT STRUCTURAL CONTAINMENT INLINE PADDING PACK */
+        .prem-viewport-lock {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding-left: var(--prem-pad-desktop);
+            padding-right: var(--prem-pad-desktop);
+            width: 100%;
+        }
+        @media (max-width: 768px) {
+            .prem-viewport-lock {
+                padding-left: var(--prem-pad-mobile);
+                padding-right: var(--prem-pad-mobile);
+            }
+        }
+
+        .prem-block-space {
+            padding: 140px 0;
+            position: relative;
+        }
+        
+        .prem-bg-wrapper-soft {
+            background-color: var(--prem-bg-soft);
+        }
+
+        .prem-bg-wrapper-black {
+            background-color: var(--prem-bg-black);
+            color: var(--prem-txt-white);
+        }
+
+        /* STICKY TOP HUD BAR ACTION */
+        .prem-sticky-hud-strip {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--prem-border);
+            z-index: 2000;
+            transform: translateY(-101%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .prem-sticky-hud-strip.is-active-view {
+            transform: translateY(0);
+        }
+        .prem-sticky-layout {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 76px;
+        }
+        .prem-sticky-logo {
+            font-weight: 700;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* INTERFACING ACTIONS BUTTON SYSTEM */
+        .prem-actions-flex {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .prem-btn-main {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            text-decoration: none;
+            color: var(--prem-txt-white);
+            background-color: var(--prem-bg-black);
+            padding: 20px 40px;
+            display: inline-block;
+            transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+            border: 1px solid var(--prem-bg-black);
+            cursor: pointer;
+        }
+        .prem-btn-main:hover {
+            background-color: transparent;
+            color: var(--prem-txt-primary);
+        }
+
+        .prem-btn-main-white {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            text-decoration: none;
+            color: var(--prem-txt-primary);
+            background-color: var(--prem-bg-white);
+            padding: 20px 40px;
+            display: inline-block;
+            transition: background-color 0.25s ease, color 0.25s ease;
+            border: 1px solid var(--prem-bg-white);
+            cursor: pointer;
+        }
+        .prem-btn-main-white:hover {
+            background-color: transparent;
+            color: var(--prem-txt-white);
+        }
+
+        .prem-btn-text-anchor {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            text-decoration: none;
+            color: inherit;
+            border: none;
+            background: none;
+            border-bottom: 2px solid currentColor;
+            padding-bottom: 4px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+        .prem-btn-text-anchor:hover {
+            opacity: 0.5;
+        }
+
+        /* TYPOGRAPHY BLOCKS */
+        .prem-eyebrow {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--prem-txt-muted);
+            display: block;
+            margin-bottom: 24px;
+        }
+        .prem-bg-wrapper-black .prem-eyebrow {
+            color: var(--prem-txt-white-muted);
+        }
+
+        .prem-title-h1 {
+            font-size: clamp(2.8rem, 6vw, 4.5rem);
+            font-weight: 500;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            margin-bottom: 28px;
+        }
+
+        .prem-title-h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 500;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 64px;
+        }
+
+        .prem-paragraph-lead {
+            font-size: 20px;
+            line-height: 1.6;
+            font-weight: 300;
+            color: var(--prem-txt-secondary);
+        }
+        .prem-bg-wrapper-black .prem-paragraph-lead {
+            color: var(--prem-txt-white-muted);
+        }
+
+        /* TEXT-CENTERED SCROLL FADE HERO SECTION */
+        .prem-hero-center-container {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 0;
+            will-change: transform, opacity;
+        }
+
+        /* WHY MESSOLD FEATURE PLATFORM MODULE */
+        .prem-why-grid-layout {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 56px 40px;
+        }
+        @media (max-width: 968px) {
+            .prem-why-grid-layout { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+            .prem-why-grid-layout { grid-template-columns: 1fr; }
+        }
+        .prem-why-card-element {
+            padding-top: 32px;
+            border-top: 1px solid var(--prem-border);
+        }
+        .prem-why-card-element h3 {
+            font-size: 19px;
+            font-weight: 500;
+            margin-bottom: 14px;
+        }
+        .prem-why-card-element p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--prem-txt-secondary);
+        }
+
+        /* METRIC counters HOOD USP CONFIGURATION */
+        .prem-metrics-editorial-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+        @media (max-width: 968px) {
+            .prem-metrics-editorial-row { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+            .prem-metrics-editorial-row { grid-template-columns: 1fr; }
+        }
+        .prem-metric-editorial-box {
+            border-left: 2px solid var(--prem-bg-black);
+            padding-left: 24px;
+        }
+        .prem-metric-giant-text {
+            font-size: 64px;
+            font-weight: 500;
+            letter-spacing: -0.05em;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+        .prem-metric-tiny-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--prem-txt-muted);
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        /* CORE MATRIX PRICING CARDS ENGINE */
+        .prem-pricing-cards-matrix {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 64px;
+        }
+        @media (max-width: 1200px) {
+            .prem-pricing-cards-matrix { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 680px) {
+            .prem-pricing-cards-matrix { grid-template-columns: 1fr; }
+        }
+
+        .prem-pricing-tier-block {
+            background: var(--prem-bg-card);
+            border: 1px solid var(--prem-border);
+            padding: 48px 36px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .prem-pricing-tier-block.is-featured-black {
+            background: var(--prem-bg-black);
+            color: var(--prem-txt-white);
+            border-color: var(--prem-bg-black);
+        }
+        
+        .prem-featured-card-badge {
+            position: absolute;
+            top: 24px;
+            right: 32px;
+            border: 1px solid var(--prem-txt-muted);
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 4px 10px;
+            font-weight: 500;
+        }
+        .prem-pricing-tier-block.is-featured-black .prem-featured-card-badge {
+            border-color: var(--prem-txt-white-muted);
+        }
+
+        .prem-card-plan-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+        .prem-card-cost-integer {
+            font-size: 40px;
+            font-weight: 500;
+            letter-spacing: -0.04em;
+            margin-bottom: 8px;
+        }
+        .prem-card-tier-explanation {
+            font-size: 13px;
+            color: var(--prem-txt-secondary);
+            line-height: 1.5;
+            margin-bottom: 36px;
+            min-height: 60px;
+        }
+        .prem-pricing-tier-block.is-featured-black .prem-card-tier-explanation {
+            color: var(--prem-txt-white-muted);
+        }
+
+        .prem-card-parameter-split {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: var(--prem-txt-muted);
+            letter-spacing: 0.05em;
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--prem-border);
+        }
+        .prem-pricing-tier-block.is-featured-black .prem-card-parameter-split {
+            border-bottom-color: var(--prem-border-dark);
+            color: var(--prem-txt-white-muted);
+        }
+        .prem-card-parameter-split span {
+            display: block;
+            font-weight: 500;
+            color: var(--prem-txt-primary);
+            font-size: 13px;
+            margin-top: 6px;
+        }
+        .prem-pricing-tier-block.is-featured-black .prem-card-parameter-split span {
+            color: var(--prem-txt-white);
+        }
+
+        .prem-card-feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 48px;
+        }
+        .prem-card-feature-list li {
+            font-size: 13px;
+            color: var(--prem-txt-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .prem-pricing-tier-block.is-featured-black .prem-card-feature-list li {
+            color: var(--prem-txt-white-muted);
+        }
+        .prem-card-feature-list li::before {
+            content: "—";
+            color: var(--prem-txt-muted);
+        }
+
+        .prem-pricing-tier-block .prem-btn-main {
+            margin-top: auto;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* 25-POINT MATRIX DRAWER DESIGN */
+        .prem-drawer-matrix-fold {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .prem-matrix-scroll-contain {
+            overflow-x: auto;
+            padding-top: 64px;
+        }
+        .prem-full-specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 13px;
+        }
+        .prem-full-specs-table th, .prem-full-specs-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--prem-border);
+        }
+        .prem-full-specs-table th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            color: var(--prem-txt-muted);
+        }
+        .prem-table-group-header td {
+            background: var(--prem-bg-soft);
+            font-weight: 600;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-bottom: 1px solid var(--prem-border);
+        }
+        .prem-mark-available {
+            color: var(--prem-txt-primary);
+            font-weight: 700;
+        }
+        .prem-mark-unavailable {
+            color: var(--prem-txt-muted);
+            opacity: 0.4;
+        }
+
+        /* 4-COLUMN SYMMETRIC ADD-ONS ARCHITECTURE GRID */
+        .prem-addons-symmetric-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+        @media (max-width: 1100px) {
+            .prem-addons-symmetric-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+            .prem-addons-symmetric-grid { grid-template-columns: 1fr; }
+        }
+        .prem-addon-premium-card {
+            background: var(--prem-bg-white);
+            border: 1px solid var(--prem-border);
+            padding: 36px 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .prem-addon-card-info h4 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+        .prem-addon-card-price {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--prem-txt-primary);
+            margin-bottom: 20px;
+            display: block;
+        }
+        .prem-addon-card-info p {
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--prem-txt-secondary);
+            margin-bottom: 32px;
+        }
+        .prem-addon-card-footer {
+            border-top: 1px solid var(--prem-border);
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .prem-addon-sku-label {
+            font-size: 10px;
+            letter-spacing: 0.05em;
+            color: var(--prem-txt-muted);
+            text-transform: uppercase;
+        }
+
+        /* ALGORITHMIC ANALYTIC MATCH ENGINE */
+        .prem-console-split-layout {
+            display: grid;
+            grid-template-columns: 7fr 5fr;
+            gap: 64px;
+            align-items: flex-start;
+        }
+        @media (max-width: 968px) {
+            .prem-console-split-layout { grid-template-columns: 1fr; }
+        }
+        .prem-selector-interactive-row {
+            margin-bottom: 44px;
+        }
+        .prem-selector-interactive-row label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--prem-txt-muted);
+            display: block;
+            margin-bottom: 18px;
+        }
+        .prem-selector-pills-flex {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .prem-invisible-radio { display: none; }
+        .prem-pill-styled-btn {
+            padding: 14px 26px;
+            border: 1px solid var(--prem-border);
+            background: var(--prem-bg-white);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .prem-invisible-radio:checked + .prem-pill-styled-btn {
+            background: var(--prem-bg-black);
+            color: var(--prem-txt-white);
+            border-color: var(--prem-bg-black);
+        }
+        .prem-console-result-card {
+            background: var(--prem-bg-white);
+            border: 1px solid var(--prem-border);
+            padding: 48px;
+        }
+        .prem-console-result-card h4 {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: var(--prem-txt-muted);
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+        .prem-matched-node-title {
+            font-size: 26px;
+            font-weight: 500;
+            margin-bottom: 14px;
+            letter-spacing: -0.02em;
+        }
+        .prem-matched-node-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--prem-txt-secondary);
+            margin-bottom: 36px;
+        }
+
+        /* COMPREHENSIVE RE-BUILT SOLID BLACK TESTIMONIAL BLOCK */
+        .prem-testimonial-editorial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+        @media (max-width: 968px) {
+            .prem-testimonial-editorial-grid { grid-template-columns: 1fr; }
+        }
+        .prem-testimonial-editorial-card {
+            background: var(--prem-bg-dark-card);
+            border: 1px solid var(--prem-border-dark);
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .prem-testimonial-editorial-card p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--prem-txt-white-muted);
+            font-style: italic;
+            margin-bottom: 40px;
+        }
+        .prem-testimonial-profile-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .prem-profile-avatar-element {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            background: var(--prem-border-dark);
+        }
+        .prem-profile-label-stack h5 {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--prem-txt-white);
+        }
+        .prem-profile-label-stack span {
+            font-size: 12px;
+            color: var(--prem-txt-white-muted);
+        }
+
+        /* LOOPING BRAND BANNER SYSTEM */
+        .prem-ticker-tape-belt {
+            overflow: hidden;
+            padding: 56px 0;
+            background: var(--prem-bg-soft);
+        }
+        .prem-ticker-tape-rail {
+            display: flex;
+            width: max-content;
+            animation: mechanicalRailRun 35s linear infinite;
+        }
+        .prem-ticker-brand-string {
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 0 64px;
+            color: var(--prem-txt-primary);
+            letter-spacing: 0.15em;
+        }
+        @keyframes mechanicalRailRun {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        /* DYNAMIC SCALABLE TWO-COLUMN FAQ DECK ENGINE */
+        .prem-faq-matrix-deck {
+            display: grid;
+            grid-template-columns: 4fr 8fr;
+            gap: 64px;
+            align-items: flex-start;
+        }
+        @media (max-width: 860px) {
+            .prem-faq-matrix-deck { grid-template-columns: 1fr; gap: 48px; }
+        }
+        .prem-faq-tabs-column {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .prem-faq-tab-trigger-item {
+            padding: 18px 24px;
+            border: 1px solid var(--prem-border);
+            background: var(--prem-bg-white);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .prem-faq-tab-trigger-item.is-active-tab {
+            background: var(--prem-bg-black);
+            color: var(--prem-txt-white);
+            border-color: var(--prem-bg-black);
+        }
+        .prem-faq-panes-column {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .prem-faq-panes-column.is-active-pane-stack {
+            display: flex;
+        }
+        .prem-accordion-unit-node {
+            border: 1px solid var(--prem-border);
+            background: var(--prem-bg-white);
+        }
+        .prem-accordion-unit-header {
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        .prem-accordion-unit-header h4 {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .prem-accordion-unit-icon {
+            font-size: 18px;
+            font-weight: 300;
+            transition: transform 0.2s ease;
+        }
+        .prem-accordion-unit-node.is-expanded-node .prem-accordion-unit-icon {
+            transform: rotate(45deg);
+        }
+        .prem-accordion-unit-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .prem-accordion-unit-body-inner {
+            padding: 0 32px 28px 32px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--prem-txt-secondary);
+        }
+
+        /* SYMMETRIC CENTERING CLOSING FOOTER BLOCK */
+        .prem-closing-symmetrical-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 64px;
+            align-items: center;
+        }
+        @media (max-width: 860px) {
+            .prem-closing-symmetrical-layout { grid-template-columns: 1fr; gap: 48px; }
+        }
+        .prem-footer-endpoint-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+        .prem-endpoint-card-info span {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: var(--prem-txt-muted);
+            display: block;
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+        }
+        .prem-endpoint-card-info a {
+            font-size: 16px;
+            color: var(--prem-txt-primary);
+            text-decoration: none;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="prem-sticky-hud-strip" id="premiumStickyGlobalNavbar">
+        <div class="prem-sticky-layout prem-viewport-lock">
+            <div class="prem-sticky-logo">MESSOLD</div>
+            <a href="#pricing-matrix-anchor" class="prem-btn-main" style="padding: 14px 28px; font-size: 10px;">Select Your Plan Lane</a>
+        </div>
+    </div>
+
+    <section class="prem-block-space prem-viewport-lock">
+        <div class="prem-hero-center-container" id="scrollFadeHeroElement">
+            <span class="prem-eyebrow">Enterprise Engine v3.0</span>
+            <h1 class="prem-title-h1">Transparent Layouts.<br>Tailored For Scale.</h1>
+            <p class="prem-paragraph-lead" style="margin-bottom: 48px; max-width: 680px; margin-left: auto; margin-right: auto;">Discard ambiguous retainers and non-transparent consulting frameworks. Access absolute production architecture mapped explicitly to predefined conversion benchmarks.</p>
+            <div class="prem-actions-flex" style="justify-content: center;">
+                <a href="#intake-anchor" class="prem-btn-main">Book Strategy Call</a>
+                <a href="#pricing-matrix-anchor" class="prem-btn-text-anchor">Explore Blueprint Plans</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="prem-bg-wrapper-soft">
+        <section class="prem-block-space prem-viewport-lock">
+            <span class="prem-eyebrow">Why Global Brands Scale With Us</span>
+            <h2 class="prem-title-h2" style="max-width: 720px;">Engineered to pass complex platform transactional speed benchmarks safely.</h2>
+            
+            <div class="prem-why-grid-layout">
+                <div class="prem-why-card-element">
+                    <h3>Native Architecture</h3>
+                    <p>Clean system assets written completely within core target guidelines to remove dynamic latency overhead metrics.</p>
+                </div>
+                <div class="prem-why-card-element">
+                    <h3>Conversion Frameworks</h3>
+                    <p>Every interface module, layout node, and custom checkout asset is deployed exclusively to minimize cart drops.</p>
+                </div>
+                <div class="prem-why-card-element">
+                    <h3>Zero-Risk Parameters</h3>
+                    <p>Clear systematic target clauses directly aligning architecture configuration costs to performance benchmarks.</p>
+                </div>
+                <div class="prem-why-card-element">
+                    <h3>Technical Cleanliness</h3>
+                    <p>Eliminate typical backend debt patterns by deploying pure, unfragmented script environments natively.</p>
+                </div>
+                <div class="prem-why-card-element">
+                    <h3>High Elasticity Scalability</h3>
+                    <p>Continuous validation architectures designed to seamlessly protect checkout capacity across heavy flash workloads.</p>
+                </div>
+                <div class="prem-why-card-element">
+                    <h3>Sentry Uptime Monitoring</h3>
+                    <p>Dedicated processing protection tracking arrays operational post-launch ensuring total integrity across user pathways.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <section class="prem-block-space prem-viewport-lock">
+        <span class="prem-eyebrow">Core Performance Metrics</span>
+        <h2 class="prem-title-h2">Verified Architecture Milestones</h2>
+        <div class="prem-metrics-editorial-row">
+            <div class="prem-metric-editorial-box">
+                <div class="prem-metric-giant-text">+240%</div>
+                <div class="prem-metric-tiny-label">Traffic Velocity Scale</div>
+            </div>
+            <div class="prem-metric-editorial-box">
+                <div class="prem-metric-giant-text">4.8x</div>
+                <div class="prem-metric-tiny-label">Investment ROI Yield</div>
+            </div>
+            <div class="prem-metric-editorial-box">
+                <div class="prem-metric-giant-text">-40%</div>
+                <div class="prem-metric-tiny-label">Server Response Load</div>
+            </div>
+            <div class="prem-metric-editorial-box">
+                <div class="prem-metric-giant-text">Native</div>
+                <div class="prem-metric-tiny-label">Custom Middleware Webhooks</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="prem-block-space prem-viewport-lock" id="pricing-matrix-anchor">
+        <span class="prem-eyebrow">Engineered Growth Pricing</span>
+        <h2 class="prem-title-h2">Select your layout path.</h2>
+        
+        <div class="prem-pricing-cards-matrix">
+            <div class="prem-pricing-tier-block">
+                <h3 class="prem-card-plan-title">Starter Launch</h3>
+                <div class="prem-card-cost-integer">₹28,000</div>
+                <p class="prem-card-tier-explanation">Perfect for early validation tracks requiring stable architectural baseline frameworks fast.</p>
+                <div class="prem-card-parameter-split">Payment Metrics <span>100% Upfront Setup</span></div>
+                <ul class="prem-card-feature-list">
+                    <li>Fully Functional Storefront</li>
+                    <li>Premium Template Inclusion</li>
+                    <li>Mobile Responsive Tuning</li>
+                    <li>Standard Payment Routing</li>
+                </ul>
+                <a href="#intake-anchor" class="prem-btn-main">Deploy Blueprint</a>
+            </div>
+
+            <div class="prem-pricing-tier-block is-featured-black">
+                <div class="prem-featured-card-badge">Most Popular Choice</div>
+                <h3 class="prem-card-plan-title">Sales Booster</h3>
+                <div class="prem-card-cost-integer">₹36,000</div>
+                <p class="prem-card-tier-explanation">Optimized completely to resolve transactional dropped tracking nodes and scale conversion metrics.</p>
+                <div class="prem-card-parameter-split">Payment Metrics <span>75 : 25 Milestone Split</span></div>
+                <ul class="prem-card-feature-list">
+                    <li>All Starter Level Parameters</li>
+                    <li>Server-Side Analytics Tracker</li>
+                    <li>Advanced Checkout Tuning</li>
+                    <li>Multi-Currency Global Paths</li>
+                </ul>
+                <a href="#intake-anchor" class="prem-btn-main-white">Deploy Blueprint</a>
+            </div>
+
+            <div class="prem-pricing-tier-block">
+                <h3 class="prem-card-plan-title">Revenue Growth</h3>
+                <div class="prem-card-cost-integer">₹44,000</div>
+                <p class="prem-card-tier-explanation">Deep customization engines engineered explicitly for large-scale multi-warehouse stock setups.</p>
+                <div class="prem-card-parameter-split">Payment Metrics <span>50 : 50 Milestone Split</span></div>
+                <ul class="prem-card-feature-list">
+                    <li>All Booster Level Parameters</li>
+                    <li>Bespoke API Automation Syncs</li>
+                    <li>Advanced Localization Routers</li>
+                    <li>Expanded Product Data Trees</li>
+                </ul>
+                <a href="#intake-anchor" class="prem-btn-main">Deploy Blueprint</a>
+            </div>
+
+            <div class="prem-pricing-tier-block is-featured-black">
+                <div class="prem-featured-card-badge">Best Performance Value</div>
+                <h3 class="prem-card-plan-title">100% Cashback</h3>
+                <div class="prem-card-cost-integer">₹1,45,000</div>
+                <p class="prem-card-tier-explanation">Bespoke component engineering coupled to continuous performance retainers with direct metric backing.</p>
+                <div class="prem-card-parameter-split">Payment Metrics <span>Flexible Retainer Matrix</span></div>
+                <ul class="prem-card-feature-list">
+                    <li>Bespoke Architecture Suite</li>
+                    <li>Full Omni-channel Setup</li>
+                    <li>Continuous Retainer Iterations</li>
+                    <li>24/7 Priority Support Sentry</li>
+                </ul>
+                <a href="#intake-anchor" class="prem-btn-main-white">Deploy Blueprint</a>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <button class="prem-btn-text-anchor" id="toggleSpecsMatrixBtn">View Complete 25-Point Specification Grid</button>
+        </div>
+
+        <div class="prem-drawer-matrix-fold" id="specsMatrixAccordionDrawer">
+            <div class="prem-matrix-scroll-contain">
+                <table class="prem-full-specs-table">
+                    <thead>
+                        <tr>
+                            <th>Comprehensive Capability Parameters Matrix</th>
+                            <th>Starter Launch</th>
+                            <th>Sales Booster</th>
+                            <th>Revenue Growth</th>
+                            <th>100% Cashback</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="prem-table-group-header"><td colspan="5">1. Core Infrastructure Layer</td></tr>
+                        <tr><td>Fully Functional Native Storefront Architecture</td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        <tr><td>Premium Theme Structural Engine Asset</td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td>Bespoke Build</td></tr>
+                        <tr><td>Responsive Liquid Template Configurations</td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        <tr><td>Native Checkout Extensions API Hooking</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        <tr><td>Multi-Currency Localization Tree Nodes</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        
+                        <tr class="prem-table-group-header"><td colspan="5">2. Precision Tracking & Performance Data</td></tr>
+                        <tr><td>Standard Pixel Tracking Scripts</td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        <tr><td>Server-Side Conversion API Protocols</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        <tr><td>Dynamic User Custom Event Scoping</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        <tr><td>First-Party Cookie Lifetime Optimization</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        <tr><td>Automated Drop-off Attribution Mapping</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+
+                        <tr class="prem-table-group-header"><td colspan="5">3. Integration Middleware & Logistics Automation</td></tr>
+                        <tr><td>Standard Gateway Integration Layouts</td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        <tr><td>Bespoke Automated Inventory Sync Syncs</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        <tr><td>Multi-Location Warehouse Inventory Allocator</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        <tr><td>Enterprise ERP Bridge Webhooks</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        <tr><td>Omni-Channel Live Inventory Webhooks</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+
+                        <tr class="prem-table-group-header"><td colspan="5">4. Velocity Optimization & Conversion Strategy</td></tr>
+                        <tr><td>Image Asset Compression Automation Pipeline</td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        <tr><td>Dynamic Lazy Load Component Framework</td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        <tr><td>Asynchronous Script Execution Profiling</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        <tr><td>Bi-Weekly CRO Bottleneck Diagnostics</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        <tr><td>Dedicated UI Micro-Interaction A/B Layers</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+
+                        <tr class="prem-table-group-header"><td colspan="5">5. SLA Commitments & Operational Corridor</td></tr>
+                        <tr><td>Post-Launch Technical Safety Support Corridor</td><td>15 Days Support</td><td>30 Days Support</td><td>45 Days Support</td><td>180 Days Corridor</td></tr>
+                        <tr><td>Core Performance Milestone Guarantee Clause</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-available">✓</span></td><td>Active Retainer</td></tr>
+                        <tr><td>Dedicated Critical Error Escalation Channel</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-available">✓</span></td><td><span class="prem-mark-available">✓</span></td></tr>
+                        <tr><td>Uptime Sentry Code Server Oversight</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td>24/7 Monitored</td></tr>
+                        <tr><td>Custom Development Priority Queue Status</td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td><span class="prem-mark-unavailable">×</span></td><td>Immediate Access</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="prem-block-space prem-viewport-lock">
+        <span class="prem-eyebrow">Add-On Component Catalogue</span>
+        <h2 class="prem-title-h2">On-demand structural scope additions.</h2>
+        
+        <div class="prem-addons-symmetric-grid">
+            <div class="prem-addon-premium-card">
+                <div class="prem-addon-card-info">
+                    <h3>UI Custom Extensions</h3>
+                    <span class="prem-addon-card-price">Custom Quote Mapping</span>
+                    <p>Bespoke frontend visual elements coded directly inside files to protect customer session actions during critical campaign runs.</p>
+                </div>
+                <div class="prem-addon-card-footer">
+                    <span class="prem-addon-sku-label">ADD-UI-EXT</span>
+                    <a href="#intake-anchor" class="prem-btn-text-anchor">Inquire</a>
+                </div>
+            </div>
+
+            <div class="prem-addon-premium-card">
+                <div class="prem-addon-card-info">
+                    <h3>Visual Asset Pack</h3>
+                    <span class="prem-addon-card-price">From ₹12,000</span>
+                    <p>High-end modern marketing layouts, typography treatments, and asset graphics optimized completely for current layouts.</p>
+                </div>
+                <div class="prem-addon-card-footer">
+                    <span class="prem-addon-sku-label">ADD-MKT-VIS</span>
+                    <a href="#intake-anchor" class="prem-btn-text-anchor">Inquire</a>
+                </div>
+            </div>
+
+            <div class="prem-addon-premium-card">
+                <div class="prem-addon-card-info">
+                    <h3>Rich Creative Loops</h3>
+                    <span class="prem-addon-card-price">From ₹18,000</span>
+                    <p>Direct response conversion video components optimized for absolute minimum loading friction across external channels.</p>
+                </div>
+                <div class="prem-addon-card-footer">
+                    <span class="prem-addon-sku-label">ADD-DR-VID</span>
+                    <a href="#intake-anchor" class="prem-btn-text-anchor">Inquire</a>
+                </div>
+            </div>
+
+            <div class="prem-addon-premium-card">
+                <div class="prem-addon-card-info">
+                    <h3>Enterprise SEO Suite</h3>
+                    <span class="prem-addon-card-price">From ₹15,000</span>
+                    <p>Deep indexing adjustments targeting structured catalog variants to clear technical tracking errors cleanly.</p>
+                </div>
+                <div class="prem-addon-card-footer">
+                    <span class="prem-addon-sku-label">ADD-SEO-TUNE</span>
+                    <a href="#intake-anchor" class="prem-btn-text-anchor">Inquire</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="prem-bg-wrapper-soft">
+        <section class="prem-block-space prem-viewport-lock">
+            <span class="prem-eyebrow">Algorithmic Matcher Console</span>
+            <h2 class="prem-title-h2">Find your best framework tier option.</h2>
+            
+            <div class="prem-console-split-layout">
+                <div>
+                    <div class="prem-selector-interactive-row">
+                        <label>What parameters describe your project best?</label>
+                        <div class="prem-selector-pills-flex">
+                            <input type="radio" name="p-Build" id="prem-t-new" class="prem-invisible-radio" value="new" checked>
+                            <label for="prem-t-new" class="prem-pill-styled-btn">New Custom Store</label>
+                            <input type="radio" name="p-Build" id="prem-t-exist" class="prem-invisible-radio" value="exist">
+                            <label for="prem-t-exist" class="prem-pill-styled-btn">Existing Optimization</label>
+                            <input type="radio" name="p-Build" id="prem-t-scale" class="prem-invisible-radio" value="scale">
+                            <label for="prem-t-scale" class="prem-pill-styled-btn">Scaling Enterprise</label>
+                        </div>
+                    </div>
+
+                    <div class="prem-selector-interactive-row">
+                        <label>Estimated Catalog Depth?</label>
+                        <div class="prem-selector-pills-flex">
+                            <input type="radio" name="p-Prod" id="prem-p-low" class="prem-invisible-radio" value="low" checked>
+                            <label for="prem-p-low" class="prem-pill-styled-btn">Under 50 Items</label>
+                            <input type="radio" name="p-Prod" id="prem-p-mid" class="prem-invisible-radio" value="mid">
+                            <label for="prem-p-mid" class="prem-pill-styled-btn">50 - 500 Items</label>
+                            <input type="radio" name="p-Prod" id="prem-p-high" class="prem-invisible-radio" value="high">
+                            <label for="prem-p-high" class="prem-pill-styled-btn">500+ Items</label>
+                        </div>
+                    </div>
+
+                    <div class="prem-selector-interactive-row">
+                        <label>Growth Retainer Architecture Required?</label>
+                        <div class="prem-selector-pills-flex">
+                            <input type="radio" name="p-Mktg" id="prem-m-yes" class="prem-invisible-radio" value="yes">
+                            <label for="prem-m-yes" class="prem-pill-styled-btn">Yes, Active Retainer</label>
+                            <input type="radio" name="p-Mktg" id="prem-m-no" class="prem-invisible-radio" value="no" checked>
+                            <label for="prem-m-no" class="prem-pill-styled-btn">No, Standalone Technical Architecture Only</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prem-console-result-card">
+                    <h4>Suggested Core Roadmap Node</h4>
+                    <div class="prem-matched-node-title" id="premCalculatedNodeTitle">Starter Launch</div>
+                    <div class="prem-matched-node-desc" id="premCalculatedNodeDesc">Configured specifically around early execution tracks requiring crisp baseline structural platform deployment metrics.</div>
+                    <a href="#pricing-matrix-anchor" class="prem-btn-main" style="display:block; text-align:center;">Lock Plan Selection</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="prem-bg-wrapper-black">
+        <section class="prem-block-space prem-viewport-lock">
+            <span class="prem-eyebrow">Partnership Feedback</span>
+            <h2 class="prem-title-h2">Client Success Ledgers</h2>
+            
+            <div class="prem-testimonial-editorial-grid">
+                <div class="prem-testimonial-editorial-card">
+                    <p>"System transaction pathways sustained massive velocity spikes across flash conversion periods cleanly without layout latency faults."</p>
+                    <div class="prem-testimonial-profile-row">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&h=150&q=80" alt="Aanya Sharma" class="prem-profile-avatar-element">
+                        <div class="prem-profile-label-stack">
+                            <h5>Aanya Sharma</h5>
+                            <span>Founder, Oats Studio</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prem-testimonial-editorial-card">
+                    <p>"Legacy database indexing operations scaled completely cleanly without organic rank tracking displacement risks during launch windows."</p>
+                    <div class="prem-testimonial-profile-row">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80" alt="Rohan Malhotra" class="prem-profile-avatar-element">
+                        <div class="prem-profile-label-stack">
+                            <h5>Rohan Malhotra</h5>
+                            <span>Operations, PowerSutra</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prem-testimonial-editorial-card">
+                    <p>"Eliminating fragmented third party script injections returned comprehensive visibility over user attribution metrics."</p>
+                    <div class="prem-testimonial-profile-row">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&h=150&q=80" alt="Kabir Mehta" class="prem-profile-avatar-element">
+                        <div class="prem-profile-label-stack">
+                            <h5>Kabir Mehta</h5>
+                            <span>Director, Leaf Studios</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="prem-ticker-tape-belt">
+        <div class="prem-ticker-tape-rail">
+            <div class="prem-ticker-brand-string">PowerSutra</div>
+            <div class="prem-ticker-brand-string">Craftsmith</div>
+            <div class="prem-ticker-brand-string">Oats Studio</div>
+            <div class="prem-ticker-brand-string">Leaf Studios</div>
+            <div class="prem-ticker-brand-string">Silk Berry</div>
+            <div class="prem-ticker-brand-string">Noise</div>
+            <div class="prem-ticker-brand-string">PowerSutra</div>
+            <div class="prem-ticker-brand-string">Craftsmith</div>
+            <div class="prem-ticker-brand-string">Oats Studio</div>
+            <div class="prem-ticker-brand-string">Leaf Studios</div>
+            <div class="prem-ticker-brand-string">Silk Berry</div>
+            <div class="prem-ticker-brand-string">Noise</div>
+        </div>
+    </div>
+
+    <section class="prem-block-space prem-viewport-lock">
+        <span class="prem-eyebrow">Resolution Core</span>
+        <h2 class="prem-title-h2">Frequently Asked Questions</h2>
+        
+        <div class="prem-faq-matrix-deck">
+            <div class="prem-faq-tabs-column" id="faqTabsNavContainer">
+                <button class="prem-faq-tab-trigger-item is-active-tab" data-target-pane="pane-infra">Infrastructure Stack</button>
+                <button class="prem-faq-tab-trigger-item" data-target-pane="pane-perf">Performance & Scope</button>
+                <button class="prem-faq-tab-trigger-item" data-target-pane="pane-ret">Retainers & SLA</button>
+                <button class="prem-faq-tab-trigger-item" data-target-pane="pane-comp">Compliance & Risk</button>
+            </div>
+
+            <div>
+                <div class="prem-faq-panes-column is-active-pane-stack" id="pane-infra">
+                    <div class="prem-accordion-unit-node">
+                        <div class="prem-accordion-unit-header">
+                            <h4>Which specific growth pricing path applies best to my catalog model?</h4>
+                            <span class="prem-accordion-unit-icon">+</span>
+                        </div>
+                        <div class="prem-accordion-unit-body">
+                            <div class="prem-accordion-unit-body-inner">
+                                Launching brand concepts perform best inside the Starter track. Active scaling operations requiring custom script injection removals require the Sales Booster or Revenue Growth environments.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="prem-accordion-unit-node">
+                        <div class="prem-accordion-unit-header">
+                            <h4>Can these custom template files be expanded post-deployment?</h4>
+                            <span class="prem-accordion-unit-icon">+</span>
+                        </div>
+                        <div class="prem-accordion-unit-body">
+                            <div class="prem-accordion-unit-body-inner">
+                                Yes. All architecture layers are written natively within direct core parameters without obfuscation parameters, ensuring internal teams scale parameters without friction.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prem-faq-panes-column" id="pane-perf">
+                    <div class="prem-accordion-unit-node">
+                        <div class="prem-accordion-unit-header">
+                            <h4>Is the licensed premium structural asset included completely free?</h4>
+                            <span class="prem-accordion-unit-icon">+</span>
+                        </div>
+                        <div class="prem-accordion-unit-body">
+                            <div class="prem-accordion-unit-body-inner">
+                                Yes. We package a fully licensed architecture configuration layer valued at ₹35,000 directly into the milestone frameworks without added handling surcharges.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="prem-accordion-unit-node">
+                        <div class="prem-accordion-unit-header">
+                            <h4>How do custom UI blocks prevent conversion drops?</h4>
+                            <span class="prem-accordion-unit-icon">+</span>
+                        </div>
+                        <div class="prem-accordion-unit-body">
+                            <div class="prem-accordion-unit-body-inner">
+                                By evaluating runtime latency vectors across global currency channels and minimizing form processing loads across standard mobile devices.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prem-faq-panes-column" id="pane-ret">
+                    <div class="prem-accordion-unit-node">
+                        <div class="prem-accordion-unit-header">
+                            <h4>What post-deployment warranty safety intervals are active?</h4>
+                            <span class="prem-accordion-unit-icon">+</span>
+                        </div>
+                        <div class="prem-accordion-unit-body">
+                            <div class="prem-accordion-unit-body-inner">
+                                Standard models maintain a fixed 15-day technical review window, while enterprise integrations carry up to a 180-day priority engineering sentry track.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="prem-accordion-unit-node">
+                        <div class="prem-accordion-unit-header">
+                            <h4>How are critical priority code updates scheduled?</h4>
+                            <span class="prem-accordion-unit-icon">+</span>
+                        </div>
+                        <div class="prem-accordion-unit-body">
+                            <div class="prem-accordion-unit-body-inner">
+                                Growth tiers gain explicit access to a dedicated integration route, ensuring responses to custom operational webhook requests process within pre-agreed SLA hours.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prem-faq-panes-column" id="pane-comp">
+                    <div class="prem-accordion-unit-node">
+                        <div class="prem-accordion-unit-header">
+                            <h4>How does the custom 100% Cashback validation guarantee operate?</h4>
+                            <span class="prem-accordion-unit-icon">+</span>
+                        </div>
+                        <div class="prem-accordion-unit-body">
+                            <div class="prem-accordion-unit-body-inner">
+                                The matrix links setup processing costs directly to pre-approved data metrics. Failure to verify these milestones within predefined timeline runs activates structural cashback runs.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="prem-accordion-unit-node">
+                        <div class="prem-accordion-unit-header">
+                            <h4>Are server-side tracking pipelines fully compliant with data rules?</h4>
+                            <span class="prem-accordion-unit-icon">+</span>
+                        </div>
+                        <div class="prem-accordion-unit-body">
+                            <div class="prem-accordion-unit-body-inner">
+                                Yes. Every pixel mapping infrastructure operates via clean first-party tracking domains ensuring complete privacy architecture safety benchmarks are met.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="prem-block-space prem-viewport-lock" id="intake-anchor">
+        <div class="prem-closing-symmetrical-layout">
+            <div>
+                <span class="prem-eyebrow">Custom Enterprise Systems</span>
+                <h2 class="prem-title-h1" style="margin-bottom: 24px;">Need tailored enterprise models?</h2>
+                <p class="prem-paragraph-lead" style="margin-bottom: 40px; font-size: 16px; max-width: 560px;">If your platform demands complex database bridges or custom logistics tracking arrays, connect directly with an architectural specialist for a custom proposal mapping.</p>
+                <div class="prem-actions-flex">
+                    <a href="#intake-anchor" class="prem-btn-main">Schedule Discovery Session</a>
+                </div>
+            </div>
+            <div class="prem-footer-endpoint-grid">
+                <div class="prem-endpoint-card-info">
+                    <span>Direct Communication Link</span>
+                    <a href="mailto:growth@messold.com">growth@messold.com</a>
+                </div>
+                <div class="prem-endpoint-card-info">
+                    <span>Operations Control Desk</span>
+                    <a href="tel:+919876543210">+91 98765 43210</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // 1. SCROLL VISIBILITY CONTROLLER FOR THE TOP FLOATING HUDBAR
+            const premiumStickyGlobalNavbar = document.getElementById("premiumStickyGlobalNavbar");
+            window.addEventListener("scroll", () => {
+                if (window.scrollY > 500) {
+                    premiumStickyGlobalNavbar.classList.add("is-active-view");
+                } else {
+                    premiumStickyGlobalNavbar.classList.remove("is-active-view");
+                }
+            });
+
+            // 2. HERO PARALLAX FADE DYNAMICS
+            const scrollFadeHeroElement = document.getElementById("scrollFadeHeroElement");
+            window.addEventListener("scroll", () => {
+                let currentScrollOffset = window.scrollY;
+                if (currentScrollOffset <= 600) {
+                    let computingOpacityValue = 1 - (currentScrollOffset / 500);
+                    let computingScaleValue = 1 - (currentScrollOffset / 5000);
+                    scrollFadeHeroElement.style.opacity = Math.max(computingOpacityValue, 0);
+                    scrollFadeHeroElement.style.transform = `scale(${Math.max(computingScaleValue, 0.95)})`;
+                }
+            });
+
+            // 3. 25-POINT MATRIX DRAWER TRIGGER MECHANICS
+            const toggleSpecsMatrixBtn = document.getElementById("toggleSpecsMatrixBtn");
+            const specsMatrixAccordionDrawer = document.getElementById("specsMatrixAccordionDrawer");
+
+            if (toggleSpecsMatrixBtn && specsMatrixAccordionDrawer) {
+                toggleSpecsMatrixBtn.addEventListener("click", () => {
+                    const drawerIsActive = specsMatrixAccordionDrawer.style.maxHeight && specsMatrixAccordionDrawer.style.maxHeight !== "0px";
+                    if (drawerIsActive) {
+                        specsMatrixAccordionDrawer.style.maxHeight = "0px";
+                        toggleSpecsMatrixBtn.textContent = "View Complete 25-Point Specification Grid";
+                    } else {
+                        specsMatrixAccordionDrawer.style.maxHeight = specsMatrixAccordionDrawer.scrollHeight + "px";
+                        toggleSpecsMatrixBtn.textContent = "Close System Specification Blueprint";
+                    }
+                });
+            }
+
+            // 4. FILTERABLE ACCORDION FAQ CONTROLLER
+            const faqTabsContainer = document.getElementById("faqTabsNavContainer");
+            if (faqTabsContainer) {
+                const tabTriggers = faqTabsContainer.querySelectorAll(".prem-faq-tab-trigger-item");
+                
+                tabTriggers.forEach(triggerElement => {
+                    triggerElement.addEventListener("click", () => {
+                        // Clear active tab status
+                        tabTriggers.forEach(t => t.classList.remove("is-active-tab"));
+                        // Hide all pane elements
+                        document.querySelectorAll(".prem-faq-panes-column").forEach(p => p.classList.remove("is-active-pane-stack"));
+                        
+                        // Set current selection active
+                        triggerElement.classList.add("is-active-tab");
+                        const activeTargetPaneId = triggerElement.getAttribute("data-target-pane");
+                        document.getElementById(activeTargetPaneId).classList.add("is-active-pane-stack");
+                    });
+                });
+            }
+
+            // COLLAPSIBLE FAQ ACCORDION PANEL ACCORDIONS LOGIC
+            document.querySelectorAll(".prem-accordion-unit-header").forEach(header => {
+                header.addEventListener("click", () => {
+                    const trackingRowParent = header.parentElement;
+                    const trackingBodyChild = trackingRowParent.querySelector(".prem-accordion-unit-body");
+                    const activeFlag = trackingRowParent.classList.contains("is-expanded-node");
+
+                    // Close sibling nodes within the parent element container
+                    trackingRowParent.parentElement.querySelectorAll(".prem-accordion-unit-node").forEach(n => {
+                        n.classList.remove("is-expanded-node");
+                        n.querySelector(".prem-accordion-unit-body").style.maxHeight = "0px";
+                    });
+
+                    if (!activeFlag) {
+                        trackingRowParent.classList.add("is-expanded-node");
+                        trackingBodyChild.style.maxHeight = trackingBodyChild.scrollHeight + "px";
+                    }
+                });
+            });
+
+            // 5. FILTER ALGORITHM ANALYTIC CONSOLE ENGINE
+            const matchSelectorElements = document.querySelectorAll(".prem-invisible-radio");
+            const outNodeTitleElement = document.getElementById("premCalculatedNodeTitle");
+            const outNodeDescElement = document.getElementById("premCalculatedNodeDesc");
+
+            const updateAlgorithmicTierMatchOutput = () => {
+                let buildType = "new";
+                let depthType = "low";
+                let retainerType = "no";
+
+                document.querySelectorAll('input[name="p-Build"]').forEach(r => { if(r.checked) buildType = r.value; });
+                document.querySelectorAll('input[name="p-Prod"]').forEach(r => { if(r.checked) depthType = r.value; });
+                document.querySelectorAll('input[name="p-Mktg"]').forEach(r => { if(r.checked) retainerType = r.value; });
+
+                let calculatedHeadline = "Starter Launch Framework";
+                let calculatedExplanation = "Configured specifically around early execution tracks requiring crisp baseline structural platform deployment metrics.";
+
+                if (retainerType === "yes") {
+                    calculatedHeadline = "100% Cashback Performance Retainer";
+                    calculatedExplanation = "Your growth requirements demand combined high-end storefront development closely integrated alongside multi-channel performance asset strategies.";
+                } else if (buildType === "scale" || depthType === "high") {
+                    calculatedHeadline = "Revenue Growth Architecture Blueprint";
+                    calculatedExplanation = "Optimal configurations for brands handling larger inventory variants, global multi-currency distribution nodes, and custom API connections.";
+                } else if (buildType === "exist" || depthType === "mid") {
+                    calculatedHeadline = "Sales Booster Integration Track";
+                    calculatedExplanation = "Best suited for functioning businesses focused heavily on resolving tracking drop-offs and introducing server-side customer conversion pipelines.";
+                }
+
+                if(outNodeTitleElement) outNodeTitleElement.textContent = calculatedHeadline;
+                if(outNodeDescElement) outNodeDescElement.textContent = calculatedExplanation;
+            };
+
+            matchSelectorElements.forEach(radioInputNode => radioInputNode.addEventListener("change", updateAlgorithmicTierMatchOutput));
+
+        });
+    </script>
+</body>
+</html>

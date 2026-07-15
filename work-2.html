@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MESSOLD — Selected Work & System Architectures</title>
+    <!-- Premium Sans Stack via Geist -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist-sans@1.0.3/dist/geist-sans.min.css">
+    <style>
+        /* --- BRAND DESIGN SYSTEM & CORE TOKENS --- */
+        :root {
+            --bg-pure: #000000;
+            --bg-section: #050505;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B3B3B3;
+            --border-alpha: rgba(255,255,255,0.08);
+            --font-main: 'Geist Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* RESET & CORE COMPONENT RULES */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .ms-root-context {
+            background-color: var(--bg-pure);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            letter-spacing: -0.01em;
+        }
+
+        /* PREMIUM SCROLLBAR ARCHITECTURE */
+        .ms-root-context::-webkit-scrollbar {
+            width: 6px;
+        }
+        .ms-root-context::-webkit-scrollbar-track {
+            background: var(--bg-pure);
+        }
+        .ms-root-context::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* CUSTOM INK REVEAL & TEXT SHARPNESS */
+        .ms-display-text {
+            font-weight: 200;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+        }
+
+        .ms-editorial-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* ASYMMETRIC GRID LAYER */
+        .ms-structural-row {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 80px;
+            width: 100%;
+        }
+
+        @media (max-width: 1024px) {
+            .ms-structural-row { padding: 0 40px; }
+        }
+        @media (max-width: 768px) {
+            .ms-structural-row { padding: 0 20px; }
+        }
+
+        /* 1. SIMPLIFIED EDITORIAL INTRODUCTION (NEW HERO) */
+        .ms-intro-hero {
+            position: relative;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            background-color: var(--bg-pure);
+            padding: 120px 0 80px 0;
+            border-bottom: 1px solid var(--border-alpha);
+        }
+
+        .ms-intro-layout {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 24px;
+            max-width: 800px;
+        }
+
+        .ms-intro-title {
+            font-size: clamp(2.5rem, 5vw, 5.5rem);
+            color: var(--text-primary);
+        }
+
+        .ms-intro-paragraph {
+            font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+            line-height: 1.6;
+            color: var(--text-secondary);
+            font-weight: 300;
+            max-width: 640px;
+        }
+
+        .ms-intro-cta {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-primary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--text-primary);
+            padding-bottom: 4px;
+            margin-top: 12px;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+        }
+
+        .ms-intro-cta:hover {
+            opacity: 0.7;
+        }
+
+        /* 2. STICKY INTERACTIVE FILTER NAVIGATION STRIP */
+        .ms-filter-strip-sticky {
+            position: sticky;
+            top: 0;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-alpha);
+            z-index: 100;
+            padding: 24px 0;
+        }
+
+        .ms-filter-flex-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ms-filter-typography-group {
+            display: flex;
+            gap: 40px;
+        }
+
+        .ms-filter-link-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-family: var(--font-main);
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            position: relative;
+            padding-bottom: 6px;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .ms-filter-link-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--text-primary);
+            transition: width 0.4s var(--ease-luxury);
+        }
+
+        .ms-filter-link-btn:hover, .ms-filter-link-btn.is-active {
+            color: var(--text-primary);
+            opacity: 1;
+        }
+
+        .ms-filter-link-btn.is-active::after, .ms-filter-link-btn:hover::after {
+            width: 100%;
+        }
+
+        /* 3. EXPERIMENTAL ASYMMETRIC PORTFOLIO GALLERY & EMBEDDED CASE STUDIES */
+        .ms-editorial-exhibition-space {
+            background-color: var(--bg-section);
+            padding: 100px 0;
+        }
+
+        .ms-editorial-dynamic-container {
+            display: flex;
+            flex-direction: column;
+            gap: 160px;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Subtly Animated Exhibition Node Wrapper */
+        .ms-exhibition-node {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s var(--ease-luxury), transform 0.8s var(--ease-luxury);
+        }
+
+        .ms-exhibition-node.reveal-active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Advanced Staggered Entry Transitions */
+        .ms-exhibition-node.reveal-active .ms-case-embedded-meta {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Unique Spatial Layout Models */
+        .ms-composition-left-heavy {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 80px;
+            align-items: flex-start;
+        }
+
+        .ms-composition-right-heavy {
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: 80px;
+            align-items: flex-start;
+        }
+
+        .ms-composition-monumental {
+            display: flex;
+            flex-direction: column;
+            gap: 48px;
+            width: 100%;
+        }
+
+        .ms-composition-monumental-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: flex-start;
+        }
+
+        .ms-composition-stacked-art {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .ms-composition-split-balance {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: flex-start;
+        }
+
+        /* Integrated Exhibition Visual Frame Elements */
+        .ms-asset-frame {
+            position: relative;
+            overflow: hidden;
+            background-color: #0c0c0c;
+            border: 1px solid var(--border-alpha);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+            clip-path: inset(100% 0 0 0);
+            transition: clip-path 1.2s var(--ease-luxury), border-color 0.4s ease;
+        }
+
+        .ms-exhibition-node.reveal-active .ms-asset-frame {
+            clip-path: inset(0% 0 0 0);
+        }
+
+        .ms-asset-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s var(--ease-luxury), filter 0.6s ease;
+            filter: grayscale(15%) brightness(0.9);
+        }
+
+        .ms-asset-frame:hover .ms-asset-img {
+            transform: scale(1.02);
+            filter: grayscale(0%) brightness(1);
+        }
+
+        .ms-asset-frame:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Embedded Case Data Column Systems */
+        .ms-case-embedded-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s var(--ease-luxury) 0.3s, transform 0.6s var(--ease-luxury) 0.3s;
+        }
+
+        .ms-case-header-block {
+            border-bottom: 1px solid var(--border-alpha);
+            padding-bottom: 20px;
+        }
+
+        .ms-case-brand-headline {
+            font-size: clamp(2rem, 3.5vw, 3.5rem);
+            font-weight: 200;
+            letter-spacing: -0.03em;
+            margin-top: 8px;
+            color: var(--text-primary);
+        }
+
+        .ms-case-taxonomy-row {
+            display: flex;
+            gap: 24px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .ms-case-summary-para {
+            font-size: 1rem;
+            line-height: 1.65;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .ms-case-technical-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-alpha);
+            padding-top: 24px;
+        }
+
+        .ms-spec-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .ms-spec-values {
+            color: var(--text-primary);
+            font-weight: 300;
+        }
+
+        /* Embedded Dynamic Metrics Displays */
+        .ms-case-metrics-display-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-top: 12px;
+        }
+
+        .ms-inline-metric-card {
+            flex: 1;
+            min-width: 120px;
+            border-left: 1px solid var(--text-primary);
+            padding-left: 16px;
+        }
+
+        .ms-inline-metric-number {
+            font-size: 1.8rem;
+            font-weight: 200;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .ms-inline-metric-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 4px;
+        }
+
+        /* 4. RHYTHMIC TYPOGRAPHY INTERSTITIAL BREAKS */
+        .ms-rhythmic-editorial-break {
+            background-color: var(--bg-pure);
+            padding: 120px 0;
+            border-top: 1px solid var(--border-alpha);
+            border-bottom: 1px solid var(--border-alpha);
+            text-align: center;
+        }
+
+        .ms-rhythmic-headline-giant {
+            font-size: clamp(1.8rem, 4vw, 4.2rem);
+            font-weight: 200;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* 5. TYPOGRAPHY INTERSTITIAL METRIC ROW */
+        .ms-interstitial-typography-accent {
+            background-color: var(--bg-pure);
+            padding: 160px 0;
+            border-top: 1px solid var(--border-alpha);
+            border-bottom: 1px solid var(--border-alpha);
+            text-align: center;
+        }
+
+        .ms-interstitial-metric-giant {
+            font-size: clamp(5rem, 12vw, 13rem);
+            font-weight: 100;
+            line-height: 0.9;
+            letter-spacing: -0.05em;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .ms-interstitial-caption {
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* 6. IMMERSIVE RESULTS GRID CRITERIA */
+        .ms-results-landscape-grid {
+            background-color: var(--bg-pure);
+            padding: 60px 0;
+        }
+
+        .ms-results-flex-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 60px;
+        }
+
+        .ms-result-stat-node {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 220px;
+        }
+
+        .ms-result-giant-num {
+            font-size: clamp(3.5rem, 6vw, 6.5rem);
+            font-weight: 200;
+            line-height: 1;
+            letter-spacing: -0.04em;
+        }
+
+        .ms-result-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+        }
+
+        /* 7. CINEMATIC MULTI-CHANNEL VIDEO PLATFORM */
+        .ms-video-gallery-section {
+            background-color: var(--bg-section);
+            padding: 140px 0;
+        }
+
+        .ms-main-theater-frame {
+            position: relative;
+            width: 100%;
+            height: 65vh;
+            background-color: #000;
+            overflow: hidden;
+            border: 1px solid var(--border-alpha);
+            cursor: pointer;
+            margin-bottom: 40px;
+        }
+
+        .ms-main-theater-frame video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.75;
+            transition: transform 0.6s var(--ease-luxury), opacity 0.4s ease;
+        }
+
+        .ms-main-theater-frame:hover video {
+            transform: scale(1.02);
+            opacity: 0.95;
+        }
+
+        .ms-theater-meta-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 40px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+            z-index: 2;
+        }
+
+        .ms-thumbnail-deck-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .ms-deck-thumb-node {
+            position: relative;
+            height: 110px;
+            background-color: #0c0c0c;
+            border: 1px solid var(--border-alpha);
+            overflow: hidden;
+            cursor: pointer;
+            transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ms-deck-thumb-node.is-active, .ms-deck-thumb-node:hover {
+            border-color: var(--text-primary);
+        }
+
+        .ms-deck-thumb-node img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .ms-deck-thumb-node.is-active img, .ms-deck-thumb-node:hover img {
+            opacity: 0.85;
+        }
+
+        /* 8. CLIENT LOGO COSMOS */
+        .ms-cosmos-section {
+            background-color: var(--bg-pure);
+            padding: 140px 0;
+            overflow: hidden;
+        }
+
+        .ms-cosmos-field {
+            position: relative;
+            width: 100%;
+            height: 480px;
+            border: 1px solid var(--border-alpha);
+        }
+
+        .ms-cosmos-particle-node {
+            position: absolute;
+            font-size: clamp(1.2rem, 2.2vw, 2.2rem);
+            font-weight: 300;
+            color: var(--text-primary);
+            letter-spacing: 0.05em;
+            cursor: default;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        /* 9. PHILOSOPHY EDITORIAL SPLIT */
+        .ms-philosophy-split {
+            background-color: var(--bg-section);
+            padding: 160px 0;
+        }
+
+        .ms-philosophy-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 80px;
+            align-items: flex-start;
+        }
+
+        .ms-philosophy-statement-giant {
+            font-size: clamp(2.2rem, 4.5vw, 4.5rem);
+            font-weight: 200;
+            line-height: 1.15;
+            letter-spacing: -0.04em;
+        }
+
+        .ms-philosophy-narratives {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            font-size: 1.05rem;
+            line-height: 1.75;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        /* 10. LUXURY MAGAZINE FINAL OUTRO */
+        .ms-magazine-outro {
+            background-color: #FFFFFF;
+            color: #000000;
+            padding: 200px 0 120px 0;
+            text-align: center;
+            opacity: 1;
+        }
+
+        .ms-outro-headline {
+            font-size: clamp(3rem, 7vw, 7.5rem);
+            font-weight: 200;
+            line-height: 1.05;
+            letter-spacing: -0.05em;
+            margin-bottom: 80px;
+        }
+
+        .ms-outro-linkages {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            margin-top: 60px;
+        }
+
+        .ms-outro-action-btn {
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: #000000;
+            text-decoration: none;
+            border-bottom: 1px solid #000000;
+            padding-bottom: 4px;
+            transition: opacity 0.3s ease;
+        }
+
+        .ms-outro-action-btn:hover {
+            opacity: 0.6;
+        }
+
+        .ms-outro-subtext-channel {
+            font-size: 1rem;
+            color: #555555;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .ms-outro-subtext-channel:hover {
+            color: #000000;
+        }
+
+        /* DYNAMIC CUSTOM INTERACTIVE MOUSE CURSOR */
+        .ms-luxury-pointer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            border: 1px solid var(--text-primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1500;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.4s var(--ease-luxury), background-color 0.4s ease;
+        }
+
+        /* RESPONSIVE INTENTIONAL RE-LAYOUT ARCHITECTURE */
+        @media (max-width: 1024px) {
+            .ms-composition-left-heavy, 
+            .ms-composition-right-heavy, 
+            .ms-composition-stacked-art, 
+            .ms-composition-split-balance,
+            .ms-composition-monumental-layout, 
+            .ms-philosophy-layout {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+            .ms-composition-right-heavy .ms-case-embedded-meta {
+                grid-row: 2;
+            }
+            .ms-thumbnail-deck-strip {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .ms-filter-flex-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 24px;
+            }
+            .ms-filter-strip-sticky {
+                padding: 16px 0;
+            }
+            .ms-filter-typography-group {
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 8px;
+                gap: 24px;
+                -webkit-overflow-scrolling: touch;
+            }
+            .ms-filter-typography-group::-webkit-scrollbar {
+                display: none;
+            }
+            .ms-editorial-exhibition-space {
+                padding: 60px 0;
+            }
+            .ms-editorial-dynamic-container {
+                gap: 100px;
+            }
+            .ms-asset-frame {
+                height: 320px !important;
+            }
+        }
+    </style>
+</head>
+<body class="ms-root-context">
+
+    <!-- CUSTOM DYNAMIC LUXURY POINTER RE-CONFIGURED -->
+    <div class="ms-luxury-pointer" id="luxuryPointer"></div>
+
+    <!-- 1. SIMPLIFIED EDITORIAL INTRODUCTION HERO SECTION -->
+    <section class="ms-intro-hero" id="introSegment">
+        <div class="ms-structural-row ms-intro-layout">
+            <span class="ms-editorial-label">OUR WORK</span>
+            <h1 class="ms-display-text ms-intro-title">Selected Shopify &<br>Growth Projects.</h1>
+            <p class="ms-intro-paragraph">An uncompromised exploration of high-performance architecture, digital flagship redesigns, and scaled engineering setups engineered specifically for brands commanding enterprise growth parameters.</p>
+            <a href="#workGallery" class="ms-intro-cta">Explore Projects</a>
+        </div>
+    </section>
+
+    <!-- 2. STICKY FILTER NAVIGATION STRIP -->
+    <nav class="ms-filter-strip-sticky" id="workGallery">
+        <div class="ms-structural-row ms-filter-flex-row">
+            <span class="ms-editorial-label">EXHIBITION INDEX</span>
+            <div class="ms-filter-typography-group" id="filterButtonGroup">
+                <button class="ms-filter-link-btn is-active" data-filter="ALL">All Projects</button>
+                <button class="ms-filter-link-btn" data-filter="DEVELOPMENT">Website Development</button>
+                <button class="ms-filter-link-btn" data-filter="PERFORMANCE">Performance Marketing</button>
+                <button class="ms-filter-link-btn" data-filter="CRO">Shopify CRO</button>
+                <button class="ms-filter-link-btn" data-filter="RETENTION">Retention Marketing</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 3. ALTERNATING EDITORIAL SHOWCASE SPACE -->
+    <section class="ms-editorial-exhibition-space">
+        <div class="ms-structural-row">
+            <div class="ms-editorial-dynamic-container" id="editorialGalleryWrapper">
+                <!-- Programmatically populated with completely open layouts containing comprehensive data fields -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. TYPOGRAPHY INTERSTITIAL GIANT METRIC ROW -->
+    <section class="ms-interstitial-typography-accent" style="display: none;">
+        <div class="ms-structural-row">
+            <div class="ms-interstitial-metric-giant" id="interstitialCounter">+212%</div>
+            <div class="ms-interstitial-caption">Conversion Growth Vector Standard Across Custom Storefront deployments</div>
+        </div>
+    </section>
+
+    <!-- 6. IMMERSIVE STATISTICAL DATA GRID -->
+    <section class="ms-results-landscape-grid">
+        <div class="ms-structural-row ms-results-flex-row">
+            <div class="ms-result-stat-node">
+                <div class="ms-result-giant-num" data-count-target="250">0</div>
+                <div class="ms-result-label">Projects Realized</div>
+            </div>
+            <div class="ms-result-stat-node">
+                <div class="ms-result-giant-num" data-count-target="120">0</div>
+                <div class="ms-result-label">Cr+ Client Revenue Generated</div>
+            </div>
+            <div class="ms-result-stat-node">
+                <div class="ms-result-giant-num" data-count-target="4.8">0</div>
+                <div class="ms-result-label">Average Scale ROAS</div>
+            </div>
+            <div class="ms-result-stat-node">
+                <div class="ms-result-giant-num" data-count-target="98">0</div>
+                <div class="ms-result-label">Client Retention Index</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. CINEMATIC MULTI-CHANNEL VIDEO PLATFORM -->
+    <section class="ms-video-gallery-section">
+        <div class="ms-structural-row">
+            <span class="ms-editorial-label" style="display:block; margin-bottom:30px;">RECORDED VERIFICATIONS</span>
+            <div class="ms-main-theater-frame" id="theaterFrame">
+                <video id="theaterVideoPlayer" src="https://assets.mixkit.co/videos/preview/mixkit-businesswoman-talking-on-a-video-call-40032-large.mp4" muted loop autoplay playsinline></video>
+                <div class="ms-theater-meta-overlay">
+                    <p id="theaterQuote" style="font-size:1.4rem; font-weight:300; margin-bottom:10px;">"MESSOLD completely reconstructed our checkout system efficiency parameters."</p>
+                    <span id="theaterAuthor" class="ms-editorial-label" style="color:#FFF;">Amit K., Power Sutra Operations</span>
+                </div>
+            </div>
+            <div class="ms-thumbnail-deck-strip" id="theaterThumbDeck">
+                <!-- Populated dynamically via Script Object Indexing -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. LOGO COSMOS MATRIX -->
+    <section class="ms-cosmos-section" style="display: none;">
+        <div class="ms-structural-row">
+            <span class="ms-editorial-label" style="display:block; margin-bottom:40px;">GLOBAL ENTERPRISE TRUST BASES</span>
+            <div class="ms-cosmos-field" id="cosmosField">
+                <!-- Logos positioned randomly, appearing like stars inside a subtle space matrix -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. PHILOSOPHY ASYMMETRIC SYSTEM REFLECTION -->
+    <section class="ms-philosophy-split">
+        <div class="ms-structural-row ms-philosophy-layout">
+            <h2 class="ms-display-text ms-philosophy-statement-giant">We don't build standard Shopify configurations.<br><br>We engineer transaction systems.</h2>
+            <div class="ms-philosophy-narratives">
+                <p>Standard templates introduce computational latency and functional standardizations that degrade enterprise valuation capabilities. We approach e-commerce codebases as financial pipelines that prioritize data architecture efficiency metrics.</p>
+                <p>Every programmatic pixel architecture configuration is deployed explicitly to maximize checkout completion probabilities while tracking client attribution logic transparently across Meta and Google algorithmic layers.</p>
+                <p>By connecting custom high performance Shopify instances directly to calculated algorithmic digital media spending models, we establish an integrated engine configured for absolute enterprise expansion capability.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. LUXURY EDITORIAL FINALE OUTRO -->
+    <section class="ms-magazine-outro">
+        <div class="ms-structural-row">
+            <h2 class="ms-display-text ms-outro-headline">Your brand<br>could be<br>next.</h2>
+            <div class="ms-outro-linkages">
+                <a href="#" class="ms-outro-action-btn">Initiate Discovery Call</a>
+                <a href="mailto:growth@messold.com" class="ms-outro-subtext-channel">growth@messold.com</a>
+                <a href="tel:+9100000000" class="ms-outro-subtext-channel">+91 (000) 000-0000</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CORE COMPLETE DATA RECORD ARRAY -->
+    <script>
+        const MASTER_CASE_STUDIES = [
+            // 12 Shopify Development Projects
+            { id: "cs-1", type: "DEVELOPMENT", brand: "Power Sutra", industry: "Premium Apparel", services: "Custom Liquid, API Architecture", tech: "Shopify Plus, Hydrogen, GraphQL", channels: "N/A", desc: "Complete re-architecture of operational checkout pathways down to micro-interaction level frameworks.", challenge: "The platform suffered severe functional drop-offs during high traffic event runs owing to standard monolithic structural dependencies.", solution: "Engineered isolated dynamic product configuration engines that process client requests off-thread to maximize page performance scaling thresholds.", metrics: [ {v: "+212%", l: "Conversion Rate"}, {v: "4.8", l: "ROAS baseline"}, {v: "+138%", l: "Revenue Growth"} ], img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1200" },
+            { id: "cs-2", type: "DEVELOPMENT", brand: "Craftsmith Designs", industry: "Luxury Furnishings", services: "Headless Commerce Architecture", tech: "React, Shopify Storefront API, Node.js", channels: "N/A", desc: "Designing structured custom presentation viewports for highly variable modular catalog sets.", challenge: "Complex layout rules bloated standard themes causing server latency parameters to spike past safe functional targets.", solution: "Decoupled rendering systems using clean custom layout rules optimized for high-resolution visual layouts.", metrics: [ {v: "60 FPS", l: "Render Velocity"}, {v: "+41%", l: "Returning Users"}, {v: "+92%", l: "Page Speed Index"} ], img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=1200" },
+            { id: "cs-3", type: "DEVELOPMENT", brand: "Silk Berry Pure", industry: "Cosmetics & Care", services: "Bespoke Checkout Engineering", tech: "Shopify Functions, Web Pixels API", channels: "N/A", desc: "Reconstructing conversion sequences into unified single-stage acquisition frameworks.", challenge: "Multi-step validation layers caused significant card abandonment spikes within target consumer cohorts.", solution: "Synthesized serverless transaction interfaces processing direct customer payloads with instantaneous validation metrics.", metrics: [ {v: "+41%", l: "Checkout Velocity"}, {v: "-32%", l: "Cart Drop-Offs"}, {v: "+55%", l: "Volume Conversion"} ], img: "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&q=80&w=1200" },
+            { id: "cs-4", type: "DEVELOPMENT", brand: "Amara Herbs", industry: "Wellness Systems", services: "Subscription Engine Architecture", tech: "Recharge API, Custom Remix Apps", channels: "N/A", desc: "Automating structured replenishment logistics interfaces directly inside native customer profiles.", challenge: "Standard subscription integrations fragmented client user flows and broken analytic tracking strings.", solution: "Crafted deep custom recurring billing models natively mapped within Shopify's primary transaction database core.", metrics: [ {v: "+88%", l: "ARR Generation"}, {v: "98%", l: "Retention Index"}, {v: "+4.2x", l: "LTV Optimization"} ], img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=1200" },
+            
+            // 12 Performance Marketing Case Studies
+            { id: "cs-5", type: "PERFORMANCE", brand: "Noise Ads", industry: "Wearable Tech", services: "Attribution Matrix Engineering", tech: "Meta CAPI, Google Analytics 4", channels: "Meta Ads, Google Search, Programmatic", desc: "Deploying multi-layered analytical structures to maximize return metrics across digital scaling channels.", challenge: "Signal loss from evolving modern security parameters rendered data modeling sets highly inaccurate.", solution: "Implemented full server-side conversion API matching pipelines coupled directly with first-party audience databases.", metrics: [ {v: "4.8", l: "ROAS Factor"}, {v: "+160%", l: "Acquisition Scale"}, {v: "-22%", l: "Blended CAC"} ], img: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=1200" },
+            { id: "cs-6", type: "PERFORMANCE", brand: "Leaf Scale", industry: "Health Tech", services: "Programmatic Audience Modeling", tech: "Klaviyo, Triple Whale Matrix", channels: "YouTube Action, Meta Scale, TikTok", desc: "Systematic capital distribution modeling configured to balance multi-channel traffic acquisitions safely.", challenge: "Rapid scaling models traditionally caused sharp client acquisition cost spikes across primary vectors.", solution: "Constructed predictive customer lifecycle tracking algorithms to focus ad spend on premium high-value users.", metrics: [ {v: "120Cr+", l: "Revenue Funneled"}, {v: "+210%", l: "Inflow Volume"}, {v: "5.1x", l: "Target Scale ROAS"} ], img: "https://images.unsplash.com/photo-1530026405186-ed1ea0ac7a63?auto=format&fit=crop&q=80&w=1200" },
+            
+            // 12 Shopify CRO Case Studies
+            { id: "cs-7", type: "CRO", brand: "Oats Studio", industry: "Premium Provisions", services: "Modular Frontend Frameworks", tech: "Vanilla JS Core, Edge Workers", channels: "N/A", desc: "Constructing ultra-light graphic rendering pathways supporting rapid interface state scaling rules.", challenge: "Heavy structural media assets and multiple script trackers crippled standard user navigation velocities.", solution: "Built programmatic layout rendering rules processing images strictly as asynchronous client viewport modules.", metrics: [ {v: "-35%", l: "Load Latency"}, {v: "+44%", l: "Conversion Index"}, {v: "+19%", l: "Add-To-Cart Rate"} ], img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=1200" },
+            { id: "cs-8", type: "CRO", brand: "Nature Matrix", industry: "Botanical Extracts", services: "Custom UI Design & Architecture", tech: "Tailored Liquify Arrays", channels: "N/A", desc: "Bespoke logic frameworks built to offer hyper-personalized customer configuration paths.", challenge: "Cross-selling assets felt intrusive and disjointed, degrading conversion mechanics at critical purchase interfaces.", solution: "Deployed clean inline algorithmic recommendation blocks rendering predictions dynamically within active scroll targets.", metrics: [ {v: "+18%", l: "AOV Elevation"}, {v: "+34%", l: "Cross-Shop Units"}, {v: "4.6", l: "Funnel Conversion"} ], img: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&q=80&w=1200" },
+            
+            // 12 Retention Marketing Case Studies
+            { id: "cs-9", type: "RETENTION", brand: "Urban Space", industry: "Textile Systems", services: "Automated Flow Pipelines", tech: "Klaviyo VIP Setup, Attentive SMS", channels: "Email Infrastructure, SMS Marketing", desc: "Bespoke segment personalization loops designed to capture dormant customer transaction pipelines.", challenge: "High initial scale volumes failed to convert into predictable long-tail brand community metrics.", solution: "Constructed precise multi-tiered behavioral trigger sequences based on historical collection viewing behaviors.", metrics: [ {v: "+98%", l: "Retention Lift"}, {v: "+64%", l: "Repeat Order Volume"}, {v: "+110%", l: "LTV Expansion"} ], img: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&q=80&w=1200" }
+        ];
+
+        const EDITORIAL_BREAKS = [
+            "Every metric represents real business growth.",
+            "Great brands aren't launched. They're engineered.",
+            "Valuation is built at the intersection of raw performance and absolute elegance."
+        ];
+
+        const VIDEO_TESTIMONIALS = [
+            { id: "v1", videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-businesswoman-talking-on-a-video-call-40032-large.mp4", thumb: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400", quote: "\"MESSOLD completely reconstructed our checkout system efficiency parameters.\"", author: "Amit K., Power Sutra Operations" },
+            { id: "v2", videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-woman-recording-a-video-with-her-phone-41584-large.mp4", thumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400", quote: "\"Their analytical modeling approach gave us absolute clarity over multi-channel return metrics.\"", author: "Sarah M., Noise Tech Strategy" },
+            { id: "v3", videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-man-holding-a-smartphone-explaining-something-41718-large.mp4", thumb: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400", quote: "\"Handcrafted codebases that natively withstand high velocity traffic spikes flawlessly.\"", author: "Vikram R., Craftsmith Executive" },
+            { id: "v4", videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-stream-of-people-crossing-a-street-at-night-40325-large.mp4", thumb: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=400", quote: "\"Zero tracking leakage means our scaling actions are supported by pristine statistical values.\"", author: "David L., Leaf Core Analytics" }
+        ];
+
+        const COSMOS_LOGOS = [
+            "POWER SUTRA", "NOISE SYSTEMS", "CRAFTSMITH", "LEAF BIO", "SILK BERRY", 
+            "AMARA HERBS", "OATS STUDIO", "NATURE MATRIX", "VELO ACTIVE", "COCOON", 
+            "URBAN SPACE", "KICKS NATION", "VINTAGE GLIDE", "CHOPPED INC", "HYDRO ELEMENT"
+        ];
+
+        // DYNAMIC LAYOUT ENGINE WITHOUT REPETITIONS
+        function composeEditorialGallery(filterTag) {
+            const targetContainer = document.getElementById("editorialGalleryWrapper");
+            targetContainer.innerHTML = ""; 
+
+            const sourceData = filterTag === "ALL" 
+                ? MASTER_CASE_STUDIES 
+                : MASTER_CASE_STUDIES.filter(item => item.type === filterTag);
+
+            let compositionState = 0; 
+            let breakTracker = 0;
+            let breakIndex = 0;
+
+            for (let i = 0; i < sourceData.length; i++) {
+                // Insert Editorial Rhythm Breaks
+                if (breakTracker > 0 && breakTracker % 3 === 0 && filterTag === "ALL") {
+                    const phrase = EDITORIAL_BREAKS[breakIndex % EDITORIAL_BREAKS.length];
+                    breakIndex++;
+                    const breakMarkup = `
+                        <div class="ms-rhythmic-editorial-break">
+                            <h2 class="ms-rhythmic-headline-giant">${phrase}</h2>
+                        </div>
+                    `;
+                    const breakNode = document.createElement('div');
+                    breakNode.innerHTML = breakMarkup;
+                    targetContainer.appendChild(breakNode.firstElementChild);
+                }
+
+                let rowMarkup = "";
+                const p1 = sourceData[i];
+
+                const generateMetrics = (p) => p.metrics.map(m => `
+                    <div class="ms-inline-metric-card">
+                        <div class="ms-inline-metric-number" data-target="${m.v}">${m.v}</div>
+                        <div class="ms-inline-metric-label">${m.l}</div>
+                    </div>
+                `).join('');
+
+                const generateMetaColumn = (p) => `
+                    <div class="ms-case-embedded-meta">
+                        <div class="ms-case-header-block">
+                            <div class="ms-case-taxonomy-row">
+                                <span>${p.industry}</span>
+                                <span>//</span>
+                                <span>${p.type}</span>
+                            </div>
+                            <h3 class="ms-case-brand-headline">${p.brand}</h3>
+                        </div>
+                        <p class="ms-case-summary-para">${p.desc} ${p.challenge} ${p.solution}</p>
+                        <div class="ms-case-technical-specs">
+                            <div>
+                                <div class="ms-spec-label">Architecture / Tools</div>
+                                <div class="ms-spec-values">${p.tech}</div>
+                            </div>
+                            <div>
+                                <div class="ms-spec-label">Operational Channels</div>
+                                <div class="ms-spec-values">${p.channels}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="ms-spec-label" style="margin-bottom: 12px;">Verified Transformation Metrics</div>
+                            <div class="ms-case-metrics-display-box">
+                                ${generateMetrics(p)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                if (compositionState === 0) {
+                    rowMarkup = `
+                        <div class="ms-exhibition-node ms-composition-left-heavy">
+                            <div class="ms-asset-frame" style="height: 600px;">
+                                <img class="ms-asset-img" src="${p1.img}" alt="${p1.brand}">
+                            </div>
+                            ${generateMetaColumn(p1)}
+                        </div>
+                    `;
+                    compositionState = 1;
+                } 
+                else if (compositionState === 1) {
+                    rowMarkup = `
+                        <div class="ms-exhibition-node ms-composition-right-heavy">
+                            ${generateMetaColumn(p1)}
+                            <div class="ms-asset-frame" style="height: 600px;">
+                                <img class="ms-asset-img" src="${p1.img}" alt="${p1.brand}">
+                            </div>
+                        </div>
+                    `;
+                    compositionState = 2;
+                } 
+                else if (compositionState === 2) {
+                    rowMarkup = `
+                        <div class="ms-exhibition-node ms-composition-monumental">
+                            <div class="ms-asset-frame" style="height: 520px; width:100%;">
+                                <img class="ms-asset-img" src="${p1.img}" alt="${p1.brand}">
+                            </div>
+                            <div class="ms-composition-monumental-layout">
+                                <h3 class="ms-display-text" style="font-size: clamp(2rem, 4vw, 4rem); max-width: 450px;">Architectural scale optimization paths realized.</h3>
+                                ${generateMetaColumn(p1)}
+                            </div>
+                        </div>
+                    `;
+                    compositionState = 3;
+                }
+                else if (compositionState === 3) {
+                    rowMarkup = `
+                        <div class="ms-exhibition-node ms-composition-stacked-art">
+                            <div class="ms-asset-frame" style="height: 480px;">
+                                <img class="ms-asset-img" src="${p1.img}" alt="${p1.brand}">
+                            </div>
+                            ${generateMetaColumn(p1)}
+                        </div>
+                    `;
+                    compositionState = 4;
+                }
+                else if (compositionState === 4) {
+                    rowMarkup = `
+                        <div class="ms-exhibition-node ms-composition-split-balance">
+                            <div class="ms-asset-frame" style="height: 540px;">
+                                <img class="ms-asset-img" src="${p1.img}" alt="${p1.brand}">
+                            </div>
+                            ${generateMetaColumn(p1)}
+                        </div>
+                    `;
+                    compositionState = 0;
+                }
+
+                const elementWrapper = document.createElement('div');
+                elementWrapper.innerHTML = rowMarkup;
+                targetContainer.appendChild(elementWrapper.firstElementChild);
+                breakTracker++;
+            }
+
+            // Re-trigger viewport observation triggers post composition update
+            bindViewportIntersectionAnimations();
+        }
+
+        // SCROLL REVEAL VIEWPORT OBSERVER APPARATUS
+        function bindViewportIntersectionAnimations() {
+            const nodes = document.querySelectorAll(".ms-exhibition-node");
+            
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("reveal-active");
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            nodes.forEach(node => revealObserver.observe(node));
+        }
+
+        // STATIC INTERACTIVE FILTER INITIALIZATION HANDLERS
+        function initFilterInteractionEngine() {
+            const buttons = document.querySelectorAll(".ms-filter-link-btn");
+            buttons.forEach(btn => {
+                btn.addEventListener("click", function() {
+                    buttons.forEach(b => b.classList.remove("is-active"));
+                    this.classList.add("is-active");
+                    
+                    const galleryWrapper = document.getElementById("editorialGalleryWrapper");
+                    galleryWrapper.style.opacity = "0";
+                    
+                    setTimeout(() => {
+                        composeEditorialGallery(this.getAttribute("data-filter"));
+                        galleryWrapper.style.opacity = "1";
+                    }, 350);
+                });
+            });
+        }
+
+        // INTERSECTION OBSERVED METRICS COUNT DOWN ENGINE
+        function initQuantitativeMetricsEngine() {
+            const numNodes = document.querySelectorAll(".ms-result-giant-num");
+            
+            const countObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const targetNode = entry.target;
+                        const finalVal = parseFloat(targetNode.getAttribute("data-count-target"));
+                        let startVal = 0;
+                        const totalSteps = 60;
+                        const increment = finalVal / totalSteps;
+                        let stepCount = 0;
+
+                        const iterationTimer = setInterval(() => {
+                            startVal += increment;
+                            stepCount++;
+                            
+                            if (Number.isInteger(finalVal)) {
+                                targetNode.innerText = Math.floor(startVal) + "+";
+                            } else {
+                                targetNode.innerText = startVal.toFixed(1) + "x";
+                            }
+
+                            if (stepCount >= totalSteps) {
+                                targetNode.innerText = Number.isInteger(finalVal) ? finalVal + "+" : finalVal + "x";
+                                clearInterval(iterationTimer);
+                            }
+                        }, 20);
+
+                        observer.unobserve(targetNode);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            numNodes.forEach(node => countObserver.observe(node));
+        }
+
+        // MULTI-CHANNEL CLIENT PRODUCTION THEATER ENGINE
+        function setupCinematicTheater() {
+            const strip = document.getElementById("theaterThumbDeck");
+            const mainPlayer = document.getElementById("theaterVideoPlayer");
+            const mainQuote = document.getElementById("theaterQuote");
+            const mainAuthor = document.getElementById("theaterAuthor");
+
+            strip.innerHTML = VIDEO_TESTIMONIALS.map((vid, idx) => `
+                <div class="ms-deck-thumb-node ${idx === 0 ? 'is-active' : ''}" data-index="${idx}">
+                    <img src="${vid.thumb}" alt="Testimonial Track Reference ${idx}">
+                </div>
+            `).join('');
+
+            const thumbs = document.querySelectorAll(".ms-deck-thumb-node");
+            thumbs.forEach(thumb => {
+                thumb.addEventListener("click", function() {
+                    thumbs.forEach(t => t.classList.remove("is-active"));
+                    this.classList.add("is-active");
+                    
+                    const activeIndex = parseInt(this.getAttribute("data-index"));
+                    const record = VIDEO_TESTIMONIALS[activeIndex];
+
+                    mainPlayer.style.opacity = "0";
+                    setTimeout(() => {
+                        mainPlayer.src = record.videoUrl;
+                        mainQuote.innerText = record.quote;
+                        mainAuthor.innerText = record.author;
+                        mainPlayer.style.opacity = "0.75";
+                        mainPlayer.play();
+                    }, 300);
+                });
+            });
+        }
+
+        // RANDOMIZED FLOATING COSMOS ENGINE (LOGO CLOUD STARFIELD DESIGN)
+        function generateLogoCosmosField() {
+            const spaceField = document.getElementById("cosmosField");
+            const fieldWidth = spaceField.offsetWidth;
+            const fieldHeight = spaceField.offsetHeight;
+
+            spaceField.innerHTML = COSMOS_LOGOS.map((logo) => {
+                const randomX = Math.floor(Math.random() * (fieldWidth - 180));
+                const randomY = Math.floor(Math.random() * (fieldHeight - 60));
+                const arbitraryOpacity = (Math.random() * 0.45) + 0.15;
+                const variableScale = (Math.random() * 0.3) + 0.8;
+
+                return `
+                    <div class="ms-cosmos-particle-node" style="top:${randomY}px; left:${randomX}px; opacity:${arbitraryOpacity}; transform: scale(${variableScale});">
+                        ${logo}
+                    </div>
+                `;
+            }).join('');
+
+            let frameCounter = 0;
+            function structuralFloatTicker() {
+                frameCounter += 0.02;
+                const particles = document.querySelectorAll(".ms-cosmos-particle-node");
+                particles.forEach((p, idx) => {
+                    const dynamicShiftY = Math.sin(frameCounter + idx) * 12;
+                    const originalTransform = p.style.transform.split(' ')[0] || 'scale(1)';
+                    p.style.transform = `${originalTransform} translateY(${dynamicShiftY}px)`;
+                });
+                requestAnimationFrame(structuralFloatTicker);
+            }
+            requestAnimationFrame(structuralFloatTicker);
+        }
+
+        // INTERACTIVE LUXURY MOUSE POINTER CONTROL ROUTINES
+        function bindLuxuryPointerTracking() {
+            const pointerNode = document.getElementById("luxuryPointer");
+            
+            window.addEventListener("mousemove", function(e) {
+                pointerNode.style.left = e.clientX + "px";
+                pointerNode.style.top = e.clientY + "px";
+            });
+
+            document.body.addEventListener("mouseenter", function(e) {
+                if (e.target.classList && e.target.classList.contains("ms-asset-frame")) {
+                    pointerNode.style.transform = "translate(-50%, -50%) scale(2)";
+                    pointerNode.style.backgroundColor = "rgba(255,255,255,0.15)";
+                }
+            }, true);
+
+            document.body.addEventListener("mouseleave", function(e) {
+                if (e.target.classList && e.target.classList.contains("ms-asset-frame")) {
+                    pointerNode.style.transform = "translate(-50%, -50%) scale(0)";
+                    pointerNode.style.backgroundColor = "transparent";
+                }
+            }, true);
+        }
+
+        // RUN DIRECT INITIALIZATIONS ON OVERLOAD RUNTIME
+        composeEditorialGallery("ALL");
+        initFilterInteractionEngine();
+        initQuantitativeMetricsEngine();
+        setupCinematicTheater();
+        generateLogoCosmosField();
+        bindLuxuryPointerTracking();
+    </script>
+</body>
+</html>

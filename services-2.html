@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Services Directory — MESSOLD</title>
+    
+    <!-- Premium Geist Typeface Integration -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist-sans@1.0.1/dist/geist-sans.css">
+    
+    <style>
+        /* --- BRAND MONOCHROME SYSTEM --- */
+        :root {
+            --bg-base: #080809;
+            --text-base: #FFFFFF;
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --border-ui: rgba(255, 255, 255, 0.09);
+            --font-main: 'Geist Sans', -apple-system, sans-serif;
+            --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Ambient light theme state managed by Scroll Observer */
+        body.env-light {
+            --bg-base: #F5F5F7;
+            --text-base: #000000;
+            --text-muted: rgba(0, 0, 0, 0.55);
+            --border-ui: rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-base);
+            color: var(--text-base);
+            transition: background-color 1s var(--ease-premium), color 1s var(--ease-premium);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Tactile overlay */
+        .ms-film-grain {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            opacity: 0.035;
+            z-index: 9999;
+            pointer-events: none;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* Magnetic Liquid Cursor */
+        #msCursor {
+            width: 8px;
+            height: 8px;
+            background-color: var(--text-base);
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 99999;
+            mix-blend-mode: difference;
+            transition: width 0.25s var(--ease-premium), height 0.25s var(--ease-premium);
+        }
+
+        .cursor-expanded #msCursor {
+            width: 44px;
+            height: 44px;
+            background-color: transparent;
+            border: 1px solid var(--text-base);
+        }
+
+        /* --- LAYOUT GRID --- */
+        .ms-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 4%;
+        }
+
+        .ms-stage {
+            padding: 6rem 0; /* Compact Spacing */
+            border-bottom: 1px solid var(--border-ui);
+            transition: border-color 1s var(--ease-premium);
+        }
+
+        /* --- MINI TYPOGRAPHY --- */
+        .ms-meta {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--text-muted);
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .ms-section-title {
+            font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        /* --- NAVIGATION HEADER --- */
+        .ms-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-ui);
+        }
+
+        .ms-logo {
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* --- HERO SECTION --- */
+        .ms-hero-grid {
+            display: grid;
+            grid-template-columns: 7fr 5fr;
+            align-items: center;
+            gap: 4rem;
+            min-height: 50vh;
+        }
+
+        @media (max-width: 768px) {
+            .ms-hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+        }
+
+        .ms-hero-heading {
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 200;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+        }
+
+        .ms-hero-heading span {
+            font-weight: 700;
+        }
+
+        /* --- BRANDS WE WORKED WITH SECTION --- */
+        .ms-brands-matrix {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-top: 1px solid var(--border-ui);
+            border-left: 1px solid var(--border-ui);
+            margin-top: 2rem;
+            transition: border-color 1s var(--ease-premium);
+        }
+
+        @media (max-width: 768px) {
+            .ms-brands-matrix { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .ms-brand-cell {
+            border-right: 1px solid var(--border-ui);
+            border-bottom: 1px solid var(--border-ui);
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--text-muted);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.4s var(--ease-premium), color 0.4s var(--ease-premium), border-color 1s var(--ease-premium);
+        }
+
+        .ms-brand-cell:hover {
+            background-color: var(--text-base);
+            color: var(--bg-base);
+        }
+
+        /* --- STICKY CINEMATIC SERVICES GRID --- */
+        .ms-services-split {
+            display: grid;
+            grid-template-columns: 5fr 7fr;
+            gap: 5%;
+            position: relative;
+        }
+
+        @media (max-width: 968px) {
+            .ms-services-split { grid-template-columns: 1fr; }
+        }
+
+        .ms-visual-chassis {
+            position: sticky;
+            top: 10vh;
+            height: 75vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 968px) {
+            .ms-visual-chassis { display: none; }
+        }
+
+        .ms-interactive-frame {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background-color: var(--border-ui);
+            overflow: hidden;
+        }
+
+        .ms-interactive-frame img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.1);
+            opacity: 0;
+            transform: scale(1.08);
+            transition: opacity 0.6s var(--ease-premium), transform 0.8s var(--ease-premium);
+        }
+
+        .ms-interactive-frame img.active-img {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Services Interactive Row List */
+        .ms-service-row-item {
+            padding: 2.2rem 0;
+            border-bottom: 1px solid var(--border-ui);
+            cursor: pointer;
+            transition: border-color 0.4s;
+        }
+
+        .ms-service-row-item:last-child {
+            border-bottom: none;
+        }
+
+        .ms-row-num {
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .ms-row-title {
+            font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.8rem;
+            transition: transform 0.4s var(--ease-premium);
+        }
+
+        .ms-service-row-item:hover .ms-row-title {
+            transform: translateX(10px);
+        }
+
+        .ms-row-brief {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            max-width: 550px;
+        }
+
+        .ms-row-bullets {
+            list-style: none;
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .ms-row-bullets li {
+            font-size: 0.75rem;
+            border: 1px solid var(--border-ui);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            color: var(--text-muted);
+        }
+
+        /* Button Action Pill */
+        .ms-action-pill {
+            display: inline-flex;
+            align-items: center;
+            background: none;
+            border: 1px solid var(--text-base);
+            color: var(--text-base);
+            padding: 0.8rem 1.8rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: background-color 0.3s, color 0.3s, border-color 1s;
+        }
+
+        .ms-action-pill:hover {
+            background-color: var(--text-base);
+            color: var(--bg-base);
+        }
+
+        /* --- PRESTIGE INTEGRATED CALCULATOR --- */
+        .ms-sim-box {
+            display: grid;
+            grid-template-columns: 6fr 6fr;
+            background-color: var(--border-ui);
+            border: 1px solid var(--border-ui);
+            padding: 3.5rem;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .ms-sim-box { grid-template-columns: 1fr; padding: 2rem; gap: 2rem; }
+        }
+
+        .ms-slider-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .ms-slider-group label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+        }
+
+        .ms-range-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 1px;
+            background: var(--text-muted);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .ms-range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--text-base);
+        }
+
+        .ms-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .ms-stat-card span {
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .ms-stat-card h4 {
+            font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+            font-weight: 300;
+        }
+
+        /* --- PROCESS STEP ROADMAP --- */
+        .ms-process-track {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 968px) {
+            .ms-process-track { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+            .ms-process-track { grid-template-columns: 1fr; }
+        }
+
+        .ms-process-item {
+            background-color: var(--border-ui);
+            border: 1px solid var(--border-ui);
+            padding: 2rem;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* --- PRESTIGE ACCORDION SYSTEM --- */
+        .ms-accordion-rack {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .ms-acc-card {
+            border-bottom: 1px solid var(--border-ui);
+            padding: 1.8rem 0;
+            cursor: pointer;
+        }
+
+        .ms-acc-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ms-acc-title {
+            font-size: 1.05rem;
+            font-weight: 300;
+        }
+
+        .ms-acc-trigger {
+            font-size: 1.2rem;
+            font-weight: 200;
+            transition: transform 0.5s var(--ease-premium);
+        }
+
+        .ms-acc-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s var(--ease-premium);
+        }
+
+        .ms-acc-body p {
+            padding-top: 1.2rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        .acc-active .ms-acc-trigger {
+            transform: rotate(45deg);
+        }
+
+        /* --- MINIMAL EDITORIAL FOOTER --- */
+        .ms-footer {
+            border-top: 1px solid var(--border-ui);
+            padding: 6rem 0 4rem 0;
+        }
+
+        .ms-footer-split {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr 1fr 2fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .ms-footer-split { grid-template-columns: 1fr; }
+        }
+
+        .ms-footer-col span {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+            margin-bottom: 1.2rem;
+            display: block;
+        }
+
+        .ms-footer-col a {
+            display: block;
+            color: var(--text-base);
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .ms-footer-col a:hover {
+            opacity: 1;
+        }
+
+        .ms-footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-ui);
+            padding-top: 2rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body id="appRoot">
+
+    <div class="ms-film-grain"></div>
+    <div id="msCursor"></div>
+
+    <!-- MAIN NAV HEADER -->
+    <header class="ms-wrapper ms-header">
+        <div class="ms-logo trigger-pointer">MESSOLD</div>
+        <button class="ms-action-pill trigger-pointer" style="padding: 0.5rem 1.2rem; margin-top: 0;">Connect</button>
+    </header>
+
+    <!-- KINETIC HERO STAGE -->
+    <section class="ms-stage" data-env="dark">
+        <div class="ms-wrapper ms-hero-grid">
+            <div>
+                <span class="ms-meta">Architectural Services</span>
+                <h1 class="ms-hero-heading">Systems Built<br>For <span>Direct Growth.</span></h1>
+            </div>
+            <div>
+                <p style="font-size: 0.9rem; line-height: 1.6; color: var(--text-muted);">
+                    Custom-engineered programmatic loops developed to direct high-intent traffic directly into calculated ROI vectors.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- BRANDS WE WORKED WITH -->
+    <section class="ms-stage" data-env="dark">
+        <div class="ms-wrapper">
+            <span class="ms-meta">The Network Ecosystem</span>
+            <h2 class="ms-section-title">Brands We Scaled</h2>
+            
+            <div class="ms-brands-matrix">
+                <div class="ms-brand-cell trigger-pointer">Google Ads</div>
+                <div class="ms-brand-cell trigger-pointer">Meta Partners</div>
+                <div class="ms-brand-cell trigger-pointer">Shopify Plus</div>
+                <div class="ms-brand-cell trigger-pointer">IIT Alumni Co.</div>
+                <div class="ms-brand-cell trigger-pointer">Y-Combinator</div>
+                <div class="ms-brand-cell trigger-pointer">Klaviyo Elite</div>
+                <div class="ms-brand-cell trigger-pointer">TikTok Commerce</div>
+                <div class="ms-brand-cell trigger-pointer">AWS Systems</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CINEMATIC INTERACTIVE SERVICES DISPLAY -->
+    <section class="ms-stage" data-env="light">
+        <div class="ms-wrapper">
+            <span class="ms-meta">Our Specialities</span>
+            <h2 class="ms-section-title" style="margin-bottom: 4rem;">System Capabilities</h2>
+
+            <div class="ms-services-split">
+                <!-- Left Sticky Morph Image Zone -->
+                <div class="ms-visual-chassis">
+                    <div class="ms-interactive-frame">
+                        <img id="img-0" class="active-img" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="Web-Development Framework">
+                        <img id="img-1" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Performance Analytics">
+                        <img id="img-2" src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80" alt="AI Operations">
+                        <img id="img-3" src="https://images.unsplash.com/photo-1561070791-26c113006238?auto=format&fit=crop&w=800&q=80" alt="Graphic Design">
+                        <img id="img-4" src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80" alt="Social Platforms">
+                        <img id="img-5" src="https://images.unsplash.com/photo-1552581230-c0137413876e?auto=format&fit=crop&w=800&q=80" alt="Influencer Integrations">
+                    </div>
+                </div>
+
+                <!-- Right Interactive Items list -->
+                <div>
+                    <!-- 01 Web Dev -->
+                    <div class="ms-service-row-item trigger-pointer" data-service-idx="0">
+                        <span class="ms-row-num">01 / STACK DEVELOPMENT</span>
+                        <h3 class="ms-row-title">Web-Development</h3>
+                        <p class="ms-row-brief">Welcome to the digital renaissance. Beautifully custom-designed interactive structures optimized for page speed, technical SEO architectures, and secure client-side transactions.</p>
+                        <ul class="ms-row-bullets">
+                            <li>Speed-Optimized</li>
+                            <li>Clean Code</li>
+                            <li>Responsive</li>
+                        </ul>
+                    </div>
+
+                    <!-- 02 Performance Marketing -->
+                    <div class="ms-service-row-item trigger-pointer" data-service-idx="1">
+                        <span class="ms-row-num">02 / CAPITAL METRICS</span>
+                        <h3 class="ms-row-title">Performance Marketing</h3>
+                        <p class="ms-row-brief">From concepts to conversions. Direct programmatic allocation models structured around verified KPIs, robust ad optimizations, and real-time behavioral user feedback tracking.</p>
+                        <ul class="ms-row-bullets">
+                            <li>ROI Driven</li>
+                            <li>Targeted Acquisition</li>
+                            <li>A/B Testing</li>
+                        </ul>
+                    </div>
+
+                    <!-- 03 AI and Automation -->
+                    <div class="ms-service-row-item trigger-pointer" data-service-idx="2">
+                        <span class="ms-row-num">03 / MACHINE LOGIC</span>
+                        <h3 class="ms-row-title">AI and Automation</h3>
+                        <p class="ms-row-brief">Automate the boring, scale the exciting. Custom database pipelines, automated cart-recovery workflows, and self-optimizing inventory synchronization engines designed to maximize margins.</p>
+                        <ul class="ms-row-bullets">
+                            <li>Workflow Optimization</li>
+                            <li>API Integrations</li>
+                            <li>Self-Healing</li>
+                        </ul>
+                    </div>
+
+                    <!-- 04 Graphic Design -->
+                    <div class="ms-service-row-item trigger-pointer" data-service-idx="3">
+                        <span class="ms-row-num">04 / STARK IDENTITY</span>
+                        <h3 class="ms-row-title">Graphic Design</h3>
+                        <p class="ms-row-brief">Distinct graphic structures, strict digital guidelines, high-contrast layouts, and visual communication properties crafted to cut through digital noise.</p>
+                        <ul class="ms-row-bullets">
+                            <li>Visual Integrity</li>
+                            <li>Bespoke Systems</li>
+                            <li>Guidelines</li>
+                        </ul>
+                    </div>
+
+                    <!-- 05 Social Media -->
+                    <div class="ms-service-row-item trigger-pointer" data-service-idx="4">
+                        <span class="ms-row-num">05 / ORGANIC CHANNELS</span>
+                        <h3 class="ms-row-title">Social Media</h3>
+                        <p class="ms-row-brief">Engaging Content – scroll-stoppers your thumb can't skip. Community building and performance-driven content pipelines sharper than your morning espresso.</p>
+                        <ul class="ms-row-bullets">
+                            <li>Community Scaling</li>
+                            <li>High Engagement</li>
+                            <li>Asset Curation</li>
+                        </ul>
+                    </div>
+
+                    <!-- 06 UGC & Influencers -->
+                    <div class="ms-service-row-item trigger-pointer" data-service-idx="5">
+                        <span class="ms-row-num">06 / SOCIAL AMPLITUDE</span>
+                        <h3 class="ms-row-title">UGC & Influencers</h3>
+                        <p class="ms-row-brief">Authentic Voices – content created by real people, for real trust. Influencer partnerships paired with scalable impact campaigns that turn views into verifiable checkouts.</p>
+                        <ul class="ms-row-bullets">
+                            <li>Creator Ecosystems</li>
+                            <li>Micro-Influencers</li>
+                            <li>Frictionless Reach</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIVE METRICS DIAGNOSTIC CALCULATOR -->
+    <section class="ms-stage" data-env="dark">
+        <div class="ms-wrapper">
+            <span class="ms-meta">Performance Engine</span>
+            <h2 class="ms-section-title">Growth Projection Matrix</h2>
+
+            <div class="ms-sim-box">
+                <div>
+                    <div class="ms-slider-group">
+                        <label>Monthly Media Spend <span id="lblSpend">$20,000</span></label>
+                        <input type="range" class="ms-range-slider trigger-pointer" id="spendRange" min="5000" max="250000" step="5000" value="20000">
+                    </div>
+                    <div class="ms-slider-group">
+                        <label>Average Conversion Rate <span id="lblConv">3.0%</span></label>
+                        <input type="range" class="ms-range-slider trigger-pointer" id="convRange" min="0.5" max="10.0" step="0.1" value="3.0">
+                    </div>
+                </div>
+                <div class="ms-stats-grid">
+                    <div class="ms-stat-card">
+                        <span>Expected Orders</span>
+                        <h4 id="statOrders">6,000</h4>
+                    </div>
+                    <div class="ms-stat-card">
+                        <span>Estimated Return Value</span>
+                        <h4 id="statRevenue">$420,000</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE SYSTEM TIMELINE STAGE -->
+    <section class="ms-stage" data-env="dark">
+        <div class="ms-wrapper">
+            <span class="ms-meta">Integration Blueprint</span>
+            <h2 class="ms-section-title">Our Process</h2>
+            
+            <div class="ms-process-track">
+                <div class="ms-process-item">
+                    <span class="ms-meta" style="margin-bottom: 0;">Step 01</span>
+                    <h3 style="font-size: 1.1rem; font-weight: 400;">Structural Audit</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">Mapping out data infrastructure, conversion tracking, and identifying friction points.</p>
+                </div>
+                <div class="ms-process-item">
+                    <span class="ms-meta" style="margin-bottom: 0;">Step 02</span>
+                    <h3 style="font-size: 1.1rem; font-weight: 400;">Design Concept</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">Developing high-converting layout structures and tailored visual architectures.</p>
+                </div>
+                <div class="ms-process-item">
+                    <span class="ms-meta" style="margin-bottom: 0;">Step 03</span>
+                    <h3 style="font-size: 1.1rem; font-weight: 400;">Integration Build</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">Writing clean code structures, setting up custom APIs, and establishing tracking tags.</p>
+                </div>
+                <div class="ms-process-item">
+                    <span class="ms-meta" style="margin-bottom: 0;">Step 04</span>
+                    <h3 style="font-size: 1.1rem; font-weight: 400;">Telemetry Scaling</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">Deploying targeted media spends, running A/B tests, and scaling high-performing funnels.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STYLISH ACCORDION FAQS -->
+    <section class="ms-stage" data-env="light">
+        <div class="ms-wrapper">
+            <span class="ms-meta">Support System</span>
+            <h2 class="ms-section-title" style="text-align: center;">Frequently Answered Specs</h2>
+
+            <div class="ms-accordion-rack">
+                <div class="ms-acc-card trigger-pointer">
+                    <div class="ms-acc-head">
+                        <span class="ms-acc-title">Are design outputs tailored to existing brand guidelines?</span>
+                        <span class="ms-acc-trigger">+</span>
+                    </div>
+                    <div class="ms-acc-body">
+                        <p>Yes. Every user interface, creative canvas, and brand asset is meticulously hand-drawn or coded to fit your precise identity parameters.</p>
+                    </div>
+                </div>
+
+                <div class="ms-acc-card trigger-pointer">
+                    <div class="ms-acc-head">
+                        <span class="ms-acc-title">How is performance-driven tracking executed?</span>
+                        <span class="ms-acc-trigger">+</span>
+                    </div>
+                    <div class="ms-acc-body">
+                        <p>We configure direct server-side APIs and custom tags to capture high-fidelity metrics cleanly, ensuring compliant and reliable user-data collection.</p>
+                    </div>
+                </div>
+
+                <div class="ms-acc-card trigger-pointer">
+                    <div class="ms-acc-head">
+                        <span class="ms-acc-title">What technology stacks do you support?</span>
+                        <span class="ms-acc-trigger">+</span>
+                    </div>
+                    <div class="ms-acc-body">
+                        <p>We work across custom JavaScript architectures (React, Next.js), headless commerce structures, server integrations, and Shopify Plus setups.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLEAN HIGH-CONTRAST FOOTER -->
+    <footer class="ms-footer" data-env="dark">
+        <div class="ms-wrapper">
+            <div class="ms-footer-split">
+                <div>
+                    <div class="ms-logo" style="margin-bottom: 1.5rem;">MESSOLD</div>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.6;">
+                        An IIT-founded collective of performance engineers specializing in custom e-commerce web systems and performance marketing execution.
+                    </p>
+                </div>
+                <div class="ms-footer-col">
+                    <span>Explore</span>
+                    <a href="#" class="trigger-pointer">Home</a>
+                    <a href="#" class="trigger-pointer">Our Work</a>
+                    <a href="#" class="trigger-pointer">Services</a>
+                </div>
+                <div class="ms-footer-col">
+                    <span>Connect</span>
+                    <a href="#" class="trigger-pointer">LinkedIn</a>
+                    <a href="#" class="trigger-pointer">Instagram</a>
+                    <a href="#" class="trigger-pointer">GitHub</a>
+                </div>
+                <div class="ms-footer-col">
+                    <span>Telemetry Inquiries</span>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5;">
+                        Subscribe to get early strategic industry updates and custom reports directly from our desk.
+                    </p>
+                    <input type="email" placeholder="Corporate email" style="background: none; border: none; border-bottom: 1px solid var(--border-ui); color: var(--text-base); padding: 0.5rem 0; outline: none; width: 100%; font-size: 0.8rem;">
+                </div>
+            </div>
+
+            <div class="ms-footer-bottom">
+                <div>
+                    <p>Synergy Building, IIT Delhi, Hauz Khas-110016</p>
+                </div>
+                <div>
+                    © 2026 Messold Technologies. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE ANIMATION CONTROLLER ENGINE -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. MAGNETIC CURSOR LOGIC
+            const cursor = document.getElementById("msCursor");
+            document.addEventListener("mousemove", (e) => {
+                cursor.style.left = `${e.clientX}px`;
+                cursor.style.top = `${e.clientY}px`;
+            });
+
+            document.addEventListener("mouseover", (e) => {
+                if (e.target.closest(".trigger-pointer")) {
+                    document.body.classList.add("cursor-expanded");
+                }
+            });
+
+            document.addEventListener("mouseout", (e) => {
+                if (e.target.closest(".trigger-pointer")) {
+                    document.body.classList.remove("cursor-expanded");
+                }
+            });
+
+            // 2. BACKGROUND SWAP TRANSITION OBSERVER
+            const stages = document.querySelectorAll(".ms-stage, .ms-footer");
+            const stageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const env = entry.target.getAttribute("data-env");
+                        if (env === "light") {
+                            document.body.classList.add("env-light");
+                        } else {
+                            document.body.classList.remove("env-light");
+                        }
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: "-10% 0px -40% 0px" });
+
+            stages.forEach(stage => stageObserver.observe(stage));
+
+            // 3. CINEMATIC TEXT HOVER -> IMAGE SWITCHER
+            const serviceItems = document.querySelectorAll(".ms-service-row-item");
+            const images = document.querySelectorAll(".ms-interactive-frame img");
+
+            serviceItems.forEach(item => {
+                item.addEventListener("mouseenter", () => {
+                    const idx = item.getAttribute("data-service-idx");
+                    
+                    images.forEach(img => img.classList.remove("active-img"));
+                    const targetImg = document.getElementById(`img-${idx}`);
+                    if (targetImg) targetImg.classList.add("active-img");
+                });
+            });
+
+            // 4. PRESTIGE PERFORMANCE CALCULATOR
+            const spend = document.getElementById("spendRange");
+            const conv = document.getElementById("convRange");
+            const lblSpend = document.getElementById("lblSpend");
+            const lblConv = document.getElementById("lblConv");
+            
+            const orders = document.getElementById("statOrders");
+            const rev = document.getElementById("statRevenue");
+
+            function computeMetrics() {
+                const spVal = parseFloat(spend.value);
+                const cvVal = parseFloat(conv.value);
+
+                lblSpend.textContent = `$${spVal.toLocaleString()}`;
+                lblConv.textContent = `${cvVal.toFixed(1)}%`;
+
+                const estimatedCPA = 15 / (cvVal / 2);
+                const totalOrders = Math.round(spVal / estimatedCPA);
+                const totalRev = totalOrders * 85; // Simulated average order value
+
+                orders.textContent = totalOrders.toLocaleString();
+                rev.textContent = `$${totalRev.toLocaleString()}`;
+            }
+
+            spend.addEventListener("input", computeMetrics);
+            conv.addEventListener("input", computeMetrics);
+            computeMetrics();
+
+            // 5. MINIMALIST ACCORDIONS
+            const accordionItems = document.querySelectorAll(".ms-acc-card");
+            accordionItems.forEach(card => {
+                card.addEventListener("click", () => {
+                    const isActive = card.classList.contains("acc-active");
+
+                    // collapse siblings
+                    accordionItems.forEach(i => {
+                        i.classList.remove("acc-active");
+                        i.querySelector(".ms-acc-body").style.maxHeight = "0";
+                    });
+
+                    if (!isActive) {
+                        card.classList.add("acc-active");
+                        const body = card.querySelector(".ms-acc-body");
+                        body.style.maxHeight = `${body.scrollHeight}px`;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Work — MESSOLD | Premium Shopify & Performance Marketing Agency</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap">
+    <style>
+        /* --- BRAND DESIGN TOKENS & SYSTEM --- */
+        :root {
+            --bg-pure: #000000;
+            --bg-secondary: #050505;
+            --bg-light: #FAFAFA;
+            --bg-card: #111111;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B8B8B8;
+            --border-alpha: rgba(255, 255, 255, 0.08);
+            --border-dark-alpha: rgba(0, 0, 0, 0.08);
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* CORE COMPONENT RESET & RULES */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: var(--bg-pure);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            letter-spacing: -0.01em;
+        }
+
+        /* TYPOGRAPHY COMPONENTS */
+        .ms-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .ms-heading-large {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+        }
+
+        .ms-heading-medium {
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-weight: 300;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .ms-paragraph-editorial {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            font-weight: 300;
+            max-width: 580px;
+        }
+
+        /* ASYMMETRIC GRID SYSTEM */
+        .ms-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 80px;
+            width: 100%;
+        }
+
+        @media (max-width: 1024px) {
+            .ms-container { padding: 0 40px; }
+        }
+        @media (max-width: 768px) {
+            .ms-container { padding: 0 20px; }
+        }
+
+        /* EXTREME LUXURY CUSTOM MOUSE CURSOR */
+        .ms-custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 100px;
+            background-color: var(--text-primary);
+            color: var(--bg-pure);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.4s var(--ease-luxury);
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* NAVIGATION HEADER */
+        .ms-navigation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 80px;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+        }
+
+        .ms-nav-logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .ms-nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .ms-nav-item {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .ms-nav-item:hover {
+            color: var(--text-primary);
+        }
+
+        .ms-cta-button {
+            background-color: var(--text-primary);
+            color: var(--bg-pure);
+            padding: 12px 24px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .ms-cta-button:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .ms-navigation { padding: 0 20px; }
+            .ms-nav-links { display: none; }
+        }
+
+        /* BUTTON UNDERLINE SYSTEM */
+        .ms-link-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            padding-bottom: 8px;
+            text-decoration: none;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        .ms-link-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--text-primary);
+            transform: scaleX(0.3);
+            transform-origin: left;
+            transition: transform 0.4s var(--ease-luxury);
+        }
+
+        .ms-link-btn:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* ========================================== */
+        /* HERO – STICKY FEATURED CASE STUDIES */
+        /* ========================================== */
+        .ms-hero-viewport-track {
+            position: relative;
+            height: 500vh; /* 5 projects, each mapped to 100vh segment */
+            background-color: var(--bg-pure);
+        }
+
+        .ms-hero-sticky-stage {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border-alpha);
+            transition: background-color 1s var(--ease-luxury);
+        }
+
+        .ms-hero-split-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            gap: 40px;
+            padding-top: 90px; /* offset header */
+        }
+
+        /* Left Side */
+        .ms-hero-left-interface {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .ms-hero-metrics-scroller {
+            height: 30px;
+            overflow: hidden;
+            margin-top: 24px;
+            position: relative;
+        }
+
+        .ms-hero-metric-line {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            line-height: 30px;
+            transition: transform 0.6s var(--ease-luxury);
+        }
+
+        .ms-hero-names-scroller {
+            height: clamp(3.2rem, 6vw, 5.5rem);
+            overflow: hidden;
+            margin: 16px 0 40px 0;
+            position: relative;
+        }
+
+        .ms-hero-name-line {
+            font-size: clamp(2.8rem, 5.5vw, 5rem);
+            font-weight: 300;
+            line-height: clamp(3.2rem, 6vw, 5.5rem);
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            transition: transform 0.6s var(--ease-luxury);
+        }
+
+        .ms-hero-brand-list-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            border-top: 1px solid var(--border-alpha);
+            padding-top: 24px;
+        }
+
+        .ms-hero-nav-item-indicator {
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            opacity: 0.3;
+            transition: opacity 0.4s ease, transform 0.4s var(--ease-luxury);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .ms-hero-nav-item-indicator.is-active {
+            opacity: 1;
+            transform: translateX(10px);
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .ms-hero-nav-item-indicator::before {
+            content: '→';
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .ms-hero-nav-item-indicator.is-active::before {
+            opacity: 1;
+        }
+
+        /* Right Side: Panel Slide Container */
+        .ms-hero-right-visuals {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ms-hero-panel-deck {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-alpha);
+        }
+
+        .ms-hero-panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(30px) scale(0.98);
+            transition: transform 0.8s var(--ease-luxury), opacity 0.6s ease, filter 0.8s ease;
+            filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ms-hero-panel.is-active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+            filter: blur(0px);
+        }
+
+        .ms-panel-media {
+            width: 100%;
+            height: 60%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ms-panel-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 12s var(--ease-luxury);
+        }
+
+        .ms-hero-panel.is-active .ms-panel-img {
+            transform: scale(1.08);
+        }
+
+        .ms-panel-content {
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .ms-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .ms-panel-metric {
+            font-size: 2.2rem;
+            font-weight: 200;
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+
+        .ms-panel-meta {
+            text-align: right;
+        }
+
+        .ms-panel-summary {
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            margin: 16px 0 24px 0;
+            line-height: 1.5;
+        }
+
+        /* ========================================== */
+        /* MARKETING PORTFOLIO GRID */
+        /* ========================================== */
+        .ms-marketing-exhibition {
+            background-color: var(--bg-pure);
+            padding: 160px 0;
+            border-bottom: 1px solid var(--border-alpha);
+        }
+
+        .ms-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 80px;
+        }
+
+        /* Asymmetric Editorial Grid */
+        .ms-asymmetric-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 40px;
+        }
+
+        /* Interactive Creative Card */
+        .ms-case-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-alpha);
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.4s ease;
+        }
+
+        .ms-case-card:hover {
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .ms-card-media {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ms-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s var(--ease-luxury), filter 0.6s ease;
+        }
+
+        .ms-case-card:hover .ms-card-img {
+            transform: scale(1.05);
+        }
+
+        /* Interactive Hover Overlay */
+        .ms-card-hover-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 100%);
+            opacity: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px;
+            z-index: 2;
+            transition: opacity 0.4s ease;
+        }
+
+        .ms-case-card:hover .ms-card-hover-overlay {
+            opacity: 1;
+        }
+
+        .ms-overlay-metric {
+            font-size: 2.5rem;
+            font-weight: 200;
+            letter-spacing: -0.03em;
+            margin-top: 16px;
+            transform: translateY(15px);
+            transition: transform 0.5s var(--ease-luxury);
+        }
+
+        .ms-case-card:hover .ms-overlay-metric {
+            transform: translateY(0);
+        }
+
+        .ms-card-static-meta {
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border-alpha);
+            z-index: 3;
+        }
+
+        /* Asymmetric Placement Classes */
+        .ms-col-7 { grid-column: span 7; height: 500px; }
+        .ms-col-5 { grid-column: span 5; height: 500px; }
+        .ms-col-12 { grid-column: span 12; height: 600px; }
+        .ms-col-6 { grid-column: span 6; height: 550px; }
+
+        /* ========================================== */
+        /* SHOPIFY DEVELOPMENT PORTFOLIO (LIGHT LAYER) */
+        /* ========================================== */
+        .ms-shopify-exhibition {
+            background-color: var(--bg-light);
+            color: #000000;
+            padding: 160px 0;
+        }
+
+        .ms-shopify-exhibition .ms-label,
+        .ms-shopify-exhibition .ms-paragraph-editorial {
+            color: #555555;
+        }
+
+        .ms-shopify-exhibition .ms-heading-large {
+            color: #000000;
+        }
+
+        /* Magazine Style Offset Composition */
+        .ms-magazine-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 60px;
+        }
+
+        .ms-shopify-card {
+            grid-column: span 6;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            cursor: pointer;
+        }
+
+        /* Offset alignment */
+        .ms-shopify-card.ms-offset-y {
+            transform: translateY(120px);
+        }
+
+        .ms-shopify-img-wrap {
+            width: 100%;
+            height: 480px;
+            overflow: hidden;
+            border: 1px solid var(--border-dark-alpha);
+            background-color: #eaeaea;
+            position: relative;
+        }
+
+        .ms-shopify-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s var(--ease-luxury);
+        }
+
+        .ms-shopify-card:hover .ms-shopify-img {
+            transform: scale(1.03);
+        }
+
+        .ms-shopify-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-right: 20px;
+        }
+
+        /* ========================================== */
+        /* FULLSCREEN MAGAZINE CASE MODAL */
+        /* ========================================== */
+        .ms-modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0,0,0,0.98);
+            backdrop-filter: blur(25px);
+            z-index: 2000;
+            display: none;
+            overflow-y: auto;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .ms-modal-backdrop.is-active {
+            opacity: 1;
+        }
+
+        .ms-modal-close {
+            position: fixed;
+            top: 40px;
+            right: 80px;
+            background: none;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--text-primary);
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 14px 28px;
+            cursor: pointer;
+            z-index: 2100;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .ms-modal-close:hover {
+            background-color: var(--text-primary);
+            color: var(--bg-pure);
+        }
+
+        .ms-modal-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 140px 20px 80px 20px;
+        }
+
+        .ms-modal-header {
+            margin-bottom: 60px;
+        }
+
+        .ms-modal-hero-frame {
+            width: 100%;
+            height: 50vh;
+            overflow: hidden;
+            border: 1px solid var(--border-alpha);
+            margin-bottom: 60px;
+        }
+
+        .ms-modal-hero-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ms-modal-editorial-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            margin-bottom: 80px;
+        }
+
+        .ms-modal-editorial-grid h4 {
+            font-size: 1.3rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
+        }
+
+        .ms-modal-editorial-grid p {
+            color: var(--text-secondary);
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        .ms-modal-tech-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .ms-tech-pill {
+            padding: 8px 16px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-alpha);
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+
+        .ms-modal-nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-alpha);
+            padding-top: 60px;
+            margin-top: 60px;
+        }
+
+        /* ========================================== */
+        /* FOOTER BRAND OUTRO */
+        /* ========================================== */
+        .ms-footer {
+            background-color: var(--bg-pure);
+            border-top: 1px solid var(--border-alpha);
+            padding: 100px 0 60px 0;
+        }
+
+        .ms-footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 80px;
+            margin-bottom: 80px;
+        }
+
+        .ms-footer-desc {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 460px;
+        }
+
+        .ms-footer-links-col {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .ms-footer-links-col h5 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .ms-footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-alpha);
+            padding-top: 40px;
+            color: #666666;
+            font-size: 0.8rem;
+        }
+
+        /* ========================================== */
+        /* RESPONSIVE LAYOUT MATRIX */
+        /* ========================================== */
+        @media (max-width: 1024px) {
+            .ms-hero-split-layout {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding-top: 140px;
+            }
+            .ms-hero-sticky-stage {
+                height: auto;
+                min-height: 100vh;
+                align-items: flex-start;
+                overflow-y: auto;
+            }
+            .ms-hero-right-visuals {
+                height: 50vh;
+                margin-bottom: 40px;
+            }
+            .ms-asymmetric-grid {
+                gap: 24px;
+            }
+            .ms-shopify-card.ms-offset-y {
+                transform: translateY(0);
+            }
+            .ms-magazine-grid {
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .ms-col-7, .ms-col-5, .ms-col-12, .ms-col-6 {
+                grid-column: span 12;
+                height: 400px;
+            }
+            .ms-shopify-card {
+                grid-column: span 12;
+            }
+            .ms-shopify-img-wrap {
+                height: 350px;
+            }
+            .ms-section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            .ms-modal-editorial-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .ms-footer-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .ms-modal-close {
+                right: 20px;
+                top: 20px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ms-custom-cursor" id="customCursor">VIEW CASE</div>
+
+    <header class="ms-navigation">
+        <a href="#" class="ms-nav-logo">MESSOLD</a>
+        <nav class="ms-nav-links">
+            <a href="#featured-section" class="ms-nav-item">Featured</a>
+            <a href="#marketing-section" class="ms-nav-item">Performance</a>
+            <a href="#shopify-section" class="ms-nav-item">Shopify Dev</a>
+        </nav>
+        <a href="#contact" class="ms-cta-button">Get in Touch</a>
+    </header>
+
+    <section class="ms-hero-viewport-track" id="featured-section">
+        <div class="ms-hero-sticky-stage" id="stickyStage">
+            <div class="ms-container ms-hero-split-layout">
+                
+                <div class="ms-hero-left-interface">
+                    <span class="ms-label">FEATURED CASE STUDIES</span>
+                    
+                    <div class="ms-hero-metrics-scroller">
+                        <div class="ms-hero-metric-line" id="metricScroller">
+                            </div>
+                    </div>
+
+                    <div class="ms-hero-names-scroller">
+                        <div class="ms-hero-name-line" id="nameScroller">
+                            </div>
+                    </div>
+
+                    <div class="ms-hero-brand-list-nav" id="brandNavList">
+                        </div>
+                </div>
+
+                <div class="ms-hero-right-visuals">
+                    <div class="ms-hero-panel-deck" id="heroPanelDeck">
+                        </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="ms-marketing-exhibition" id="marketing-section">
+        <div class="ms-container">
+            <div class="ms-section-header">
+                <div>
+                    <span class="ms-label">PERFORMANCE MARKETING</span>
+                    <h2 class="ms-heading-large" style="margin-top: 16px;">Systematic Growth.<br>Scaled Acquisition.</h2>
+                </div>
+                <p class="ms-paragraph-editorial">
+                    We approach paid digital advertising spend optimization mathematically, bypassing generic audience targets to drive reliable unit-economics metrics.
+                </p>
+            </div>
+
+            <div class="ms-asymmetric-grid" id="marketingGrid">
+                </div>
+        </div>
+    </section>
+
+    <section class="ms-shopify-exhibition" id="shopify-section">
+        <div class="ms-container">
+            <div class="ms-section-header">
+                <div>
+                    <span class="ms-label" style="color: #555555;">SHOPIFY DEVELOPMENT</span>
+                    <h2 class="ms-heading-large" style="margin-top: 16px; color: #000000;">Engineered to Convert.</h2>
+                </div>
+                <p class="ms-paragraph-editorial" style="color: #333333;">
+                    Custom Liquid architecture paired with clean transactional checkout frameworks. No bloated themes, purely bespoke 60 FPS user experiences.
+                </p>
+            </div>
+
+            <div class="ms-magazine-grid" id="shopifyGrid">
+                </div>
+        </div>
+    </section>
+
+    <div class="ms-modal-backdrop" id="caseModal">
+        <button class="ms-modal-close" id="closeModalBtn">Exit Case</button>
+        <div class="ms-modal-container" id="modalContainer">
+            </div>
+    </div>
+
+    <footer class="ms-footer" id="contact">
+        <div class="ms-container">
+            <div class="ms-footer-grid">
+                <div>
+                    <a href="#" class="ms-nav-logo" style="display: block; margin-bottom: 24px;">MESSOLD</a>
+                    <p class="ms-footer-desc">
+                        An elite Shopify Design, Custom Development, and Performance Marketing partner built to engineer high-velocity commercial scaling vectors.
+                    </p>
+                </div>
+                <div class="ms-footer-links-col">
+                    <h5>SERVICES</h5>
+                    <a href="#" class="ms-nav-item">Shopify Architecture</a>
+                    <a href="#" class="ms-nav-item">Custom Frontend Liquid</a>
+                    <a href="#" class="ms-nav-item">Performance Media Spend</a>
+                    <a href="#" class="ms-nav-item">CRO System Optimization</a>
+                </div>
+                <div class="ms-footer-links-col">
+                    <h5>REACH US</h5>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6;">
+                        growth@messold.com<br>
+                        Based globally. Operating at speed.
+                    </p>
+                </div>
+            </div>
+            <div class="ms-footer-bottom">
+                <p>&copy; 2026 MESSOLD. All Rights Reserved. Monochromatic System Blueprint.</p>
+                <p>Designed to scale.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ========================================== */
+        /* COMPREHENSIVE EXPERT SYSTEM DATA ARRAYS */
+        /* ========================================== */
+        const FEATURED_PROJECTS = [
+            {
+                id: "feat-1",
+                brand: "Power Sutra",
+                subtitle: "PREMIUM APPAREL ACQUISITION",
+                metric: "+212% Conversion Scale",
+                summary: "Complete layout optimization and re-architecture of native checkout sequences to remove transactional friction.",
+                img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1200",
+                color: "#050505",
+                industry: "High-End Retail",
+                services: "Headless Architecture / UX Blueprint",
+                challenge: "The brand struggled with standard checkout speed limits under heavy visual loads during premium event launches.",
+                solution: "Designed clean isolated transactional pathways and dynamic inventory rendering rules that optimized browser performance.",
+                results: "212% growth in direct checkouts with absolute stability verified on mobile formats during traffic spikes.",
+                tech: ["Shopify Custom Liquid", "Node.js Platform Layer", "Edge Optimization Engines"]
+            },
+            {
+                id: "feat-2",
+                brand: "Leaf Studios",
+                subtitle: "AUDIO GEAR RETENTION SYSTEMS",
+                metric: "4.8x Scaled ROAS",
+                summary: "Algorithmic data routing and programmatic audience targeting connected straight to specialized funnel landing views.",
+                img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=1200",
+                color: "#090909",
+                industry: "Consumer Electronics",
+                services: "Paid Acquisition / Performance Funnels",
+                challenge: "Targeting parameters became highly inefficient, leading to elevated customer acquisition metrics across primary platforms.",
+                solution: "Constructed targeted performance segments matched to dynamically rendered content setups using custom-built Shopify structures.",
+                results: "Sustained a consistent 4.8x Return on Ad Spend over three subsequent fiscal quarters.",
+                tech: ["Server-side Tracking API", "Dynamic Ad Variations", "Behavioral Target Mapping"]
+            },
+            {
+                id: "feat-3",
+                brand: "Noise Systems",
+                subtitle: "SMART WEARABLE SCALE METRICS",
+                metric: "₹120Cr+ Acquisition Funnel",
+                summary: "Comprehensive platform-level scale optimizations and integrated tracking setups built to eliminate conversion loss.",
+                img: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=1200",
+                color: "#0c0c0c",
+                industry: "Technology Wearables",
+                services: "Conversion Optimization / Creative Automation",
+                challenge: "Uncoordinated marketing campaigns created friction between modern ad layers and active Shopify landing formats.",
+                solution: "Engineered single-step conversion layouts with lightning-fast load architectures optimized for mobile traffic.",
+                results: "Captured over 120 Crore in scaled consumer revenue directly tracked within integrated reporting layers.",
+                tech: ["Bespoke Shopify Checkouts", "Segment.io", "React Native Engine Integrations"]
+            },
+            {
+                id: "feat-4",
+                brand: "Craftsmith",
+                subtitle: "ARTISANAL SPACE FURNITURE",
+                metric: "60 FPS Interactive Interface",
+                summary: "Bespoke presentation layouts styled with generous whitespace structures designed to convey luxury identity.",
+                img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=1200",
+                color: "#030303",
+                industry: "Luxury Furnishings",
+                services: "UI/UX Design / Front-End Dev",
+                challenge: "High-resolution product portfolios loaded too slowly, leading to early bounces from target premium shoppers.",
+                solution: "Synthesized serverless image caching rules alongside modular screen asset loaders to assure seamless 60 FPS scroll metrics.",
+                results: "Drastically minimized layout shift indexes while keeping brand imagery crisp and pixel-perfect on mobile viewports.",
+                tech: ["Custom Liquid Framework", "Modular Asset Compilers", "Intersection Observer Lazy Pipelines"]
+            },
+            {
+                id: "feat-5",
+                brand: "Silk Berry",
+                subtitle: "ORGANIC CONVERTING COSMETICS",
+                metric: "+98% Return Value Peak",
+                summary: "Bespoke subscription and checkout logic loops built directly into native Shopify database setups.",
+                img: "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&q=80&w=1200",
+                color: "#080808",
+                industry: "Beauty & Cosmetics",
+                services: "Shopify Custom Scripting / LTV Engines",
+                challenge: "Sub-optimal checkout steps forced recurring cosmetic buyers to execute redundant steps on every replenishment order.",
+                solution: "Designed and deployed custom single-step subscription structures directly embedded within the native checkout pipeline.",
+                results: "Increased repeat customer lifetime value metrics by 98% within four development iterations.",
+                tech: ["Shopify Script Editors", "Custom Recharging Architectures", "Behavioral Target Flows"]
+            }
+        ];
+
+        const MARKETING_PROJECTS = [
+            {
+                id: "mkt-1",
+                brand: "Janasya Pure",
+                industry: "Ethnic Lifestyle",
+                category: "Paid Social Scale",
+                metric: "5.2x Return on Ad Spend",
+                img: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=1000",
+                class: "ms-col-7",
+                services: "Meta Scaling / Creative Iteration",
+                challenge: "Ad account stabilization issues prevented scaling past a consistent monthly run-rate.",
+                solution: "Introduced programmatic target segmentation frameworks alongside dynamic content iterations to maintain audience engagement.",
+                results: "Achieved a sustained 5.2x ROAS baseline over high-budget periods.",
+                tech: ["Meta Ads API", "Advanced Audience Segmentation", "Performance Creative Variations"]
+            },
+            {
+                id: "mkt-2",
+                brand: "Reprise Studio",
+                industry: "Athletic Wear",
+                category: "Attribution Setup",
+                metric: "+114% Conversion Lift",
+                img: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=1000",
+                class: "ms-col-5",
+                services: "First-Party Tracking Architecture",
+                challenge: "Browser tracking limitations led to unreliable platform conversion data.",
+                solution: "Integrated a clean, server-side Conversion API setup mapping signals directly from checkout pages.",
+                results: "Saved wasted ad spend and boosted baseline conversion efficiency by 114%.",
+                tech: ["Shopify Pixel API", "Google Tag Manager", "Server-Side Tagging Nodes"]
+            },
+            {
+                id: "mkt-3",
+                brand: "Sila Atelier",
+                industry: "Luxury Accessories",
+                category: "Retention Engine",
+                metric: "₹42Cr Direct Attribution",
+                img: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=1200",
+                class: "ms-col-12",
+                services: "Email Automations / Segmentation Flow",
+                challenge: "The brand missed key post-purchase flows, leaving major potential customer lifetime value unmonetized.",
+                solution: "Designed high-context behavioral flow pipelines triggered by transaction and search interactions.",
+                results: "Directly attributed over 42 Crore in automated customer retention revenue.",
+                tech: ["Klaviyo API Architecture", "Custom CRM Pipelines", "Liquid-based Custom Templates"]
+            },
+            {
+                id: "mkt-4",
+                brand: "Buna Organic",
+                industry: "Gourmet Provisions",
+                category: "Local SEO Scale",
+                metric: "-35% Client Acquisition Costs",
+                img: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1000",
+                class: "ms-col-6",
+                services: "Organic Funnel Architecture",
+                challenge: "High cost-per-click values on traditional platforms made paid client acquisition unprofitable.",
+                solution: "Optimized structured semantic tags and high-volume product content grids across natural search terms.",
+                results: "Decreased direct customer acquisition costs by 35% within five months.",
+                tech: ["SEO Schema Systems", "Content Performance Layouts", "Core Web Vitals Optimization"]
+            },
+            {
+                id: "mkt-5",
+                brand: "Raisin Global",
+                industry: "Bespoke Jewelry",
+                category: "Dynamic Retargeting",
+                metric: "14x ROAS Launch Day",
+                img: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=1000",
+                class: "ms-col-6",
+                services: "Omnichannel Funnel Orchestration",
+                challenge: "High cart abandonment rates on newly launched premium products.",
+                solution: "Crafted automated cross-channel marketing sequences to capture immediate checkout intent.",
+                results: "Generated a 14x ROAS on day-one launch campaigns.",
+                tech: ["Klaviyo Flow Systems", "Dynamic Retargeting Nodes", "Personalized Cart Offers"]
+            }
+        ];
+
+        const SHOPIFY_PROJECTS = [
+            {
+                id: "shp-1",
+                brand: "Esme Crystals",
+                industry: "Luxury Goods",
+                metric: "0.8s Load Velocity",
+                img: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e12?auto=format&fit=crop&q=80&w=1000",
+                services: "Bespoke Frontend / Liquid Framework",
+                challenge: "Complex product configurators slowed down the standard Shopify theme engine.",
+                solution: "Built clean custom presentation layers using lean JavaScript loops to keep load times ultra-low.",
+                results: "Achieved an active 0.8-second load velocity across all product listing templates.",
+                tech: ["Custom Shopify Liquid", "Native Web Components", "Vite Bundling Engines"]
+            },
+            {
+                id: "shp-2",
+                brand: "Clazep Active",
+                industry: "Sports Performance",
+                metric: "+48% Cart Progression",
+                img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=1000",
+                services: "Micro-Interaction Engineering",
+                challenge: "A complex multi-step checkout setup on mobile devices was dropping high volumes of buyers.",
+                solution: "Designed and coded an intuitive, single-screen sliding checkout drawer to keep transaction flows seamless.",
+                results: "Boosted direct cart-to-purchase progression metrics by 48%.",
+                tech: ["AJAX Cart APIs", "Tailored Mobile UX Patterns", "Micro-Interaction Engine"]
+            },
+            {
+                id: "shp-3",
+                brand: "Theme My Party",
+                industry: "Event Planning",
+                metric: "60 FPS Interactive Setup",
+                img: "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&q=80&w=1000",
+                services: "Advanced Product Customization Layer",
+                challenge: "Users found dynamic custom package building steps confusing and difficult on mobile.",
+                solution: "Constructed an intuitive interactive visual layout system for real-time order building.",
+                results: "Delivered responsive 60 FPS performance transitions with zero layout shift.",
+                tech: ["Shopify App Blocks", "Custom Event Listeners", "CSS Grid Architectures"]
+            },
+            {
+                id: "shp-4",
+                brand: "Weaving Cult",
+                industry: "Sustainable Apparel",
+                metric: "+32% Average Order Value",
+                img: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&q=80&w=1000",
+                services: "Dynamic Bundling Engine",
+                challenge: "Traditional product recommendations felt generic, yielding low cross-selling metrics.",
+                solution: "Built dynamic upselling prompts directly into the custom product pages and checkout drawers.",
+                results: "Increased baseline Average Order Value metrics by 32%.",
+                tech: ["Shopify Search & Discovery Customization", "Dynamic Cart Rules", "Bespoke Recommendations API"]
+            }
+        ];
+
+        /* ========================================== */
+        /* STICKY SCROLL DRIVEN HERO STORYTELLING ENGINE */
+        /* ========================================== */
+        function initStickyHeroEngine() {
+            const track = document.getElementById("featured-section");
+            const stage = document.getElementById("stickyStage");
+            const nameScroller = document.getElementById("nameScroller");
+            const metricScroller = document.getElementById("metricScroller");
+            const brandNavList = document.getElementById("brandNavList");
+            const panelDeck = document.getElementById("heroPanelDeck");
+
+            // 1. Generate Left Navigation Links & Right Panels Dynamically
+            FEATURED_PROJECTS.forEach((proj, idx) => {
+                // Left nav indicator
+                const navItem = document.createElement("div");
+                navItem.className = `ms-hero-nav-item-indicator ${idx === 0 ? 'is-active' : ''}`;
+                navItem.setAttribute("data-index", idx);
+                navItem.innerHTML = `<span style="font-size:0.75rem; margin-right:8px; opacity:0.5;">0${idx+1}</span> ${proj.brand}`;
+                brandNavList.appendChild(navItem);
+
+                // Click to scroll to the corresponding viewport section
+                navItem.addEventListener("click", () => {
+                    const scrollTarget = track.offsetTop + (idx * window.innerHeight);
+                    window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+                });
+
+                // Right panel content layout
+                const panel = document.createElement("div");
+                panel.className = `ms-hero-panel ${idx === 0 ? 'is-active' : ''}`;
+                panel.setAttribute("id", `panel-${idx}`);
+                panel.innerHTML = `
+                    <div class="ms-panel-media">
+                        <img class="ms-panel-img" src="${proj.img}" alt="${proj.brand}">
+                    </div>
+                    <div class="ms-panel-content">
+                        <div class="ms-panel-header">
+                            <div>
+                                <span class="ms-label" style="color:var(--text-secondary);">${proj.subtitle}</span>
+                                <h3 style="font-size:1.4rem; font-weight:400; margin-top:8px;">${proj.brand}</h3>
+                            </div>
+                            <div class="ms-panel-metric">${proj.metric.split(" ")[0]}</div>
+                        </div>
+                        <p class="ms-panel-summary">${proj.summary}</p>
+                        <div style="text-align:right;">
+                            <button class="ms-link-btn" onclick="openCaseStudy('${proj.id}', 'featured')">View Case Study</button>
+                        </div>
+                    </div>
+                `;
+                panelDeck.appendChild(panel);
+            });
+
+            // Set Initial Left Scroller text content
+            nameScroller.innerHTML = FEATURED_PROJECTS.map(p => `<div style="height: clamp(3.2rem, 6vw, 5.5rem);">${p.brand}</div>`).join('');
+            metricScroller.innerHTML = FEATURED_PROJECTS.map(p => `<div style="height:30px;">${p.metric}</div>`).join('');
+
+            // 2. High Performance Scroll Calculations
+            function updateScrollVisuals() {
+                const rect = track.getBoundingClientRect();
+                const totalHeight = track.offsetHeight - window.innerHeight;
+                const progress = Math.max(0, Math.min(1, -rect.top / totalHeight));
+
+                // Calculate which active index (0 to 4) is currently in focus
+                const step = 1 / (FEATURED_PROJECTS.length - 1);
+                let activeIndex = Math.round(progress / step);
+                if (activeIndex >= FEATURED_PROJECTS.length) activeIndex = FEATURED_PROJECTS.length - 1;
+
+                // Sync background dynamic transitions with active panel colors
+                const activeProj = FEATURED_PROJECTS[activeIndex];
+                stage.style.backgroundColor = activeProj.color;
+
+                // Move left scroll text elements smoothly
+                const itemHeight = nameScroller.firstElementChild.offsetHeight;
+                nameScroller.style.transform = `translateY(-${activeIndex * itemHeight}px)`;
+                nameScroller.style.transition = "transform 0.8s var(--ease-luxury)";
+
+                metricScroller.style.transform = `translateY(-${activeIndex * 30}px)`;
+                metricScroller.style.transition = "transform 0.8s var(--ease-luxury)";
+
+                // Update active navigation classes
+                document.querySelectorAll(".ms-hero-nav-item-indicator").forEach((el, index) => {
+                    if (index === activeIndex) {
+                        el.classList.add("is-active");
+                    } else {
+                        el.classList.remove("is-active");
+                    }
+                });
+
+                // Update active right panel decks
+                document.querySelectorAll(".ms-hero-panel").forEach((panel, index) => {
+                    if (index === activeIndex) {
+                        panel.classList.add("is-active");
+                    } else {
+                        panel.classList.remove("is-active");
+                    }
+                });
+            }
+
+            window.addEventListener("scroll", () => {
+                requestAnimationFrame(updateScrollVisuals);
+            });
+        }
+
+        /* ========================================== */
+        /* EDITORIAL PORTFOLIOS POPULATORS */
+        /* ========================================== */
+        function populateEditorialPortfolios() {
+            // Populate Marketing grid
+            const marketingGrid = document.getElementById("marketingGrid");
+            marketingGrid.innerHTML = MARKETING_PROJECTS.map(proj => `
+                <div class="ms-case-card ${proj.class}" onclick="openCaseStudy('${proj.id}', 'marketing')">
+                    <div class="ms-card-media">
+                        <img class="ms-card-img" src="${proj.img}" alt="${proj.brand}">
+                        <div class="ms-card-hover-overlay">
+                            <span class="ms-label" style="color:#FFF;">${proj.category}</span>
+                            <div class="ms-overlay-metric">${proj.metric}</div>
+                        </div>
+                    </div>
+                    <div class="ms-card-static-meta">
+                        <div>
+                            <span class="ms-label" style="font-size:0.65rem;">${proj.industry}</span>
+                            <h4 style="font-size:1.1rem; font-weight:400; margin-top:4px;">${proj.brand}</h4>
+                        </div>
+                        <span class="ms-link-btn" style="font-size:0.75rem;">Explore</span>
+                    </div>
+                </div>
+            `).join('');
+
+            // Populate Shopify dev grid
+            const shopifyGrid = document.getElementById("shopifyGrid");
+            shopifyGrid.innerHTML = SHOPIFY_PROJECTS.map((proj, idx) => `
+                <div class="ms-shopify-card ${idx % 2 === 1 ? 'ms-offset-y' : ''}" onclick="openCaseStudy('${proj.id}', 'shopify')">
+                    <div class="ms-shopify-img-wrap">
+                        <img class="ms-shopify-img" src="${proj.img}" alt="${proj.brand}">
+                    </div>
+                    <div class="ms-shopify-meta">
+                        <div>
+                            <span class="ms-label" style="color:#777777;">${proj.industry}</span>
+                            <h4 style="font-size:1.3rem; font-weight:400; margin-top:6px; color:#000000;">${proj.brand}</h4>
+                        </div>
+                        <div style="text-align:right;">
+                            <span style="font-size:1.1rem; font-weight:500; display:block; color:#000000;">${proj.metric}</span>
+                            <span class="ms-label" style="font-size:0.65rem; color:#777777;">LOAD PERFORMANCE</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        /* ========================================== */
+        /* FULLSCREEN MAGAZINE MODAL CONTROLS */
+        /* ========================================== */
+        let currentOpenSource = null;
+        let currentOpenId = null;
+
+        function openCaseStudy(id, source) {
+            let project = null;
+            currentOpenSource = source;
+            currentOpenId = id;
+
+            if (source === 'featured') {
+                project = FEATURED_PROJECTS.find(p => p.id === id);
+            } else if (source === 'marketing') {
+                project = MARKETING_PROJECTS.find(p => p.id === id);
+            } else if (source === 'shopify') {
+                project = SHOPIFY_PROJECTS.find(p => p.id === id);
+            }
+
+            if (!project) return;
+
+            const modal = document.getElementById("caseModal");
+            const container = document.getElementById("modalContainer");
+
+            // Define next navigation target logically
+            let nextIndex = 0;
+            let sourceList = [];
+            if (source === 'featured') sourceList = FEATURED_PROJECTS;
+            else if (source === 'marketing') sourceList = MARKETING_PROJECTS;
+            else if (source === 'shopify') sourceList = SHOPIFY_PROJECTS;
+
+            const currentIndex = sourceList.findIndex(p => p.id === id);
+            nextIndex = (currentIndex + 1) % sourceList.length;
+            const nextProj = sourceList[nextIndex];
+
+            // Render Fullscreen Layout Content
+            container.innerHTML = `
+                <div class="ms-modal-header">
+                    <span class="ms-label">${project.industry} // SYSTEM REALIZATION</span>
+                    <h2 class="ms-display-text" style="font-size: clamp(2rem, 4.5vw, 4rem); font-weight:300; margin-top:16px; line-height:1.15;">
+                        ${project.brand} Architecture Evolution
+                    </h2>
+                </div>
+
+                <div class="ms-modal-hero-frame">
+                    <img src="${project.img}" alt="${project.brand}">
+                </div>
+
+                <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 40px; border-top:1px solid var(--border-alpha); border-bottom:1px solid var(--border-alpha); padding: 40px 0; margin-bottom: 60px;">
+                    <div>
+                        <span class="ms-label">TRACKED REALIZATION</span>
+                        <p style="font-size: 1.8rem; font-weight: 200; margin-top:10px;">${project.metric}</p>
+                    </div>
+                    <div>
+                        <span class="ms-label">ROLE SPECIFICATION</span>
+                        <p style="font-size: 1rem; font-weight: 300; margin-top:10px; color:var(--text-secondary);">${project.services || 'E-Commerce Engineering'}</p>
+                    </div>
+                    <div>
+                        <span class="ms-label">STACK METRICS</span>
+                        <div class="ms-modal-tech-pills">
+                            ${(project.tech || ['Shopify Engine', 'Analytics Routing']).map(t => `<span class="ms-tech-pill">${t}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ms-modal-editorial-grid">
+                    <div>
+                        <h4>The Scaling Barrier</h4>
+                        <p>${project.challenge || 'High performance traffic surges periodically destabilized checkout loading capabilities.'}</p>
+                    </div>
+                    <div>
+                        <h4>System Action Strategy</h4>
+                        <p>${project.solution || 'Re-architected presentation assets and server integrations, routing performance arrays directly over high-speed servers.'}</p>
+                    </div>
+                </div>
+
+                <div style="background-color:var(--bg-card); border:1px solid var(--border-alpha); padding:40px; margin-bottom:60px;">
+                    <span class="ms-label" style="display:block; margin-bottom:12px;">OUTCOME METRICS REPORT</span>
+                    <p class="ms-paragraph-editorial" style="max-width:100%; color:var(--text-primary); font-size:1.2rem;">
+                        ${project.results || 'Achieved absolute conversion stability and consistent return metrics throughout peak scaling periods.'}
+                    </p>
+                </div>
+
+                <div class="ms-modal-nav-bar">
+                    <a href="#" class="ms-link-btn" onclick="event.preventDefault(); window.open('https://messold.com', '_blank')">Visit Live Storefront</a>
+                    <button class="ms-link-btn" onclick="openCaseStudy('${nextProj.id}', '${source}')">Next Case: ${nextProj.brand} →</button>
+                </div>
+            `;
+
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden";
+            setTimeout(() => {
+                modal.classList.add("is-active");
+            }, 50);
+        }
+
+        function initModalCloseEvents() {
+            const modal = document.getElementById("caseModal");
+            document.getElementById("closeModalBtn").addEventListener("click", () => {
+                modal.classList.remove("is-active");
+                setTimeout(() => {
+                    modal.style.display = "none";
+                    document.body.style.overflow = "";
+                }, 500);
+            });
+
+            // Close on outer modal overlay click
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal) {
+                    document.getElementById("closeModalBtn").click();
+                }
+            });
+
+            // Escape key binding
+            window.addEventListener("keydown", (e) => {
+                if (e.key === "Escape" && modal.classList.contains("is-active")) {
+                    document.getElementById("closeModalBtn").click();
+                }
+            });
+        }
+
+        /* ========================================== */
+        /* CUSTOM INTERACTIVE LUXURY CURSOR SYSTEMS */
+        /* ========================================== */
+        function initLuxuryCursorEngine() {
+            const cursor = document.getElementById("customCursor");
+
+            window.addEventListener("mousemove", (e) => {
+                cursor.style.left = e.clientX + "px";
+                cursor.style.top = e.clientY + "px";
+            });
+
+            // Trigger visual transitions when hovering cards
+            document.body.addEventListener("mouseenter", (e) => {
+                if (e.target.closest && (e.target.closest(".ms-case-card") || e.target.closest(".ms-shopify-card"))) {
+                    cursor.style.transform = "translate(-50%, -50%) scale(1)";
+                }
+            }, true);
+
+            document.body.addEventListener("mouseleave", (e) => {
+                if (e.target.closest && (e.target.closest(".ms-case-card") || e.target.closest(".ms-shopify-card"))) {
+                    cursor.style.transform = "translate(-50%, -50%) scale(0)";
+                }
+            }, true);
+        }
+
+        /* ========================================== */
+        /* DIRECT SYSTEM INITIALIZATIONS RUNNERS */
+        /* ========================================== */
+        window.addEventListener("DOMContentLoaded", () => {
+            initStickyHeroEngine();
+            populateEditorialPortfolios();
+            initModalCloseEvents();
+            initLuxuryCursorEngine();
+        });
+    </script>
+</body>
+</html>

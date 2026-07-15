@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MESSOLD Shopify Pricing — Premium Shopify Storefronts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandDark: '#18181B', // Charcoal Black
+                        brandGray: '#27272A',
+                        brandLightGray: '#F4F4F5',
+                        brandBorder: '#E4E4E7',
+                        accentGreen: '#16A34A'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            animation: marquee 35s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body class="bg-white text-brandDark antialiased overflow-x-hidden">
+
+    <section class="relative bg-[#18181B] text-white pt-12 pb-14 lg:pt-16 lg:pb-20 overflow-hidden flex items-center min-h-[65vh] lg:min-h-[70vh]">
+        <div class="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-6 space-y-5 z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-xs font-medium tracking-wide text-zinc-300">
+                    <i data-lucide="verified" class="w-4 h-4 text-zinc-300"></i> Verified Shopify Partner
+                </div>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-tight">
+                    Transparent Shopify Pricing.<br>
+                    <span class="text-zinc-400 font-light">Built for Growing Brands.</span>
+                </h1>
+                <p class="text-zinc-400 text-base font-light max-w-lg leading-relaxed">
+                    Choose the right plan to launch, optimize, or scale your store. Straightforward pricing, complete milestone transparency, and zero hidden overheads.
+                </p>
+                <div class="flex flex-wrap gap-4 pt-2">
+                    <a href="#pricing-cards" class="px-6 py-3 bg-white text-brandDark hover:bg-zinc-200 transition font-medium text-xs rounded-md shadow-sm">
+                        Choose Your Plan
+                    </a>
+                    <a href="#comparison" class="px-6 py-3 border border-zinc-700 text-white hover:bg-white/10 transition font-medium text-xs rounded-md">
+                        Compare Features
+                    </a>
+                </div>
+            </div>
+
+            <div class="lg:col-span-6 relative h-[320px] sm:h-[400px] flex items-center justify-center select-none mt-8 lg:mt-0">
+                <div class="absolute w-[230px] sm:w-[260px] p-5 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl transition-transform hover:-translate-y-2 duration-300 transform translate-x-20 sm:translate-x-28 translate-y-8 rotate-6 z-10">
+                    <span class="text-[9px] uppercase tracking-widest font-semibold text-emerald-400">Website + Marketing</span>
+                    <h3 class="text-sm font-semibold mt-1">100% Cashback</h3>
+                    <div class="text-lg font-bold mt-2">₹1,45,000</div>
+                    <p class="text-zinc-500 text-[11px] mt-1 font-light">Complete build plus full marketing setup and strategy.</p>
+                </div>
+
+                <div class="absolute w-[230px] sm:w-[260px] p-5 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl transition-transform hover:-translate-y-2 duration-300 transform -translate-x-12 sm:-translate-x-16 -translate-y-6 -rotate-6 z-10">
+                    <span class="text-[9px] uppercase tracking-widest font-semibold text-zinc-400">High Growth</span>
+                    <h3 class="text-sm font-semibold mt-1">Revenue Growth</h3>
+                    <div class="text-lg font-bold mt-2">₹44,000</div>
+                    <p class="text-zinc-500 text-[11px] mt-1 font-light">For expanding brands looking to double speed metrics.</p>
+                </div>
+
+                <div class="absolute w-[230px] sm:w-[260px] p-5 bg-zinc-800 border border-zinc-700 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-transform hover:-translate-y-2 duration-300 transform translate-y-2 translate-x-4 z-20">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[9px] uppercase tracking-widest font-bold text-emerald-400">Recommended</span>
+                            <h3 class="text-base font-bold mt-1">Sales Booster</h3>
+                        </div>
+                        <span class="bg-emerald-500/10 text-emerald-400 text-[9px] px-2 py-0.5 rounded font-semibold">Popular</span>
+                    </div>
+                    <div class="text-xl font-bold mt-3">₹36,000</div>
+                    <p class="text-zinc-400 text-[11px] mt-1.5 font-light">Engineered to optimize user journeys and scaling metrics.</p>
+                </div>
+
+                <div class="absolute w-[210px] sm:w-[240px] p-5 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl transition-transform hover:-translate-y-2 duration-300 transform -translate-x-24 sm:-translate-x-32 translate-y-12 -rotate-12 z-15">
+                    <span class="text-[9px] uppercase tracking-widest font-semibold text-zinc-400">New Launch</span>
+                    <h3 class="text-xs font-semibold mt-1">Starter Launch</h3>
+                    <div class="text-base font-bold mt-2">₹28,000</div>
+                    <p class="text-zinc-500 text-[11px] mt-1 font-light">A structured baseline launchpad to start selling online.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="py-8 bg-white border-b border-brandBorder overflow-hidden relative">
+        <div class="absolute top-0 bottom-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+        <div class="absolute top-0 bottom-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 mb-3 text-center">
+            <p class="text-[10px] font-semibold tracking-widest text-zinc-400 uppercase">Trusted by Premium E-Commerce Innovators</p>
+        </div>
+
+        <div class="flex overflow-hidden select-none">
+            <div class="flex gap-16 items-center whitespace-nowrap animate-marquee">
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">OUD Studio</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Craftsmith</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Power Sutra</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Weaving Cult</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Harries</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Silk Berry</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Noise</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Leaf</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Mango</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Amara Herbs</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Kind Soul</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Fraternity & Co.</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">OUD Studio</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Craftsmith</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Power Sutra</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Weaving Cult</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Harries</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Silk Berry</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Noise</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Leaf</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Mango</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Amara Herbs</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Kind Soul</span>
+                <span class="text-zinc-400 font-medium text-sm tracking-widest uppercase">Fraternity & Co.</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing-cards" class="py-14 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <h2 class="text-2xl lg:text-3xl font-semibold tracking-tight text-brandDark">E-Commerce Development Packages</h2>
+                <p class="text-zinc-500 font-light text-sm mt-1.5">No complex setups. Pay for the scope that matches your scale.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+                
+                <div class="flex flex-col bg-white border border-brandBorder rounded-xl p-5 transition hover:shadow-md duration-300 relative">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-[10px] font-semibold tracking-wider text-zinc-400 uppercase">Starter</span>
+                        <span class="bg-zinc-100 text-zinc-600 text-[9px] px-2 py-0.5 rounded font-medium">⚡ 15 Days</span>
+                    </div>
+                    <h3 class="text-base font-bold text-brandDark">Starter Launch Plan</h3>
+                    <div class="mt-3 mb-4">
+                        <span class="text-2xl font-bold text-brandDark">₹28,000</span>
+                    </div>
+                    <p class="text-xs text-zinc-500 font-light leading-relaxed mb-4 min-h-[40px]">
+                        Perfect for early validation setups requiring immediate, straightforward market validation.
+                    </p>
+                    
+                    <div class="space-y-2 text-xs text-zinc-600 mb-6 flex-1">
+                        <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brandDark"></i> <span>Fully Functional Store</span></div>
+                        <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brandDark"></i> <span>Free Premium Theme Setup</span></div>
+                        <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brandDark"></i> <span>Basic Payment Integration</span></div>
+                    </div>
+
+                    <div class="pt-4 border-t border-zinc-100 space-y-3">
+                        <div class="text-[10px] text-zinc-500 font-medium">
+                            <span class="block"><strong>Best For:</strong> New retail concepts</span>
+                            <span class="block mt-1"><strong>Terms:</strong> 100% Advance Payment</span>
+                        </div>
+                        <a href="#consultation" class="block text-center py-2 bg-brandDark text-white hover:bg-zinc-800 transition font-medium text-xs rounded">
+                            Enquire Now
+                        </a>
+                        <a href="#comparison" class="block text-center text-[11px] text-zinc-500 hover:text-brandDark transition font-medium">
+                            Compare Plans
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-white border border-brandBorder rounded-xl p-5 transition hover:shadow-md duration-300 relative">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-[10px] font-semibold tracking-wider text-zinc-400 uppercase">Growth</span>
+                        <span class="bg-zinc-100 text-zinc-600 text-[9px] px-2 py-0.5 rounded font-medium">⚡ 30 Days</span>
+                    </div>
+                    <h3 class="text-base font-bold text-brandDark">Sales Booster Plan</h3>
+                    <div class="mt-3 mb-4">
+                        <span class="text-2xl font-bold text-brandDark">₹36,000</span>
+                    </div>
+                    <p class="text-xs text-zinc-500 font-light leading-relaxed mb-4 min-h-[40px]">
+                        Designed to immediately increase conversion speeds on current active marketing campaigns.
+                    </p>
+                    
+                    <div class="space-y-2 text-xs text-zinc-600 mb-6 flex-1">
+                        <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brandDark"></i> <span>Up to 25 SEO Products</span></div>
+                        <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brandDark"></i> <span>Meta Ads Setup Included</span></div>
+                        <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brandDark"></i> <span>WhatsApp Campaign Setup</span></div>
+                    </div>
+
+                    <div class="pt-4 border-t border-zinc-100 space-y-3">
+                        <div class="text-[10px] text-zinc-500 font-medium">
+                            <span class="block"><strong>Best For:</strong> Brands starting active marketing</span>
+                            <span class="block mt-1"><strong>Terms:</strong> 75 : 25 Split Payment</span>
+                        </div>
+                        <a href="#consultation" class="block text-center py-2 bg-brandDark text-white hover:bg-zinc-800 transition font-medium text-xs rounded">
+                            Enquire Now
+                        </a>
+                        <a href="#comparison" class="block text-center text-[11px] text-zinc-500 hover:text-brandDark transition font-medium">
+                            Compare Plans
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-white border-2 border-zinc-900 rounded-xl p-5 transition hover:shadow-lg duration-300 relative">
+                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-zinc-900 text-white text-[9px] tracking-widest font-bold px-2.5 py-0.5 rounded uppercase">
+                        ⭐ Recommended
+                    </div>
+                    <div class="flex justify-between items-center mb-3 mt-1.5">
+                        <span class="text-[10px] font-semibold tracking-wider text-emerald-600 uppercase">Pro Scale</span>
+                        <span class="bg-emerald-100 text-emerald-800 text-[9px] px-2 py-0.5 rounded font-medium">⚡ 45 Days</span>
+                    </div>
+                    <h3 class="text-base font-bold text-brandDark">Revenue Growth Plan</h3>
+                    <div class="mt-3 mb-4">
+                        <span class="text-2xl font-bold text-brandDark">₹44,000</span>
+                    </div>
+                    <p class="text-xs text-zinc-500 font-light leading-relaxed mb-4 min-h-[40px]">
+                        Full custom storefront overhaul built to support deep multi-channel expansion workflows.
+                    </p>
+                    
+                    <div class="space-y-2 text-xs text-zinc-600 mb-6 flex-1">
+                        <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> <span>Up to 50 SEO Products</span></div>
+                        <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> <span>Google Merchant Sync Setup</span></div>
+                        <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> <span>45 Days Free Post-Launch Support</span></div>
+                    </div>
+
+                    <div class="pt-4 border-t border-zinc-100 space-y-3">
+                        <div class="text-[10px] text-zinc-500 font-medium">
+                            <span class="block"><strong>Best For:</strong> High volume scale setup</span>
+                            <span class="block mt-1"><strong>Terms:</strong> 50 : 50 Split Payment</span>
+                        </div>
+                        <a href="#consultation" class="block text-center py-2 bg-emerald-600 hover:bg-emerald-700 text-white transition font-semibold text-xs rounded">
+                            Enquire Now
+                        </a>
+                        <a href="#comparison" class="block text-center text-[11px] text-zinc-500 hover:text-brandDark transition font-medium">
+                            Compare Plans
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-white border border-brandBorder rounded-xl p-5 transition hover:shadow-md duration-300 relative">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-[10px] font-semibold tracking-wider text-zinc-400 uppercase">Enterprise</span>
+                        <span class="bg-zinc-100 text-zinc-600 text-[9px] px-2 py-0.5 rounded font-medium">⚡ Custom Timeline</span>
+                    </div>
+                    <h3 class="text-base font-bold text-brandDark">100% Cashback Plan</h3>
+                    <div class="mt-3 mb-4">
+                        <span class="text-2xl font-bold text-brandDark">₹1,45,000</span>
+                    </div>
+                    <p class="text-xs text-zinc-500 font-light leading-relaxed mb-4 min-h-[40px]">
+                        Fully aligned operational setup with design + active performance marketing implementation.
+                    </p>
+                    
+                    <div class="space-y-2 text-xs text-zinc-600 mb-6 flex-1">
+                        <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brandDark"></i> <span>Premium Storefront Build</span></div>
+                        <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brandDark"></i> <span>Full Media Buying Campaign</span></div>
+                        <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brandDark"></i> <span>180 Days Active Maintenance</span></div>
+                    </div>
+
+                    <div class="pt-4 border-t border-zinc-100 space-y-3">
+                        <div class="text-[10px] text-zinc-500 font-medium">
+                            <span class="block"><strong>Best For:</strong> High growth brands seeking zero-risk</span>
+                            <span class="block mt-1"><strong>Terms:</strong> Performance-Backed</span>
+                        </div>
+                        <a href="#consultation" class="block text-center py-2 bg-brandDark text-white hover:bg-zinc-800 transition font-medium text-xs rounded">
+                            Enquire Now
+                        </a>
+                        <a href="#comparison" class="block text-center text-[11px] text-zinc-500 hover:text-brandDark transition font-medium">
+                            Compare Plans
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="comparison" class="py-14 bg-white border-t border-brandBorder">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <h2 class="text-2xl font-semibold tracking-tight text-brandDark">Every Feature Compared Clearly</h2>
+                <p class="text-zinc-500 font-light text-sm mt-1.5">Direct spreadsheet data mapping. Zero hidden specifications.</p>
+            </div>
+
+            <div class="border border-brandBorder rounded-lg overflow-x-auto shadow-sm">
+                <table class="w-full text-left border-collapse min-w-[700px]">
+                    <thead>
+                        <tr class="bg-zinc-50 border-b border-brandBorder text-[10px] uppercase tracking-wider text-zinc-600 font-semibold sticky top-0 bg-white z-10">
+                            <th class="p-3.5 sticky left-0 bg-zinc-50 min-w-[220px]">Structural Features</th>
+                            <th class="p-3.5 text-center">Starter</th>
+                            <th class="p-3.5 text-center">Sales Booster</th>
+                            <th class="p-3.5 text-center bg-zinc-100/50">Revenue Growth</th>
+                            <th class="p-3.5 text-center">100% Cashback</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-brandBorder text-xs text-zinc-700">
+                        <tr class="hover:bg-zinc-50/50 transition-colors">
+                            <td class="p-3.5 font-medium sticky left-0 bg-white">Shopify Theme Setup</td>
+                            <td class="p-3.5 text-center text-emerald-600 font-medium">Free Premium Theme</td>
+                            <td class="p-3.5 text-center text-emerald-600 font-medium">Free Premium Theme</td>
+                            <td class="p-3.5 text-center text-emerald-600 font-semibold bg-zinc-100/50">Free Premium Theme</td>
+                            <td class="p-3.5 text-center text-emerald-600 font-medium">Free Premium Theme</td>
+                        </tr>
+                        <tr class="hover:bg-zinc-50/50 transition-colors">
+                            <td class="p-3.5 font-medium sticky left-0 bg-white">Mobile Friendly Layout</td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center bg-zinc-100/50"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                        </tr>
+                        <tr class="hover:bg-zinc-50/50 transition-colors">
+                            <td class="p-3.5 font-medium sticky left-0 bg-white">Payment Integration</td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center bg-zinc-100/50"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                        </tr>
+                        <tr class="hover:bg-zinc-50/50 transition-colors">
+                            <td class="p-3.5 font-medium sticky left-0 bg-white">Multi-Currency Ready</td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center bg-zinc-100/50"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                        </tr>
+                        <tr class="hover:bg-zinc-50/50 transition-colors">
+                            <td class="p-3.5 font-medium sticky left-0 bg-white">SEO Friendly Schema</td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center bg-zinc-100/50"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                        </tr>
+                        <tr class="hover:bg-zinc-50/50 transition-colors">
+                            <td class="p-3.5 font-medium sticky left-0 bg-white">Product Listing</td>
+                            <td class="p-3.5 text-center text-zinc-400">—</td>
+                            <td class="p-3.5 text-center text-zinc-800">Up to 25</td>
+                            <td class="p-3.5 text-center text-zinc-800 bg-zinc-100/50 font-medium">Up to 50</td>
+                            <td class="p-3.5 text-center text-zinc-800">Up to 50</td>
+                        </tr>
+                        <tr class="hover:bg-zinc-50/50 transition-colors">
+                            <td class="p-3.5 font-medium sticky left-0 bg-white">Free Support Period</td>
+                            <td class="p-3.5 text-center">15 Days</td>
+                            <td class="p-3.5 text-center">30 Days</td>
+                            <td class="p-3.5 text-center bg-zinc-100/50">45 Days</td>
+                            <td class="p-3.5 text-center font-medium text-emerald-600">180 Days</td>
+                        </tr>
+
+                        <tr id="extended-row-1" class="hidden">
+                            <td class="p-3.5 font-medium sticky left-0 bg-white">Abandoned Cart Email Setup</td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center bg-zinc-100/50"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                        </tr>
+                        <tr id="extended-row-2" class="hidden">
+                            <td class="p-3.5 font-medium sticky left-0 bg-white">FB & Meta Ads Setup</td>
+                            <td class="p-3.5 text-center text-zinc-500">₹2,500 extra</td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center bg-zinc-100/50"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                        </tr>
+                        <tr id="extended-row-3" class="hidden">
+                            <td class="p-3.5 font-medium sticky left-0 bg-white">Google Ads Setup</td>
+                            <td class="p-3.5 text-center text-zinc-500">₹5,000 extra</td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center bg-zinc-100/50"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                        </tr>
+                        <tr id="extended-row-4" class="hidden">
+                            <td class="p-3.5 font-medium sticky left-0 bg-white">GA4 Analytics</td>
+                            <td class="p-3.5 text-center text-zinc-500">₹2,500 extra</td>
+                            <td class="p-3.5 text-center text-zinc-500">₹2,500 extra</td>
+                            <td class="p-3.5 text-center bg-zinc-100/50"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                        </tr>
+                        <tr id="extended-row-5" class="hidden">
+                            <td class="p-3.5 font-medium sticky left-0 bg-white">WhatsApp Funnel Setup</td>
+                            <td class="p-3.5 text-center text-zinc-500 font-medium">₹5,000 extra</td>
+                            <td class="p-3.5 text-center text-zinc-500 font-medium">₹5,000 extra</td>
+                            <td class="p-3.5 text-center bg-zinc-100/50 text-zinc-500 font-medium">₹5,000 extra</td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                        </tr>
+                        <tr id="extended-row-6" class="hidden">
+                            <td class="p-3.5 font-medium sticky left-0 bg-white">3-Month Free Marketing Strategy</td>
+                            <td class="p-3.5 text-center text-zinc-500 font-medium">₹5,000 extra</td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center bg-zinc-100/50"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                            <td class="p-3.5 text-center"><i data-lucide="check" class="w-4 h-4 mx-auto text-emerald-600"></i></td>
+                        </tr>
+                        <tr id="extended-row-7" class="hidden">
+                            <td class="p-3.5 font-medium sticky left-0 bg-white">Payment Splits</td>
+                            <td class="p-3.5 text-center text-[10px] text-zinc-500 font-medium">100% Advance</td>
+                            <td class="p-3.5 text-center text-[10px] text-zinc-500 font-semibold">75 : 25</td>
+                            <td class="p-3.5 text-center bg-zinc-100/50 text-[10px] text-zinc-600 font-semibold">50 : 50</td>
+                            <td class="p-3.5 text-center text-[10px] text-zinc-500 font-semibold">50 : 50</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="bg-zinc-50 p-3 text-center border-t border-brandBorder">
+                    <button id="toggle-table" onclick="toggleTableDetails()" class="inline-flex items-center gap-1.5 text-zinc-800 hover:text-black font-semibold text-xs tracking-wide">
+                        <span>View Full Comparison</span>
+                        <i id="toggle-table-icon" data-lucide="chevron-down" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-14 bg-brandDark text-white">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-8">
+                <span class="text-xs uppercase tracking-wider text-emerald-400 font-semibold">Self Assessment</span>
+                <h2 class="text-2xl font-semibold tracking-tight mt-1">Configure Your Shopify Plan</h2>
+                <p class="text-zinc-400 font-light text-xs mt-1">Select your exact business targets below to reveal your ideal plan direction.</p>
+            </div>
+
+            <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 sm:p-8 space-y-6">
+                <div>
+                    <label class="block text-xs text-zinc-400 font-medium mb-2.5">What best describes your current business stage?</label>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <button onclick="setConfigOption('stage', 'starter', this)" class="config-stage-btn border border-zinc-700 bg-zinc-800 hover:border-zinc-500 py-2.5 px-3 rounded text-xs text-center font-medium transition">
+                            Starting Out (0-1)
+                        </button>
+                        <button onclick="setConfigOption('stage', 'booster', this)" class="config-stage-btn border border-zinc-700 bg-zinc-800 hover:border-zinc-500 py-2.5 px-3 rounded text-xs text-center font-medium transition">
+                            Growing (1-10)
+                        </button>
+                        <button onclick="setConfigOption('stage', 'revenue', this)" class="config-stage-btn border border-zinc-700 bg-zinc-800 hover:border-zinc-500 py-2.5 px-3 rounded text-xs text-center font-medium transition">
+                            Scaling (10-50)
+                        </button>
+                        <button onclick="setConfigOption('stage', 'cashback', this)" class="config-stage-btn border border-zinc-700 bg-zinc-800 hover:border-zinc-500 py-2.5 px-3 rounded text-xs text-center font-medium transition">
+                            Established (50+)
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-zinc-400 font-medium mb-2.5">Do you require performance marketing systems integrated?</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <button onclick="setConfigOption('marketing', 'no', this)" class="config-mkt-btn border border-zinc-700 bg-zinc-800 hover:border-zinc-500 py-2.5 px-3 rounded text-xs text-center font-medium transition">
+                            Development Only
+                        </button>
+                        <button onclick="setConfigOption('marketing', 'yes', this)" class="config-mkt-btn border border-zinc-700 bg-zinc-800 hover:border-zinc-500 py-2.5 px-3 rounded text-xs text-center font-medium transition">
+                            Full Marketing & Dev Integration
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-zinc-800/50 border border-zinc-800 rounded-lg p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-[9px] uppercase tracking-widest text-zinc-400 font-bold block">Recommended Asset Path</span>
+                        <h4 id="config-result-title" class="text-base font-bold text-white mt-0.5">Sales Booster Blueprint</h4>
+                        <p id="config-result-desc" class="text-xs text-zinc-400 font-light mt-1">Includes core storefront development plus organic funnel configurations.</p>
+                    </div>
+                    <a href="#consultation" class="bg-emerald-600 hover:bg-emerald-700 transition text-white font-semibold text-xs py-2.5 px-5 rounded-md text-center">
+                        Proceed with This Plan
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-14 bg-white">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl font-semibold tracking-tight text-brandDark">Add-On Service Catalogue</h2>
+                <p class="text-zinc-500 font-light text-sm mt-1">Upgrade your base build cleanly with modular upgrades designed specifically for conversion scaling.</p>
+            </div>
+
+            <div class="bg-white border border-brandBorder rounded-lg divide-y divide-brandBorder shadow-sm">
+                
+                <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-zinc-50/40 transition">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h4 class="text-sm font-semibold text-zinc-900">Expert UI/UX Design Redesign</h4>
+                            <span class="text-[9px] font-bold text-zinc-400 tracking-wider uppercase">Conversion Opt</span>
+                        </div>
+                        <p class="text-xs text-zinc-500 font-light mt-0.5">Designing clean, modern, and conversion-focused interfaces to scale your identity.</p>
+                    </div>
+                    <div class="flex items-center gap-3 self-end sm:self-center shrink-0">
+                        <span class="text-xs font-semibold text-zinc-800 bg-zinc-100 px-2.5 py-1 rounded">₹10,000</span>
+                        <a href="#consultation" class="border border-brandDark text-brandDark hover:bg-zinc-50 transition px-3 py-1 text-xs font-medium rounded">Enquire</a>
+                    </div>
+                </div>
+
+                <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-zinc-50/40 transition">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h4 class="text-sm font-semibold text-zinc-900">Custom Creative Banner Packs</h4>
+                            <span class="text-[9px] font-bold text-zinc-400 tracking-wider uppercase">Design Asset</span>
+                        </div>
+                        <p class="text-xs text-zinc-500 font-light mt-0.5">Professionally designed banners for your desktop & mobile screens to capture user flow.</p>
+                    </div>
+                    <div class="flex items-center gap-3 self-end sm:self-center shrink-0">
+                        <span class="text-xs font-semibold text-zinc-800 bg-zinc-100 px-2.5 py-1 rounded">₹800 - ₹1250</span>
+                        <a href="#consultation" class="border border-brandDark text-brandDark hover:bg-zinc-50 transition px-3 py-1 text-xs font-medium rounded">Enquire</a>
+                    </div>
+                </div>
+
+                <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-zinc-50/40 transition">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h4 class="text-sm font-semibold text-zinc-900">Dynamic Motion GIFs & Videos</h4>
+                            <span class="text-[9px] font-bold text-zinc-400 tracking-wider uppercase">Media Boost</span>
+                        </div>
+                        <p class="text-xs text-zinc-500 font-light mt-0.5">Creation of engaging custom animations/explainer loops for product usage storytelling.</p>
+                    </div>
+                    <div class="flex items-center gap-3 self-end sm:self-center shrink-0">
+                        <span class="text-xs font-semibold text-zinc-800 bg-zinc-100 px-2.5 py-1 rounded">On Request</span>
+                        <a href="#consultation" class="border border-brandDark text-brandDark hover:bg-zinc-50 transition px-3 py-1 text-xs font-medium rounded">Enquire</a>
+                    </div>
+                </div>
+
+                <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-zinc-50/40 transition">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h4 class="text-sm font-semibold text-zinc-900">SEO Optimized Product Listings</h4>
+                            <span class="text-[9px] font-bold text-emerald-600 tracking-wider uppercase">Visibility</span>
+                        </div>
+                        <p class="text-xs text-zinc-500 font-light mt-0.5">Comprehensive structuring and listing setup to maximize organic search discoveries.</p>
+                    </div>
+                    <div class="flex items-center gap-3 self-end sm:self-center shrink-0">
+                        <span class="text-xs font-semibold text-zinc-800 bg-zinc-100 px-2.5 py-1 rounded">₹75 / product</span>
+                        <a href="#consultation" class="border border-brandDark text-brandDark hover:bg-zinc-50 transition px-3 py-1 text-xs font-medium rounded">Enquire</a>
+                    </div>
+                </div>
+
+                <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-zinc-50/40 transition">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h4 class="text-sm font-semibold text-zinc-900">Brand Name Search Engine Dominance</h4>
+                            <span class="text-[9px] font-bold text-zinc-400 tracking-wider uppercase">Marketing</span>
+                        </div>
+                        <p class="text-xs text-zinc-500 font-light mt-0.5">Guaranteed page index control on Google when buyers look up your specific direct brand.</p>
+                    </div>
+                    <div class="flex items-center gap-3 self-end sm:self-center shrink-0">
+                        <span class="text-xs font-semibold text-zinc-800 bg-zinc-100 px-2.5 py-1 rounded">₹10,000 / store</span>
+                        <a href="#consultation" class="border border-brandDark text-brandDark hover:bg-zinc-50 transition px-3 py-1 text-xs font-medium rounded">Enquire</a>
+                    </div>
+                </div>
+
+                <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-zinc-50/40 transition">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h4 class="text-sm font-semibold text-zinc-900">Product Review & Social Proof Sync</h4>
+                            <span class="text-[9px] font-bold text-zinc-400 tracking-wider uppercase">Social Proof</span>
+                        </div>
+                        <p class="text-xs text-zinc-500 font-light mt-0.5">Authentic import, parsing, and advanced formatting of reviews to build trust metrics.</p>
+                    </div>
+                    <div class="flex items-center gap-3 self-end sm:self-center shrink-0">
+                        <span class="text-xs font-semibold text-zinc-800 bg-zinc-100 px-2.5 py-1 rounded">₹15 - ₹25 / review</span>
+                        <a href="#consultation" class="border border-brandDark text-brandDark hover:bg-zinc-50 transition px-3 py-1 text-xs font-medium rounded">Enquire</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-brandDark text-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-[10px] tracking-widest font-bold text-emerald-400 uppercase">Proven Case Studies</span>
+                <h2 class="text-2xl font-semibold tracking-tight mt-1">Real Growth Achieved by Real Brands</h2>
+                <p class="text-zinc-400 font-light text-xs mt-1.5">No decorative vanity metrics. Just validated Shopify storefront outcomes.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                <div class="lg:col-span-7 bg-zinc-900 border border-zinc-800 rounded-xl p-8 flex flex-col justify-between transition hover:border-zinc-700 duration-300">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-semibold text-emerald-400 tracking-wider">LUMEN WELLNESS</span>
+                            <span class="bg-emerald-500/15 text-emerald-400 text-[10px] px-2.5 py-1 rounded font-bold uppercase">+88% ROI Growth</span>
+                        </div>
+                        <h3 class="text-xl lg:text-2xl font-semibold mb-3 tracking-tight">Streamlining Checkout Friction for Premium Direct Orders</h3>
+                        <p class="text-zinc-400 text-xs font-light leading-relaxed mb-6">
+                            Lumen Wellness required a seamless checkout setup targeted specifically toward mobile-first checkout paths. By configuring custom page segments, we optimized load speeds by 40% across initial buyer catalogs.
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-4 border-t border-zinc-800 pt-5 mt-4">
+                        <div>
+                            <div class="text-lg font-bold text-white">+88%</div>
+                            <div class="text-[10px] text-zinc-500 font-semibold uppercase">ROI Return</div>
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold text-white">1.8s</div>
+                            <div class="text-[10px] text-zinc-500 font-semibold uppercase">Load Speed</div>
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold text-white">14 Days</div>
+                            <div class="text-[10px] text-zinc-500 font-semibold uppercase">Build Time</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 flex flex-col gap-6">
+                    <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 flex flex-col justify-between transition hover:border-zinc-700 duration-300 flex-1">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[10px] font-bold text-zinc-400 uppercase">OUD Studio</span>
+                                <span class="text-emerald-400 text-[10px] font-bold bg-emerald-500/10 px-2 py-0.5 rounded">3.2x Conversions</span>
+                            </div>
+                            <h4 class="text-sm font-semibold">Luxury Fragrances Catalog Launch</h4>
+                            <p class="text-zinc-500 text-xs font-light mt-1">Rebuilt their customized Shopify setup from scratch using flexible theme frameworks, allowing fast internal content variations.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 flex flex-col justify-between transition hover:border-zinc-700 duration-300 flex-1">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[10px] font-bold text-zinc-400 uppercase">Craftsmith</span>
+                                <span class="text-emerald-400 text-[10px] font-bold bg-emerald-500/10 px-2 py-0.5 rounded">+115% Active Orders</span>
+                            </div>
+                            <h4 class="text-sm font-semibold">Responsive Apparel Scaling</h4>
+                            <p class="text-zinc-500 text-xs font-light mt-1">Clean checkout pathways integrated alongside a high-converting WhatsApp marketing sequence directly configured into Shopify cart triggers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-10">
+                <span class="text-xs uppercase tracking-widest font-semibold text-zinc-400">Merchant Reviews</span>
+                <h2 class="text-2xl font-semibold mt-1">What Our Partners Experience</h2>
+            </div>
+
+            <div class="bg-zinc-50/50 border border-brandBorder rounded-2xl p-6 lg:p-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    
+                    <div class="lg:col-span-7 aspect-video bg-zinc-950 rounded-xl overflow-hidden relative flex items-center justify-center group cursor-pointer shadow-md">
+                        <div class="absolute inset-0 bg-zinc-900/40 group-hover:bg-zinc-900/20 transition-all"></div>
+                        <div class="w-12 h-12 bg-white text-zinc-950 flex items-center justify-center rounded-full shadow-lg z-10 transition-transform group-hover:scale-110">
+                            <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5 text-zinc-900"></i>
+                        </div>
+                        <span id="current-testimonial-video-desc" class="absolute bottom-4 left-4 text-[10px] text-zinc-200 tracking-wider bg-black/50 px-2.5 py-1 rounded font-medium">Watch OUD Studio Video Review (1:45)</span>
+                    </div>
+
+                    <div class="lg:col-span-5 flex flex-col justify-between h-full space-y-5">
+                        <div class="space-y-3">
+                            <div class="flex gap-1 text-emerald-600">
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                            </div>
+                            <blockquote id="testimonial-quote" class="text-sm lg:text-base text-zinc-800 font-light leading-relaxed italic">
+                                "MESSOLD completely transformed our e-commerce storefront. Our website load speed dropped down to 2.1 seconds immediately, bringing a dramatic drop-off reduction."
+                            </blockquote>
+                            <div>
+                                <p id="testimonial-author" class="text-xs font-bold text-zinc-950">Pradeep Kumar</p>
+                                <p id="testimonial-role" class="text-[10px] text-zinc-400 uppercase font-semibold">Founder, OUD Studio</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="text-[10px] uppercase tracking-wider text-zinc-400 font-bold mb-2">Select Video Review</p>
+                            <div class="flex gap-3">
+                                <button onclick="selectTestimonial('oud')" class="w-12 h-12 rounded border-2 border-brandDark overflow-hidden focus:outline-none transition shrink-0">
+                                    <div class="bg-zinc-300 w-full h-full flex items-center justify-center text-[10px] font-bold">OUD</div>
+                                </button>
+                                <button onclick="selectTestimonial('craft')" class="w-12 h-12 rounded border border-zinc-200 overflow-hidden focus:outline-none hover:border-zinc-400 transition shrink-0">
+                                    <div class="bg-zinc-300 w-full h-full flex items-center justify-center text-[10px] font-bold">CRA</div>
+                                </button>
+                                <button onclick="selectTestimonial('power')" class="w-12 h-12 rounded border border-zinc-200 overflow-hidden focus:outline-none hover:border-zinc-400 transition shrink-0">
+                                    <div class="bg-zinc-300 w-full h-full flex items-center justify-center text-[10px] font-bold">POW</div>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white border-t border-brandBorder">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <div class="lg:col-span-4 lg:sticky lg:top-8 self-start space-y-3">
+                    <span class="text-xs uppercase tracking-widest font-semibold text-emerald-600">Quick Answers</span>
+                    <h2 class="text-2xl font-semibold tracking-tight text-brandDark">Pricing & Delivery FAQs</h2>
+                    <p class="text-zinc-500 text-xs font-light leading-relaxed">
+                        Have queries regarding pricing milestones, custom scopes, or storefront transfers? Learn how we structure our workflows.
+                    </p>
+                </div>
+
+                <div class="lg:col-span-8 divide-y divide-zinc-200">
+                    
+                    <div class="py-4">
+                        <button onclick="toggleFaq(1)" class="w-full flex justify-between items-center text-left focus:outline-none">
+                            <span class="text-xs font-semibold text-zinc-950">Which package should I choose?</span>
+                            <i id="faq-icon-1" data-lucide="plus" class="w-4 h-4 text-zinc-500 transition-transform"></i>
+                        </button>
+                        <div id="faq-answer-1" class="hidden mt-2 text-xs text-zinc-500 font-light leading-relaxed">
+                            For new storefronts testing the market, choose the **Starter Launch**. If you are running performance ads, choose the **Sales Booster** or **Revenue Growth** for full integrations and catalog SEO ready schemas.
+                        </div>
+                    </div>
+
+                    <div class="py-4">
+                        <button onclick="toggleFaq(2)" class="w-full flex justify-between items-center text-left focus:outline-none">
+                            <span class="text-xs font-semibold text-zinc-950">Can I customize a specific package?</span>
+                            <i id="faq-icon-2" data-lucide="plus" class="w-4 h-4 text-zinc-500 transition-transform"></i>
+                        </button>
+                        <div id="faq-answer-2" class="hidden mt-2 text-xs text-zinc-500 font-light leading-relaxed">
+                            Yes. You can start with any base development layout and add expert UI redesigns, customized product listings, or translation setups from our Service Catalog.
+                        </div>
+                    </div>
+
+                    <div class="py-4">
+                        <button onclick="toggleFaq(3)" class="w-full flex justify-between items-center text-left focus:outline-none">
+                            <span class="text-xs font-semibold text-zinc-950">How long does custom store development take?</span>
+                            <i id="faq-icon-3" data-lucide="plus" class="w-4 h-4 text-zinc-500 transition-transform"></i>
+                        </button>
+                        <div id="faq-answer-3" class="hidden mt-2 text-xs text-zinc-500 font-light leading-relaxed">
+                            A Starter build takes **15 Days**, Sales Booster takes **30 Days**, and Revenue Growth is finalized and deployed within **45 Days**.
+                        </div>
+                    </div>
+
+                    <div class="py-4">
+                        <button onclick="toggleFaq(4)" class="w-full flex justify-between items-center text-left focus:outline-none">
+                            <span class="text-xs font-semibold text-zinc-950">Are there any hidden licensing or platform fees?</span>
+                            <i id="faq-icon-4" data-lucide="plus" class="w-4 h-4 text-zinc-500 transition-transform"></i>
+                        </button>
+                        <div id="faq-answer-4" class="hidden mt-2 text-xs text-zinc-500 font-light leading-relaxed">
+                            No. You get flat, completely upfront pricing. Premium Shopify themes valued at ₹35,000 are integrated for free. You only pay for active platform hosting directly to Shopify.
+                        </div>
+                    </div>
+
+                    <div class="py-4">
+                        <button onclick="toggleFaq(5)" class="w-full flex justify-between items-center text-left focus:outline-none">
+                            <span class="text-xs font-semibold text-zinc-950">What are the precise payment terms?</span>
+                            <i id="faq-icon-5" data-lucide="plus" class="w-4 h-4 text-zinc-500 transition-transform"></i>
+                        </button>
+                        <div id="faq-answer-5" class="hidden mt-2 text-xs text-zinc-500 font-light leading-relaxed">
+                            Payment terms scale dynamically by tier: Starter is 100% advance; Sales Booster is 75:25 milestone split; Revenue Growth is 50:50.
+                        </div>
+                    </div>
+
+                    <div class="py-4">
+                        <button onclick="toggleFaq(6)" class="w-full flex justify-between items-center text-left focus:outline-none">
+                            <span class="text-xs font-semibold text-zinc-950">Do you support Shopify Plus layouts or international brands?</span>
+                            <i id="faq-icon-6" data-lucide="plus" class="w-4 h-4 text-zinc-500 transition-transform"></i>
+                        </button>
+                        <div id="faq-answer-6" class="hidden mt-2 text-xs text-zinc-500 font-light leading-relaxed">
+                            Yes. We deploy advanced multi-currency engines, customized checkout configurations, and handle complete transfers to global markets.
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="consultation" class="py-14 bg-zinc-50">
+        <div class="max-w-5xl mx-auto px-6">
+            
+            <div class="bg-white border border-brandBorder rounded-2xl p-6 sm:p-10 shadow-sm relative overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    
+                    <div class="lg:col-span-7 space-y-4">
+                        <span class="text-xs uppercase tracking-wider font-semibold text-emerald-600">Secure Consultation</span>
+                        <h2 class="text-2xl lg:text-3xl font-semibold tracking-tight text-brandDark leading-tight">Ready to Build Something That Converts?</h2>
+                        <p class="text-zinc-500 text-xs font-light leading-relaxed max-w-md">
+                            Connect directly with our backend development leads. We verify your asset pipeline and design specifications before any build codes begin.
+                        </p>
+                        
+                        <div class="pt-2 space-y-2 text-xs text-zinc-600">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="mail" class="w-4 h-4 text-zinc-400"></i>
+                                <span>Direct Mail: <strong class="text-brandDark">hello@messold.com</strong></span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="clock" class="w-4 h-4 text-zinc-400"></i>
+                                <span>Avg Response: <strong>Under 3 Hours</strong></span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
+                                <span class="text-emerald-700">Approval from Backend Team is guaranteed before starting.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 bg-zinc-50 border border-brandBorder rounded-xl p-6">
+                        <h4 class="text-xs font-bold tracking-wide text-zinc-800 uppercase mb-3">Request Strategy Proposal</h4>
+                        <form class="space-y-3" onsubmit="event.preventDefault(); alert('Proposal request accepted. Our tech lead will connect in under 3 hours.');">
+                            <div>
+                                <label class="block text-[10px] text-zinc-500 uppercase font-semibold mb-1">Brand/Business Name</label>
+                                <input type="text" placeholder="e.g. OUD Studio" required class="w-full bg-white border border-zinc-200 text-zinc-900 rounded p-2 text-xs focus:outline-none focus:border-brandDark">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-zinc-500 uppercase font-semibold mb-1">Plan of Choice</label>
+                                <select class="w-full bg-white border border-zinc-200 text-zinc-800 rounded p-2 text-xs focus:outline-none focus:border-brandDark">
+                                    <option>Starter Launch Plan (₹28,000)</option>
+                                    <option selected>Sales Booster Plan (₹36,000)</option>
+                                    <option>Revenue Growth Plan (₹44,000)</option>
+                                    <option>100% Cashback Plan (₹1,45,000)</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white transition font-semibold text-xs tracking-wider uppercase rounded shadow-sm mt-2">
+                                Book Strategy Session
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="bg-brandDark text-zinc-500 py-6 border-t border-zinc-800 text-xs">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p>© 2026 MESSOLD. Certified Shopify Partners.</p>
+            <div class="flex gap-4">
+                <a href="https://www.shopify.com/partners/directory/partner/messold" target="_blank" class="hover:text-white transition">Shopify Partner Profile</a>
+                <a href="#pricing-cards" class="hover:text-white transition">T&C</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // 1. Comparison Table Expand/Collapse Toggle
+        function toggleTableDetails() {
+            const toggleIcon = document.getElementById('toggle-table-icon');
+            const buttonText = document.querySelector('#toggle-table span');
+            const totalRows = 7; // Number of hidden rows
+
+            let isHidden = true;
+            for(let i=1; i<=totalRows; i++) {
+                const row = document.getElementById(`extended-row-${i}`);
+                if (row) {
+                    if (row.classList.contains('hidden')) {
+                        row.classList.remove('hidden');
+                    } else {
+                        row.classList.add('hidden');
+                        isHidden = false;
+                    }
+                }
+            }
+
+            if (isHidden) {
+                buttonText.innerText = "Hide Full Comparison";
+                toggleIcon.setAttribute('data-lucide', 'chevron-up');
+            } else {
+                buttonText.innerText = "View Full Comparison";
+                toggleIcon.setAttribute('data-lucide', 'chevron-down');
+            }
+            lucide.createIcons();
+        }
+
+        // 2. Interactive Configurator Selection Flow
+        let selections = {
+            stage: 'booster',
+            marketing: 'yes'
+        };
+
+        function setConfigOption(type, value, btnElement) {
+            // Unhighlight all relative buttons
+            const className = type === 'stage' ? 'config-stage-btn' : 'config-mkt-btn';
+            document.querySelectorAll(`.${className}`).forEach(btn => {
+                btn.classList.remove('border-emerald-500', 'bg-emerald-950/20');
+                btn.classList.add('border-zinc-700', 'bg-zinc-800');
+            });
+
+            // Highlight selected button
+            btnElement.classList.add('border-emerald-500', 'bg-emerald-950/20');
+            btnElement.classList.remove('border-zinc-700', 'bg-zinc-800');
+
+            selections[type] = value;
+            evaluateConfiguration();
+        }
+
+        function evaluateConfiguration() {
+            const titleEl = document.getElementById('config-result-title');
+            const descEl = document.getElementById('config-result-desc');
+
+            if (selections.stage === 'starter' && selections.marketing === 'no') {
+                titleEl.innerText = "Starter Launch Plan (₹28,000)";
+                descEl.innerText = "Includes complete core store validation setup ready for fast launch processes.";
+            } else if (selections.stage === 'starter' || selections.stage === 'booster') {
+                if (selections.marketing === 'yes') {
+                    titleEl.innerText = "Sales Booster Plan (₹36,000)";
+                    descEl.innerText = "Adds automated user flow optimizations plus fully integrated Meta advertising campaign pipelines.";
+                } else {
+                    titleEl.innerText = "Starter Launch + Customize";
+                    descEl.innerText = "A modular setup with precise, flexible custom integrations tailored precisely to your budget limits.";
+                }
+            } else if (selections.stage === 'revenue' || selections.marketing === 'yes') {
+                titleEl.innerText = "Revenue Growth Plan (₹44,000)";
+                descEl.innerText = "Includes optimized product structuring layouts, detailed analytics tracking pipelines, and active marketing integrations.";
+            } else {
+                titleEl.innerText = "100% Cashback Plan (₹1,45,000)";
+                descEl.innerText = "Advanced performance-backed setup, complete custom layouts, and comprehensive post-launch campaign management structures.";
+            }
+        }
+
+        // 3. Testimonial Video Switcher
+        const reviews = {
+            oud: {
+                quote: `"MESSOLD completely transformed our e-commerce storefront. Our website load speed dropped down to 2.1 seconds immediately, bringing a dramatic drop-off reduction."`,
+                author: "Pradeep Kumar",
+                role: "Founder, OUD Studio",
+                videoDesc: "Watch OUD Studio Video Review (1:45)"
+            },
+            craft: {
+                quote: `"The development speed was exceptional. Our mobile conversion rates shot up over 115% during our high-traffic summer collection launch campaign."`,
+                author: "Arjun Mehta",
+                role: "Operations Head, Craftsmith",
+                videoDesc: "Watch Craftsmith Video Review (2:10)"
+            },
+            power: {
+                quote: `"Absolute professional transparency from day one. Zero hidden margins. Booking strategy and payout phases occurred precisely to our scheduled project plan."`,
+                author: "Sonia Sen",
+                role: "Co-Founder, Power Sutra",
+                videoDesc: "Watch Power Sutra Video Review (1:30)"
+            }
+        };
+
+        function selectTestimonial(brandId) {
+            const data = reviews[brandId];
+            if (data) {
+                document.getElementById('testimonial-quote').innerText = data.quote;
+                document.getElementById('testimonial-author').innerText = data.author;
+                document.getElementById('testimonial-role').innerText = data.role;
+                document.getElementById('current-testimonial-video-desc').innerText = data.videoDesc;
+            }
+        }
+
+        // 4. FAQ Accordion Toggle
+        function toggleFaq(index) {
+            const answer = document.getElementById(`faq-answer-${index}`);
+            const icon = document.getElementById(`faq-icon-${index}`);
+
+            if (answer.classList.contains('hidden')) {
+                answer.classList.remove('hidden');
+                icon.setAttribute('data-lucide', 'minus');
+            } else {
+                answer.classList.add('hidden');
+                icon.setAttribute('data-lucide', 'plus');
+            }
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>

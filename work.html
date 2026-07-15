@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MESSOLD — Selected Work & System Architectures</title>
+    <!-- Premium Sans Stack via Geist -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist-sans@1.0.3/dist/geist-sans.min.css">
+    <style>
+        /* --- BRAND DESIGN SYSTEM & CORE TOKENS --- */
+        :root {
+            --bg-pure: #000000;
+            --bg-section: #050505;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B3B3B3;
+            --border-alpha: rgba(255,255,255,0.08);
+            --font-main: 'Geist Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* RESET & CORE COMPONENT RULES */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .ms-root-context {
+            background-color: var(--bg-pure);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            letter-spacing: -0.01em;
+        }
+
+        /* PREMIUM SCROLLBAR ARCHITECTURE */
+        .ms-root-context::-webkit-scrollbar {
+            width: 6px;
+        }
+        .ms-root-context::-webkit-scrollbar-track {
+            background: var(--bg-pure);
+        }
+        .ms-root-context::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* CUSTOM INK REVEAL & TEXT SHARPNESS */
+        .ms-display-text {
+            font-weight: 200;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+        }
+
+        .ms-editorial-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* ASYMMETRIC GRID LAYER */
+        .ms-structural-row {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 80px;
+            width: 100%;
+        }
+
+        @media (max-width: 1024px) {
+            .ms-structural-row { padding: 0 40px; }
+        }
+        @media (max-width: 768px) {
+            .ms-structural-row { padding: 0 20px; }
+        }
+
+        /* 1. CINEMATIC HERO DESIGN */
+        .ms-hero-canvas {
+            position: relative;
+            height: 200vh;
+            background-color: var(--bg-pure);
+            z-index: 10;
+        }
+
+        .ms-hero-sticky-core {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .ms-hero-text-mask {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            mix-blend-mode: difference;
+            pointer-events: none;
+            transition: transform 0.1s linear;
+        }
+
+        .ms-hero-title-large {
+            font-size: clamp(3rem, 7vw, 7.5rem);
+            color: var(--text-primary);
+        }
+
+        .ms-hero-background-reveal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            transform: scale(1.15);
+            opacity: 0;
+            transition: transform 0.1s linear, opacity 0.5s ease;
+        }
+
+        .ms-hero-background-reveal img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.4) grayscale(30%);
+        }
+
+        /* 2. SCROLL STORYTELLING VIEWPORT SYSTEM */
+        .ms-story-scroll-track {
+            position: relative;
+            background-color: var(--bg-pure);
+        }
+
+        .ms-story-viewport-pane {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            padding: 100px 80px;
+            border-bottom: 1px solid var(--border-alpha);
+        }
+
+        .ms-story-bg-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            transform: scale(1);
+            transition: transform 12s var(--ease-luxury);
+        }
+
+        .ms-story-viewport-pane:hover .ms-story-bg-img {
+            transform: scale(1.05);
+        }
+
+        .ms-story-bg-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.35);
+        }
+
+        .ms-story-content-box {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .ms-story-metrics-badge {
+            font-size: clamp(2rem, 4vw, 4.5rem);
+            font-weight: 200;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+        }
+
+        .ms-story-title {
+            font-size: clamp(1.8rem, 3vw, 3rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+
+        /* 3. STICKY INTERACTIVE FILTER NAVIGATION */
+        .ms-filter-strip-sticky {
+            position: sticky;
+            top: 0;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-alpha);
+            z-index: 100;
+            padding: 30px 0;
+        }
+
+        .ms-filter-flex-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ms-filter-typography-group {
+            display: flex;
+            gap: 40px;
+        }
+
+        .ms-filter-link-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-family: var(--font-main);
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            position: relative;
+            padding-bottom: 6px;
+            transition: color 0.3s ease;
+        }
+
+        .ms-filter-link-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--text-primary);
+            transition: width 0.4s var(--ease-luxury);
+        }
+
+        .ms-filter-link-btn:hover, .ms-filter-link-btn.is-active {
+            color: var(--text-primary);
+        }
+
+        .ms-filter-link-btn.is-active::after, .ms-filter-link-btn:hover::after {
+            width: 100%;
+        }
+
+        /* 4. EXPERIMENTAL ASYMMETRIC PORTFOLIO GALLERY */
+        .ms-editorial-exhibition-space {
+            background-color: var(--bg-section);
+            padding: 140px 0;
+        }
+
+        .ms-editorial-dynamic-container {
+            display: flex;
+            flex-direction: column;
+            gap: 160px;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Dynamic Composition Models */
+        .ms-composition-left-heavy {
+            display: grid;
+            grid-template-columns: 1.3fr 0.7fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .ms-composition-right-heavy {
+            display: grid;
+            grid-template-columns: 0.7fr 1.3fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .ms-composition-monumental {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .ms-composition-split-double {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        /* Exhibition Assets */
+        .ms-asset-frame {
+            position: relative;
+            overflow: hidden;
+            background-color: #0c0c0c;
+            cursor: pointer;
+            border: 1px solid var(--border-alpha);
+            transition: border-color 0.4s ease;
+        }
+
+        .ms-asset-frame:hover {
+            border-color: rgba(255,255,255,0.25);
+        }
+
+        .ms-asset-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s var(--ease-luxury), filter 0.6s ease;
+            filter: grayscale(15%);
+        }
+
+        .ms-asset-frame:hover .ms-asset-img {
+            transform: scale(1.03);
+            filter: grayscale(0%) blur(2px);
+        }
+
+        /* Contextual Inlay Details revealed on Hover */
+        .ms-asset-hover-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 40px;
+            z-index: 2;
+            transition: opacity 0.4s ease;
+        }
+
+        .ms-asset-frame:hover .ms-asset-hover-overlay {
+            opacity: 1;
+        }
+
+        .ms-narrative-block {
+            max-width: 380px;
+        }
+
+        .ms-narrative-block h3 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .ms-narrative-block p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* 5. TYPOGRAPHY INTERSTITIAL METRIC ROW */
+        .ms-interstitial-typography-accent {
+            background-color: var(--bg-pure);
+            padding: 160px 0;
+            border-top: 1px solid var(--border-alpha);
+            border-bottom: 1px solid var(--border-alpha);
+            text-align: center;
+        }
+
+        .ms-interstitial-metric-giant {
+            font-size: clamp(5rem, 12vw, 13rem);
+            font-weight: 100;
+            line-height: 0.9;
+            letter-spacing: -0.05em;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .ms-interstitial-caption {
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* 6. IMMERSIVE RESULTS GRID CRITERIA */
+        .ms-results-landscape-grid {
+            background-color: var(--bg-pure);
+            padding: 160px 0;
+        }
+
+        .ms-results-flex-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 60px;
+        }
+
+        .ms-result-stat-node {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 220px;
+        }
+
+        .ms-result-giant-num {
+            font-size: clamp(3.5rem, 6vw, 6.5rem);
+            font-weight: 200;
+            line-height: 1;
+            letter-spacing: -0.04em;
+        }
+
+        .ms-result-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+        }
+
+        /* 7. PREMIUM CINEMATIC STREAMING VIDEO STORIES (REDESIGNED EXCLUSIVELY) */
+        .ms-streaming-stories-section {
+            background-color: var(--bg-pure);
+            padding: 160px 0 120px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ms-streaming-header {
+            margin-bottom: 80px;
+        }
+
+        .ms-streaming-headline-large {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 200;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            margin: 20px 0 24px 0;
+        }
+
+        .ms-streaming-support-text {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        /* Infinite Cinematic Infinite Scroll Engine Containers */
+        .ms-streaming-carousel-viewport {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .ms-streaming-track-container {
+            display: flex;
+            width: max-content;
+            will-change: transform;
+        }
+
+        .ms-streaming-video-card {
+            width: calc((100vw - 160px - 80px) / 3);
+            margin-right: 40px;
+            flex-shrink: 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform 0.6s var(--ease-luxury);
+        }
+
+        .ms-streaming-video-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .ms-streaming-media-box {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            background-color: #0c0c0c;
+            border: 1px solid var(--border-alpha);
+            overflow: hidden;
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .ms-streaming-video-card:hover .ms-streaming-media-box {
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .ms-streaming-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            transition: transform 0.6s var(--ease-luxury), opacity 0.4s ease;
+        }
+
+        .ms-streaming-video-card:hover .ms-streaming-thumb {
+            transform: scale(1.04);
+            opacity: 0.85;
+        }
+
+        /* Floating Play Interaction Trigger Button */
+        .ms-streaming-play-trigger {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            transition: transform 0.4s var(--ease-luxury), background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        .ms-streaming-play-trigger svg {
+            width: 18px;
+            height: 18px;
+            fill: #FFFFFF;
+            transform: translateX(2px);
+            transition: fill 0.3s ease;
+        }
+
+        .ms-streaming-video-card:hover .ms-streaming-play-trigger {
+            transform: translate(-50%, -50%) scale(1.1);
+            background-color: #FFFFFF;
+            border-color: #FFFFFF;
+        }
+
+        .ms-streaming-video-card:hover .ms-streaming-play-trigger svg {
+            fill: #000000;
+        }
+
+        /* Text Layer Typography Core Metadata */
+        .ms-streaming-meta-block {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .ms-streaming-client-identity {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--text-primary);
+        }
+
+        .ms-streaming-brand-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: 6px;
+        }
+
+        .ms-streaming-one-liner {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            font-weight: 300;
+            border-left: 1px solid var(--border-alpha);
+            padding-left: 14px;
+            margin-top: 4px;
+        }
+
+        /* Fullscreen Cinematic Theater Lightbox Engine Container */
+        .ms-streaming-theater-lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(25px);
+            z-index: 3000;
+            display: none;
+            opacity: 0;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .ms-streaming-theater-lightbox.is-visible {
+            opacity: 1;
+        }
+
+        .ms-lightbox-close-zone {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            background: none;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--text-primary);
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 14px 28px;
+            cursor: pointer;
+            z-index: 3100;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .ms-lightbox-close-zone:hover {
+            background-color: var(--text-primary);
+            color: var(--bg-pure);
+        }
+
+        .ms-lightbox-stage {
+            width: 100%;
+            max-width: 1100px;
+            padding: 0 40px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .ms-lightbox-video-frame {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: #050505;
+            border: 1px solid var(--border-alpha);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ms-lightbox-video-frame video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Lightbox Interface Navigation Anchors */
+        .ms-lightbox-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #FFFFFF;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease, border-color 0.3s ease;
+            z-index: 3200;
+        }
+
+        .ms-lightbox-nav-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .ms-lightbox-nav-prev { left: -80px; }
+        .ms-lightbox-nav-next { right: -80px; }
+
+        @media(max-width: 1200px) {
+            .ms-streaming-video-card { width: calc((100vw - 80px - 40px) / 2); }
+            .ms-lightbox-nav-prev { left: 10px; }
+            .ms-lightbox-nav-next { right: 10px; }
+        }
+
+        @media(max-width: 768px) {
+            .ms-streaming-video-card { width: calc(100vw - 40px); margin-right: 24px; }
+            .ms-lightbox-stage { padding: 0 20px; }
+            .ms-lightbox-nav-btn { display: none; }
+        }
+
+        /* 8. CLIENT LOGO COSMOS */
+        .ms-cosmos-section {
+            background-color: var(--bg-pure);
+            padding: 140px 0;
+            overflow: hidden;
+        }
+
+        .ms-cosmos-field {
+            position: relative;
+            width: 100%;
+            height: 480px;
+            border: 1px solid var(--border-alpha);
+        }
+
+        .ms-cosmos-particle-node {
+            position: absolute;
+            font-size: clamp(1.2rem, 2.2vw, 2.2rem);
+            font-weight: 300;
+            color: var(--text-primary);
+            letter-spacing: 0.05em;
+            cursor: default;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        /* 9. PHILOSOPHY EDITORIAL SPLIT */
+        .ms-philosophy-split {
+            background-color: var(--bg-section);
+            padding: 160px 0;
+        }
+
+        .ms-philosophy-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 80px;
+            align-items: flex-start;
+        }
+
+        .ms-philosophy-statement-giant {
+            font-size: clamp(2.2rem, 4.5vw, 4.5rem);
+            font-weight: 200;
+            line-height: 1.15;
+            letter-spacing: -0.04em;
+        }
+
+        .ms-philosophy-narratives {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            font-size: 1.05rem;
+            line-height: 1.75;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        /* 10. LUXURY MAGAZINE FINAL OUTRO */
+        .ms-magazine-outro {
+            background-color: #FFFFFF;
+            color: #000000;
+            padding: 200px 0 120px 0;
+            text-align: center;
+            opacity: 1;
+        }
+
+        .ms-outro-headline {
+            font-size: clamp(3rem, 7vw, 7.5rem);
+            font-weight: 200;
+            line-height: 1.05;
+            letter-spacing: -0.05em;
+            margin-bottom: 80px;
+        }
+
+        .ms-outro-linkages {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            margin-top: 60px;
+        }
+
+        .ms-outro-action-btn {
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: #000000;
+            text-decoration: none;
+            border-bottom: 1px solid #000000;
+            padding-bottom: 4px;
+            transition: opacity 0.3s ease;
+        }
+
+        .ms-outro-action-btn:hover {
+            opacity: 0.6;
+        }
+
+        .ms-outro-subtext-channel {
+            font-size: 1rem;
+            color: #555555;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .ms-outro-subtext-channel:hover {
+            color: #000000;
+        }
+
+        /* 11. IMMERSIVE CASE STUDY OVERLAY */
+        .ms-fullscreen-case-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0,0,0,0.96);
+            backdrop-filter: blur(30px);
+            z-index: 2000;
+            display: none;
+            overflow-y: auto;
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ms-fullscreen-case-overlay.is-active {
+            transform: translateY(0);
+        }
+
+        .ms-overlay-close-trigger {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            background: none;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 12px 24px;
+            cursor: pointer;
+            z-index: 2100;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .ms-overlay-close-trigger:hover {
+            background-color: var(--text-primary);
+            color: var(--bg-pure);
+        }
+
+        .ms-case-magazine-layout {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 140px 20px;
+        }
+
+        .ms-case-hero-img-box {
+            width: 100%;
+            height: 55vh;
+            overflow: hidden;
+            margin: 40px 0 80px 0;
+            border: 1px solid var(--border-alpha);
+        }
+
+        .ms-case-hero-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ms-case-meta-metrics-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            border-top: 1px solid var(--border-alpha);
+            border-bottom: 1px solid var(--border-alpha);
+            padding: 40px 0;
+            margin-bottom: 60px;
+        }
+
+        .ms-case-editorial-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 80px;
+        }
+
+        .ms-case-editorial-columns h4 {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+
+        .ms-case-editorial-columns p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        .ms-case-testimonial-blockquote {
+            border-left: 2px solid var(--text-primary);
+            padding-left: 30px;
+            font-size: 1.3rem;
+            font-style: italic;
+            font-weight: 200;
+            margin: 60px 0;
+            line-height: 1.6;
+        }
+
+        /* DYNAMIC CUSTOM INTERACTIVE MOUSE CURSOR */
+        .ms-luxury-pointer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 120px;
+            height: 120px;
+            background-color: var(--text-primary);
+            color: var(--bg-pure);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            pointer-events: none;
+            z-index: 1500;
+            transform: translate(-50%, -50%) scale(0);
+            mix-blend-mode: normal;
+            transition: transform 0.4s var(--ease-luxury);
+            text-align: center;
+            padding: 10px;
+        }
+
+        /* RESPONSIVE REDESIGNS */
+        @media (max-width: 1024px) {
+            .ms-composition-left-heavy, .ms-composition-right-heavy, .ms-composition-split-double, .ms-philosophy-layout {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .ms-case-editorial-columns {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .ms-hero-title-large { font-size: 4.5rem; }
+        }
+
+        @media (max-width: 768px) {
+            .ms-filter-flex-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            .ms-filter-typography-group {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+            .ms-story-viewport-pane {
+                padding: 60px 20px;
+            }
+            .ms-case-meta-metrics-strip {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body class="ms-root-context">
+
+    <!-- CUSTOM DYNAMIC LUXURY POINTER -->
+    <div class="ms-luxury-pointer" id="luxuryPointer">View Case</div>
+
+    <!-- 1. CINEMATIC HERO SECTOR -->
+    <section class="ms-hero-canvas" id="heroTrack">
+        <div class="ms-hero-sticky-core">
+            <div class="ms-hero-text-mask">
+                <h1 class="ms-display-text ms-hero-title-large">Selected Work.<br>Built to Perform.</h1>
+            </div>
+            <div class="ms-hero-background-reveal" id="heroBgReveal">
+                <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=1800" alt="Cinematic Backdrop Engine">
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. SCROLL STORYTELLING SYSTEM (Top 5 Featured Matrix) -->
+    <section class="ms-story-scroll-track" id="featuredScrollStory" style="display: none;">
+        <!-- Viewport 1: Power Sutra -->
+        <div class="ms-story-viewport-pane" data-project-index="0">
+            <div class="ms-story-bg-img">
+                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1800" alt="Power Sutra Runway">
+            </div>
+            <div class="ms-story-content-box">
+                <span class="ms-editorial-label">FEATURED CAPABILITY // DEVELOPMENT</span>
+                <div class="ms-story-metrics-badge">+212% Conversion Scale</div>
+                <h2 class="ms-story-title">Power Sutra</h2>
+            </div>
+        </div>
+        <!-- Viewport 2: Noise -->
+        <div class="ms-story-viewport-pane" data-project-index="1">
+            <div class="ms-story-bg-img">
+                <img src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=1800" alt="Noise Architecture">
+            </div>
+            <div class="ms-story-content-box">
+                <span class="ms-editorial-label">FEATURED CAPABILITY // CRO METRICS</span>
+                <div class="ms-story-metrics-badge">4.8x Scaled ROAS Baseline</div>
+                <h2 class="ms-story-title">Noise Systems</h2>
+            </div>
+        </div>
+        <!-- Viewport 3: Craftsmith -->
+        <div class="ms-story-viewport-pane" data-project-index="2">
+            <div class="ms-story-bg-img">
+                <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=1800" alt="Craftsmith Spatial Aesthetic">
+            </div>
+            <div class="ms-story-content-box">
+                <span class="ms-editorial-label">FEATURED CAPABILITY // RETENTION ARCHITECTURE</span>
+                <div class="ms-story-metrics-badge">+98% Retention Pipeline Optimization</div>
+                <h2 class="ms-story-title">Craftsmith</h2>
+            </div>
+        </div>
+        <!-- Viewport 4: Leaf -->
+        <div class="ms-story-viewport-pane" data-project-index="3">
+            <div class="ms-story-bg-img">
+                <img src="https://images.unsplash.com/photo-1530026405186-ed1ea0ac7a63?auto=format&fit=crop&q=80&w=1800" alt="Leaf Systems Organic">
+            </div>
+            <div class="ms-story-content-box">
+                <span class="ms-editorial-label">FEATURED CAPABILITY // PERFORMANCE MARKETING</span>
+                <div class="ms-story-metrics-badge">₹120Cr+ System Acquisition Matrix</div>
+                <h2 class="ms-story-title">Leaf Bio</h2>
+            </div>
+        </div>
+        <!-- Viewport 5: Silk Berry -->
+        <div class="ms-story-viewport-pane" data-project-index="4">
+            <div class="ms-story-bg-img">
+                <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&q=80&w=1800" alt="Silk Berry Aesthetic Luxe">
+            </div>
+            <div class="ms-story-content-box">
+                <span class="ms-editorial-label">FEATURED CAPABILITY // SHOPIFY CUSTOM DEVELOPMENT</span>
+                <div class="ms-story-metrics-badge">60 FPS Native Interaction Design</div>
+                <h2 class="ms-story-title">Silk Berry</h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. STICKY FILTER NAVIGATION STRIP -->
+    <nav class="ms-filter-strip-sticky">
+        <div class="ms-structural-row ms-filter-flex-row">
+            <span class="ms-editorial-label">EXHIBITION INDEX</span>
+            <div class="ms-filter-typography-group" id="filterButtonGroup">
+                <button class="ms-filter-link-btn is-active" data-filter="ALL">ALL</button>
+                <button class="ms-filter-link-btn" data-filter="SHOPIFY">SHOPIFY DEVELOPMENT</button>
+                <button class="ms-filter-link-btn" data-filter="PERFORMANCE">PERFORMANCE MARKETING</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 4. ALTERNATING EDITORIAL GALLERY EXHIBITION SPACE -->
+    <section class="ms-editorial-exhibition-space">
+        <div class="ms-structural-row">
+            <div class="ms-editorial-dynamic-container" id="editorialGalleryWrapper">
+                <!-- Programmatically populated with alternating complex layouts -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. TYPOGRAPHY INTERSTITIAL GIANT METRIC ROW -->
+    <section class="ms-interstitial-typography-accent">
+        <div class="ms-structural-row">
+            <div class="ms-interstitial-metric-giant" id="interstitialCounter">+212%</div>
+            <div class="ms-interstitial-caption">Conversion Growth Vector Standard Across Custom Storefront deployments</div>
+        </div>
+    </section>
+
+    <!-- 6. IMMERSIVE STATISTICAL DATA GRID -->
+    <section class="ms-results-landscape-grid">
+        <div class="ms-structural-row ms-results-flex-row">
+            <div class="ms-result-stat-node">
+                <div class="ms-result-giant-num" data-count-target="250">0</div>
+                <div class="ms-result-label">Projects Realized</div>
+            </div>
+            <div class="ms-result-stat-node">
+                <div class="ms-result-giant-num" data-count-target="120">0</div>
+                <div class="ms-result-label">Cr+ Client Revenue Generated</div>
+            </div>
+            <div class="ms-result-stat-node">
+                <div class="ms-result-giant-num" data-count-target="4.8">0</div>
+                <div class="ms-result-label">Average Scale ROAS</div>
+            </div>
+            <div class="ms-result-stat-node">
+                <div class="ms-result-giant-num" data-count-target="98">0</div>
+                <div class="ms-result-label">Client Retention Index</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. PREMIUM CINEMATIC STREAMING VIDEO STORIES (REDESIGNED STREAMING FIRST PLATFORM) -->
+    <section class="ms-streaming-stories-section">
+        <div class="ms-structural-row ms-streaming-header">
+            <span class="ms-editorial-label">CLIENT STORIES</span>
+            <h2 class="ms-display-text ms-streaming-headline-large">Real Brands.<br>Real Results.<br>Real Conversations.</h2>
+            <p class="ms-streaming-support-text">Hear directly from the founders and marketing teams we've partnered with to build, optimize and scale their brands.</p>
+        </div>
+
+        <div class="ms-streaming-carousel-viewport" id="streamingViewport">
+            <div class="ms-streaming-track-container" id="streamingTrack">
+                <!-- Programmatic Infinite Loop Content Generation Injection Target -->
+            </div>
+        </div>
+
+        <!-- Fullscreen Premium Lightbox Stage Elements -->
+        <div class="ms-streaming-theater-lightbox" id="streamingLightbox">
+            <button class="ms-lightbox-close-zone" id="closeLightboxBtn">Exit Screening</button>
+            <button class="ms-lightbox-nav-btn ms-lightbox-nav-prev" id="lightboxPrevBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button class="ms-lightbox-nav-btn ms-lightbox-nav-next" id="lightboxNextBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <div class="ms-lightbox-stage">
+                <div class="ms-lightbox-video-frame">
+                    <video id="lightboxVideoElement" controls playsinline></video>
+                </div>
+                <div style="margin-top: 10px;">
+                    <div id="lightboxBrand" class="ms-streaming-brand-tag"></div>
+                    <div id="lightboxClient" id="lightboxClient" class="ms-streaming-client-identity" style="font-size: 1.5rem;"></div>
+                    <p id="lightboxQuote" class="ms-streaming-one-liner" style="font-size: 1.1rem; margin-top: 12px; max-width: 800px; color: #FFFFFF;"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. LOGO COSMOS MATRIX -->
+    <section class="ms-cosmos-section" style="display: none;">
+        <div class="ms-structural-row">
+            <span class="ms-editorial-label" style="display:block; margin-bottom:40px;">GLOBAL ENTERPRISE TRUST BASES</span>
+            <div class="ms-cosmos-field" id="cosmosField">
+                <!-- Logos positioned randomly, appearing like stars inside a subtle space matrix -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. PHILOSOPHY ASYMMETRIC SYSTEM REFLECTION -->
+    <section class="ms-philosophy-split">
+        <div class="ms-structural-row ms-philosophy-layout">
+            <h2 class="ms-display-text ms-philosophy-statement-giant">We don't build standard Shopify configurations.<br><br>We engineer transaction systems.</h2>
+            <div class="ms-philosophy-narratives">
+                <p>Standard templates introduce computational latency and functional standardizations that degrade enterprise valuation capabilities. We approach e-commerce codebases as financial pipelines that prioritize data architecture efficiency metrics.</p>
+                <p>Every programmatic pixel architecture configuration is deployed explicitly to maximize checkout completion probabilities while tracking client attribution logic transparently across Meta and Google algorithmic layers.</p>
+                <p>By connecting custom high performance Shopify instances directly to calculated algorithmic digital media spending models, we establish an integrated engine configured for absolute enterprise expansion capability.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. LUXURY EDITORIAL FINALE OUTRO -->
+    <section class="ms-magazine-outro">
+        <div class="ms-structural-row">
+            <h2 class="ms-display-text ms-outro-headline">Your brand<br>could be<br>next.</h2>
+            <div class="ms-outro-linkages">
+                <a href="#" class="ms-outro-action-btn">Initiate Discovery Call</a>
+                <a href="mailto:growth@messold.com" class="ms-outro-subtext-channel">growth@messold.com</a>
+                <a href="tel:+9100000000" class="ms-outro-subtext-channel">+91 (000) 000-0000</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. FULLSCREEN IMMERSIVE MAGAZINE OVERLAY FOR ACTIVE CASE SELECTION -->
+    <div class="ms-fullscreen-case-overlay" id="caseStudyOverlay">
+        <button class="ms-overlay-close-trigger" id="closeOverlayBtn">Close Project</button>
+        <div class="ms-case-magazine-layout" id="overlayDynamicContent">
+            <!-- Populated instantly via object extraction rules -->
+        </div>
+    </div>
+
+    <!-- CORE REUSABLE DEVELOPMENT RECORD MATRICES -->
+    <script>
+        const MASTER_CASE_STUDIES = [
+            // 12 Shopify Development Projects
+            { id: "cs-1", type: "SHOPIFY", brand: "Power Sutra", industry: "Premium Apparel", services: "Custom Liquid, API Architecture", metric: "+212% CR Lift", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1200", desc: "Complete re-architecture of operational checkout pathways down to micro-interaction level frameworks.", challenge: "The platform suffered severe functional drop-offs during high traffic event runs owing to standard monolithic structural dependencies.", solution: "Engineered isolated dynamic product configuration engines that process client requests off-thread to maximize page performance scaling thresholds.", testimonial: "MESSOLD transformed our baseline interaction design paradigms entirely.", visitorUrl: "#" },
+            { id: "cs-2", type: "SHOPIFY", brand: "Craftsmith Designs", industry: "Luxury Furnishings", services: "Headless Commerce Architecture", metric: "60 FPS Render Flow", img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=1200", desc: "Designing structured custom presentation viewports for highly variable modular catalog sets.", challenge: "Complex layout rules bloated standard themes causing server latency parameters to spike past safe functional targets.", solution: "Decoupled rendering systems using clean custom layout rules optimized for high-resolution visual layouts.", testimonial: "The platform feels as smooth and premium as our physical exhibition assets.", visitorUrl: "#" },
+            { id: "cs-3", type: "SHOPIFY", brand: "Silk Berry Pure", industry: "Cosmetics & Care", services: "Bespoke Checkout Engineering", metric: "+41% Checkout Speed", img: "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&q=80&w=1200", desc: "Reconstructing conversion sequences into unified single-stage acquisition frameworks.", challenge: "Multi-step validation layers caused significant card abandonment spikes within target consumer cohorts.", solution: "Synthesized serverless transaction interfaces processing direct customer payloads with instantaneous validation metrics.", testimonial: "Our checkout abandonment matrix dropped to historical minimum levels within two development cycles.", visitorUrl: "#" },
+            { id: "cs-4", type: "SHOPIFY", brand: "Amara Herbs", industry: "Wellness Systems", services: "Subscription Engine Architecture", metric: "+88% Subscription ARR", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=1200", desc: "Automating structured replenishment logistics interfaces directly inside native customer profiles.", challenge: "Standard subscription integrations fragmented client user flows and broken analytic tracking strings.", solution: "Crafted deep custom recurring billing models natively mapped within Shopify's primary transaction database core.", testimonial: "Analytical clarity combined with flawless user management pipelines changed our retention curves completely.", visitorUrl: "#" },
+            { id: "cs-5", type: "SHOPIFY", brand: "Oats Studio", industry: "Premium Provisions", services: "Modular Frontend Frameworks", metric: "-35% Load Latency", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=1200", desc: "Constructing ultra-light graphic rendering pathways supporting rapid interface state scaling rules.", challenge: "Heavy structural media assets and multiple script trackers crippled standard user navigation velocities.", solution: "Built programmatic layout rendering rules processing images strictly as asynchronous client viewport modules.", testimonial: "Speed execution rules built by MESSOLD directly unlocked higher ad spend capacities.", visitorUrl: "#" },
+            { id: "cs-6", type: "SHOPIFY", brand: "Nature Matrix", industry: "Botanical Extracts", services: "Custom UI Design & Architecture", metric: "+18% AOV Elevation", img: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&q=80&w=1200", desc: "Bespoke logic frameworks built to offer hyper-personalized customer configuration paths.", challenge: "Cross-selling assets felt intrusive and disjointed, degrading conversion mechanics at critical purchase interfaces.", solution: "Deployed clean inline algorithmic recommendation blocks rendering predictions dynamically within active scroll targets.", testimonial: "The absolute peak of intuitive, high-converting digital storefront design principles.", visitorUrl: "#" },
+            { id: "cs-7", type: "SHOPIFY", brand: "Velo Active", industry: "Performance Gear", services: "Inventory System Sync Arrays", metric: "Zero Sync Delays", img: "https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&q=80&w=1200", desc: "High-frequency operational data links constructed to handle high velocity flashing item allocation tasks.", challenge: "Over-selling during premium event drops compromised delivery metrics and customer support vectors.", solution: "Engineered ultra-fast cache systems processing checkout inventory buffers prior to database lock executions.", testimonial: "Flawless technical precision during our largest yearly product launches.", visitorUrl: "#" },
+            { id: "cs-8", type: "SHOPIFY", brand: "Cocoon Crafts", industry: "Artisanal Homeware", services: "Visual Design Systems", metric: "+55% Interaction Level", img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=1200", desc: "Editorial visual catalog systems optimized to present artisanal item heritages elegantly.", challenge: "Standard generic platform layouts failed to justify premium, high-tier product market positions.", solution: "Constructed bold asymmetrical display portfolios emphasizing whitespace ratios and editorial text hierarchy layout rules.", testimonial: "MESSOLD created a digital experience reflecting the precise luxury standards of our art form.", visitorUrl: "#" },
+            { id: "cs-9", type: "SHOPIFY", brand: "Urban Space", industry: "Textile Systems", services: "Enterprise Architecture Deployment", metric: "+110% Scaling Headroom", img: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&q=80&w=1200", desc: "Bespoke global scaling setups designed to transition localized stores into cross-border frameworks.", challenge: "Currency conversion calculations and tax logic layers degraded storefront rendering speed indexes.", solution: "Implemented edge-network localized caching pipelines processing multi-currency calculations at zero structural overhead.", testimonial: "Our cross-border storefront structures operate with flawless speed across all global metrics.", visitorUrl: "#" },
+            { id: "cs-10", type: "SHOPIFY", brand: "Kicks Nation", industry: "Footwear Culture", services: "Drop Architecture Modules", metric: "350k Instant User Load", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1200", desc: "High availability layout structures built to handle rapid transactional loading spikes safely.", challenge: "Flash launch patterns regularly resulted in payment pipeline errors and broken user session tracks.", solution: "Engineered static pre-rendered generation tracks redirecting incoming traffic surges into highly robust cache arrays.", testimonial: "The only platform framework that successfully handled our scaling product launch metrics.", visitorUrl: "#" },
+            { id: "cs-11", type: "SHOPIFY", brand: "Vintage Glide", industry: "Luxury Timepieces", services: "High Security Client Tiers", metric: "+67% Security Index", img: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=1200", desc: "Private transactional portal interfaces configured for verified high-net-worth client interaction tiers.", challenge: "High-value acquisition operations attracted severe bot traffic vectors and high fraud percentages.", solution: "Integrated hardware-level tokenized entry verification layouts seamlessly within checkout generation cycles.", testimonial: "Secured our transactions completely while preserving the ultra-premium user onboarding experience.", visitorUrl: "#" },
+            { id: "cs-12", type: "SHOPIFY", brand: "Chopped Inc", industry: "Culinary Implements", services: "Omnichannel Architecture Setup", metric: "+43% Channel Efficiency", img: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=1200", desc: "Connecting enterprise point-of-sale data pipelines with real-time storefront display engines.", challenge: "Data synchronization lag between warehouse assets and web stores regularly caused delivery errors.", solution: "Constructed customized event listener webhooks syncing operational catalog updates within sub-second thresholds.", testimonial: "Absolute operational reliability across all real-world retail channels.", visitorUrl: "#" },
+
+            // 12 Performance Marketing Case Studies
+            { id: "cs-13", type: "PERFORMANCE", brand: "Noise Ads", industry: "Wearable Tech", services: "Attribution Matrix Engineering", metric: "4.8x Return Allocation", img: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=1200", desc: "Deploying multi-layered analytical structures to maximize return metrics across digital scaling channels.", challenge: "Signal loss from evolving modern security parameters rendered data modeling sets highly inaccurate.", solution: "Implemented full server-side conversion API matching pipelines coupled directly with first-party audience databases.", testimonial: "Our data accuracy optimization directly triggered enhanced multi-channel scaling capabilities.", visitorUrl: "#" },
+            { id: "cs-14", type: "PERFORMANCE", brand: "Leaf Scale", industry: "Health Tech", services: "Programmatic Audience Modeling", metric: "₹120Cr Scaled Funnel", img: "https://images.unsplash.com/photo-1530026405186-ed1ea0ac7a63?auto=format&fit=crop&q=80&w=1200", desc: "Systematic capital distribution modeling configured to balance multi-channel traffic acquisitions safely.", challenge: "Rapid scaling models traditionally caused sharp client acquisition cost spikes across primary vectors.", solution: "Constructed predictive customer lifecycle tracking algorithms to focus ad spend on premium high-value users.", testimonial: "MESSOLD approach performance metrics with pure mathematical discipline.", visitorUrl: "#" },
+            { id: "cs-15", type: "PERFORMANCE", brand: "Mango Tech", industry: "Personal Electronics", services: "Omnichannel Creative Systems", metric: "+310% Funnel Inflow", img: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&q=80&w=1200", desc: "Data-driven creative pipeline engineering designed to maximize early user attention retention metrics.", challenge: "High user visibility wear-out loops regularly resulted in fast acquisition performance decline across ad sets.", solution: "Constructed systematic modular structural variants testing graphic frameworks dynamic matching algorithms.", testimonial: "Our production parameters finally operate with full quantitative tracking clarity.", visitorUrl: "#" },
+            { id: "cs-16", type: "PERFORMANCE", brand: "Velo Performance", industry: "Bicycle Systems", services: "Cross-Channel Dynamic Funnels", metric: "5.4x Blended ROAS", img: "https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&q=80&w=1200", desc: "Constructing automated user flow sequences passing targeted cohorts based on site interaction habits.", challenge: "Disjointed message structures between first ads and landing layouts damaged conversion probabilities.", solution: "Engineered customized dynamic data parameters showing landing content custom tailored to matching entry creative hooks.", testimonial: "The alignment of our message layers dramatically elevated checkout performance parameters.", visitorUrl: "#" },
+            { id: "cs-17", type: "PERFORMANCE", brand: "Nature Scale", industry: "Wellness Systems", services: "Predictive LTV Targeting", metric: "-28% Customer CAC", img: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&q=80&w=1200", desc: "Algorithmic profile targeting built to isolate and capture high-value lifecycle transaction cohorts.", challenge: "Wasted capital distributions targeted short-term one-time buyers instead of recurring consumer pillars.", solution: "Built dynamic customer value prediction engines mapping audience allocations back into active platform targeting setups.", testimonial: "Acquisition efficiency metrics optimized completely within the initial quarter.", visitorUrl: "#" },
+            { id: "cs-18", type: "PERFORMANCE", brand: "Urban Growth", industry: "Home Interiors", services: "High Budget Scaling Arrays", metric: "₹45Cr Quarter Scale", img: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&q=80&w=1200", desc: "Deploying institutional budget systems built to sustain scale parameters without data efficiency loss.", challenge: "Rapid capital acceleration loops routinely destabilized automatic campaign machine-learning logic tracks.", solution: "Constructed tiered portfolio allocation systems balancing broad optimization tests against stable core frameworks.", testimonial: "Absolute performance reliability even while running our highest velocity media allocations.", visitorUrl: "#" },
+            { id: "cs-19", type: "PERFORMANCE", brand: "Kicks Acquire", industry: "Streetwear Culture", services: "High Velocity Launch Models", metric: "12x Launch Peak ROAS", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1200", desc: "Synchronizing custom audience pre-registration models to drive massive transactional traffic surges during item releases.", challenge: "Standard linear traffic deployment structures failed to capture the urgent, time-sensitive premium demand cycles.", solution: "Engineered sequential countdown tracking structures building audience reservation matrices ahead of drop intervals.", testimonial: "Generated record-breaking transactional metrics during our limited collection release cycles.", visitorUrl: "#" },
+            { id: "cs-20", type: "PERFORMANCE", brand: "Vintage Media", industry: "Luxury Watches", services: "Premium Lead Qualification", metric: "+140% Qualified Inflow", img: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=1200", desc: "Constructing high-tier behavioral targeting arrays specifically isolated for premium client acquisitions.", challenge: "Broad consumer segment targeting populated processing queues with non-transactional lookalike users.", solution: "Implemented granular asset checking rules processing behavior validation criteria prior to lead recording actions.", testimonial: "We stopped tracking hollow clicks and started recording real enterprise value.", visitorUrl: "#" },
+            { id: "cs-21", type: "PERFORMANCE", brand: "Chopped Growth", industry: "Premium Culinary", services: "Localized Scaling Models", metric: "+74% Region Inflow", img: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=1200", desc: "Geographic media distribution balancing models tailored around live distribution center inventory limits.", challenge: "Ad spends frequently directed high volume user traffic towards out-of-stock local item centers.", solution: "Connected dynamic fulfillment data endpoints directly to live creative presentation layers natively.", testimonial: "A masterclass in connecting real physical logistics constraints directly to analytical media models.", visitorUrl: "#" },
+            { id: "cs-22", type: "PERFORMANCE", brand: "Hydro Element", industry: "Fitness Tech", services: "Behavioral Retargeting Logic", metric: "3.9x Funnel ROAS", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=1200", desc: "Configuring sequence retargeting rules tailored directly to user cart interactions.", challenge: "Generic secondary ad repetition loops tired out high-intent prospective consumer cohorts.", solution: "Implemented structured narrative sequence rules changing active ad creative views based on past session latency metrics.", testimonial: "Intelligent, non-intrusive ad presentation systems that consistently harvest lost checkout values.", visitorUrl: "#" },
+            { id: "cs-23", type: "PERFORMANCE", brand: "Amara Scale", industry: "Wellness Core", services: "Predictive Funnel Optimization", metric: "+52% Margin Scale", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=1200", desc: "Deep programmatic modeling to dynamically route prospective users into optimal value journeys.", challenge: "Single baseline landing frameworks failed to convert diverse demographic target groups efficiently.", solution: "Constructed instant client tracking routers presenting specific value arguments targeted to source parameters.", testimonial: "The dynamic segmentation models drastically stabilized our target conversion efficiency maps.", visitorUrl: "#" },
+            { id: "cs-24", type: "PERFORMANCE", brand: "Cocoon Media", industry: "Artisanal Decor", services: "International Growth Track", metric: "+260% Global Scale", img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=1200", desc: "Deploying multi-region capital balancing matrices across high-intent localized customer populations globally.", challenge: "Fragmented global conversion indicators routinely disrupted automated optimization signals inside ad sets.", solution: "Constructed centralized global data collection models normalizing performance indicators across cross-border vectors.", testimonial: "Enabled our brand expansion parameters to execute predictably across diverse foreign territories.", visitorUrl: "#" }
+        ];
+
+        const REDESIGNED_VIDEO_STORIES = [
+            { id: "st-1", name: "Rahul Mehta", brand: "Power Sutra", quote: "\"Our Shopify conversion rate increased by 212% within six months.\"", thumb: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600", video: "https://assets.mixkit.co/videos/preview/mixkit-businesswoman-talking-on-a-video-call-40032-large.mp4" },
+            { id: "st-2", name: "Sarah Mathews", brand: "Noise Systems", quote: "\"Their analytical modeling approach gave us absolute 4.8x ROAS clarity.\"", thumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600", video: "https://assets.mixkit.co/videos/preview/mixkit-woman-recording-a-video-with-her-phone-41584-large.mp4" },
+            { id: "st-3", name: "Vikram Rajpal", brand: "Craftsmith", quote: "\"Handcrafted storefront codebases that native retain 98% of users cleanly.\"", thumb: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=600", video: "https://assets.mixkit.co/videos/preview/mixkit-man-holding-a-smartphone-explaining-something-41718-large.mp4" },
+            { id: "st-4", name: "David L.", brand: "Leaf Bio", quote: "\"Zero tracking infrastructure leakages unlocked scale parameters completely.\"", thumb: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=600", video: "https://assets.mixkit.co/videos/preview/mixkit-stream-of-people-crossing-a-street-at-night-40325-large.mp4" }
+        ];
+
+        const COSMOS_LOGOS = [
+            "POWER SUTRA", "NOISE SYSTEMS", "CRAFTSMITH", "LEAF BIO", "SILK BERRY", 
+            "AMARA HERBS", "OATS STUDIO", "NATURE MATRIX", "VELO ACTIVE", "COCOON", 
+            "URBAN SPACE", "KICKS NATION", "VINTAGE GLIDE", "CHOPPED INC", "HYDRO ELEMENT"
+        ];
+
+        // DYNAMIC RENDERING & ALTERNATING LAYOUT COMPOSER ENGINE
+        function composeEditorialGallery(filterTag) {
+            const targetContainer = document.getElementById("editorialGalleryWrapper");
+            targetContainer.innerHTML = ""; 
+
+            const sourceData = filterTag === "ALL" 
+                ? MASTER_CASE_STUDIES 
+                : MASTER_CASE_STUDIES.filter(item => item.type === filterTag);
+
+            let compositionState = 0; 
+
+            for (let i = 0; i < sourceData.length; i++) {
+                let rowMarkup = "";
+
+                if (compositionState === 0) {
+                    const p1 = sourceData[i];
+                    rowMarkup = `
+                        <div class="ms-composition-left-heavy">
+                            <div class="ms-asset-frame" style="height: 520px;" onclick="revealCaseStudyFullscreen('${p1.id}')">
+                                <img class="ms-asset-img" src="${p1.img}" alt="${p1.brand}">
+                                <div class="ms-asset-hover-overlay">
+                                    <span class="ms-editorial-label" style="color:#FFF;">${p1.metric}</span>
+                                    <div class="ms-narrative-block">
+                                        <h3>${p1.brand}</h3>
+                                        <p>${p1.desc}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="padding-left: 20px;">
+                                <span class="ms-editorial-label">${p1.industry}</span>
+                                <h3 style="font-size: 2rem; font-weight: 200; margin-top:15px; line-height:1.2;">Systematic infrastructure upgrade metrics.</h3>
+                            </div>
+                        </div>
+                    `;
+                    compositionState = 1;
+                } 
+                else if (compositionState === 1) {
+                    const p1 = sourceData[i];
+                    rowMarkup = `
+                        <div class="ms-composition-right-heavy">
+                            <div style="padding-right: 20px; text-align: right;">
+                                <span class="ms-editorial-label">${p1.services}</span>
+                                <h3 style="font-size: 2rem; font-weight: 200; margin-top:15px; line-height:1.2;">Algorithmic scale optimization paths.</h3>
+                            </div>
+                            <div class="ms-asset-frame" style="height: 520px;" onclick="revealCaseStudyFullscreen('${p1.id}')">
+                                <img class="ms-asset-img" src="${p1.img}" alt="${p1.brand}">
+                                <div class="ms-asset-hover-overlay">
+                                    <span class="ms-editorial-label" style="color:#FFF;">${p1.metric}</span>
+                                    <div class="ms-narrative-block">
+                                        <h3>${p1.brand}</h3>
+                                        <p>${p1.desc}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    compositionState = 2;
+                } 
+                else if (compositionState === 2) {
+                    const p1 = sourceData[i];
+                    rowMarkup = `
+                        <div class="ms-composition-monumental">
+                            <div class="ms-asset-frame" style="height: 480px; width:100%;" onclick="revealCaseStudyFullscreen('${p1.id}')">
+                                <img class="ms-asset-img" src="${p1.img}" alt="${p1.brand}">
+                                <div class="ms-asset-hover-overlay">
+                                    <span class="ms-editorial-label" style="color:#FFF;">${p1.metric}</span>
+                                    <div class="ms-narrative-block">
+                                        <h3>${p1.brand}</h3>
+                                        <p>${p1.desc}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    compositionState = 3;
+                }
+                else if (compositionState === 3) {
+                    const p1 = sourceData[i];
+                    const p2 = sourceData[i + 1] ? sourceData[i + 1] : sourceData[0]; 
+                    rowMarkup = `
+                        <div class="ms-composition-split-double">
+                            <div class="ms-asset-frame" style="height: 600px;" onclick="revealCaseStudyFullscreen('${p1.id}')">
+                                <img class="ms-asset-img" src="${p1.img}" alt="${p1.brand}">
+                                <div class="ms-asset-hover-overlay">
+                                    <span class="ms-editorial-label" style="color:#FFF;">${p1.metric}</span>
+                                    <div class="ms-narrative-block">
+                                        <h3>${p1.brand}</h3>
+                                        <p>${p1.desc}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ms-asset-frame" style="height: 450px; margin-top: 75px;" onclick="revealCaseStudyFullscreen('${p2.id}')">
+                                <img class="ms-asset-img" src="${p2.img}" alt="${p2.brand}">
+                                <div class="ms-asset-hover-overlay">
+                                    <span class="ms-editorial-label" style="color:#FFF;">${p2.metric}</span>
+                                    <div class="ms-narrative-block">
+                                        <h3>${p2.brand}</h3>
+                                        <p>${p2.desc}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    if (sourceData[i + 1]) i++; 
+                    compositionState = 0;
+                }
+
+                const elementWrapper = document.createElement('div');
+                elementWrapper.innerHTML = rowMarkup;
+                targetContainer.appendChild(elementWrapper.firstElementChild);
+            }
+        }
+
+        // SCROLL DRIVEN Keynote Reveal Animations Engine
+        function handleScrollStorytellingEngine() {
+            const heroTrack = document.getElementById("heroTrack");
+            const heroBgReveal = document.getElementById("heroBgReveal");
+            const textMask = document.querySelector(".ms-hero-text-mask");
+
+            const scrollY = window.scrollY;
+            const heroHeight = heroTrack.offsetHeight;
+
+            if (scrollY <= heroHeight) {
+                const progress = scrollY / heroHeight;
+                textMask.style.transform = `scale(${1 - (progress * 0.15)})`;
+                heroBgReveal.style.opacity = progress * 1.2;
+                heroBgReveal.style.transform = `scale(${1.15 - (progress * 0.15)})`;
+            }
+
+            const sections = document.querySelectorAll(".ms-story-viewport-pane");
+            sections.forEach(sec => {
+                const top = sec.getBoundingClientRect().top;
+                const img = sec.querySelector(".ms-story-bg-img");
+                if (top < window.innerHeight && top > -window.innerHeight) {
+                    const imgProgress = (top / window.innerHeight) * 50;
+                    img.style.transform = `translateY(${imgProgress}px) scale(1.05)`;
+                }
+            });
+        }
+
+        // STATIC INTERACTIVE FILTER INITIALIZATION HANDLERS
+        function initFilterInteractionEngine() {
+            const buttons = document.querySelectorAll(".ms-filter-link-btn");
+            buttons.forEach(btn => {
+                btn.addEventListener("click", function() {
+                    buttons.forEach(b => b.classList.remove("is-active"));
+                    this.classList.add("is-active");
+                    
+                    const galleryWrapper = document.getElementById("editorialGalleryWrapper");
+                    galleryWrapper.style.opacity = "0";
+                    
+                    setTimeout(() => {
+                        composeEditorialGallery(this.getAttribute("data-filter"));
+                        galleryWrapper.style.opacity = "1";
+                    }, 350);
+                });
+            });
+        }
+
+        // INTERSECTION OBSERVED METRICS COUNT DOWN ENGINE
+        function initQuantitativeMetricsEngine() {
+            const numNodes = document.querySelectorAll(".ms-result-giant-num");
+            
+            const countObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const targetNode = entry.target;
+                        const finalVal = parseFloat(targetNode.getAttribute("data-count-target"));
+                        let startVal = 0;
+                        const totalSteps = 60;
+                        const increment = finalVal / totalSteps;
+                        let stepCount = 0;
+
+                        const iterationTimer = setInterval(() => {
+                            startVal += increment;
+                            stepCount++;
+                            
+                            if (Number.isInteger(finalVal)) {
+                                targetNode.innerText = Math.floor(startVal) + "+";
+                            } else {
+                                targetNode.innerText = startVal.toFixed(1) + "x";
+                            }
+
+                            if (stepCount >= totalSteps) {
+                                targetNode.innerText = Number.isInteger(finalVal) ? finalVal + "+" : finalVal + "x";
+                                clearInterval(iterationTimer);
+                            }
+                        }, 20);
+
+                        observer.unobserve(targetNode);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            numNodes.forEach(node => countObserver.observe(node));
+        }
+
+        // PREMIUM AUTO-SCROLLING VIDEO STREAMING PLATFORM EXPERIENCE IMPLEMENTATION
+        let activeVideoIndex = 0;
+        let lightboxIsOpen = false;
+        let carouselIsPaused = false;
+        let continuousScrollX = 0;
+        let animationFrameId = null;
+
+        function buildStreamingPlatformTestimonials() {
+            const track = document.getElementById("streamingTrack");
+            
+            // Triple layout pool configuration array to assure infinite loop integrity lengths across desktop
+            const totalDisplayPool = [...REDESIGNED_VIDEO_STORIES, ...REDESIGNED_VIDEO_STORIES, ...REDESIGNED_VIDEO_STORIES];
+            
+            track.innerHTML = totalDisplayPool.map((story, currentIdx) => {
+                const absoluteDataIndex = currentIdx % REDESIGNED_VIDEO_STORIES.length;
+                return `
+                    <div class="ms-streaming-video-card" data-pool-idx="${currentIdx}" data-absolute-idx="${absoluteDataIndex}">
+                        <div class="ms-streaming-media-box">
+                            <div class="ms-streaming-play-trigger">
+                                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            </div>
+                            <img class="ms-streaming-thumb" src="${story.thumb}" alt="${story.name}">
+                        </div>
+                        <div class="ms-streaming-meta-block">
+                            <span class="ms-streaming-brand-tag">${story.brand}</span>
+                            <span class="ms-streaming-client-identity">${story.name}</span>
+                            <p class="ms-streaming-one-liner">${story.quote}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Setup Carousel Interaction Listeners
+            const viewport = document.getElementById("streamingViewport");
+            viewport.addEventListener("mouseenter", () => { carouselIsPaused = true; });
+            viewport.addEventListener("mouseleave", () => { carouselIsPaused = false; });
+
+            // Bind Card Clicks to Lightbox Openers
+            const cards = document.querySelectorAll(".ms-streaming-video-card");
+            cards.forEach(card => {
+                card.addEventListener("click", function() {
+                    const targetIndex = parseInt(this.getAttribute("data-absolute-idx"));
+                    launchStreamingLightbox(targetIndex);
+                });
+            });
+
+            // Start High-Performance Animation Loop Thread
+            executeInfiniteScrollTrack();
+        }
+
+        function executeInfiniteScrollTrack() {
+            if (!carouselIsPaused && !lightboxIsOpen) {
+                const track = document.getElementById("streamingTrack");
+                const firstElement = track.querySelector(".ms-streaming-video-card");
+                
+                if (firstElement) {
+                    const elementStyle = window.getComputedStyle(firstElement);
+                    const singleCardWidth = firstElement.offsetWidth + parseFloat(elementStyle.marginRight);
+                    
+                    // Progressive step progression tracking parameters
+                    continuousScrollX -= 0.8; 
+                    
+                    // Reset matrix thresholds once complete loop sequences finish execution bounds
+                    const resetPoint = singleCardWidth * REDESIGNED_VIDEO_STORIES.length;
+                    if (Math.abs(continuousScrollX) >= resetPoint) {
+                        continuousScrollX = 0;
+                    }
+                    
+                    track.style.transform = `translateX(${continuousScrollX}px)`;
+                }
+            }
+            animationFrameId = requestAnimationFrame(executeInfiniteScrollTrack);
+        }
+
+        // LIGHTBOX SCREENING ARCHITECTURE CONTROL LAYERS
+        function launchStreamingLightbox(index) {
+            lightboxIsOpen = true;
+            activeVideoIndex = index;
+            
+            const lightbox = document.getElementById("streamingLightbox");
+            const player = document.getElementById("lightboxVideoElement");
+            
+            populateLightboxMetadata();
+            
+            lightbox.style.display = "flex";
+            setTimeout(() => {
+                lightbox.classList.add("is-visible");
+                player.style.opacity = "1";
+                player.play().catch(() => {});
+            }, 50);
+        }
+
+        function populateLightboxMetadata() {
+            const data = REDESIGNED_VIDEO_STORIES[activeVideoIndex];
+            const player = document.getElementById("lightboxVideoElement");
+            
+            player.src = data.video;
+            document.getElementById("lightboxBrand").innerText = data.brand;
+            document.getElementById("lightboxClient").innerText = data.name;
+            document.getElementById("lightboxQuote").innerText = data.quote;
+        }
+
+        function closeStreamingLightbox() {
+            const lightbox = document.getElementById("streamingLightbox");
+            const player = document.getElementById("lightboxVideoElement");
+            
+            player.pause();
+            lightbox.classList.remove("is-visible");
+            
+            setTimeout(() => {
+                lightbox.style.display = "none";
+                lightboxIsOpen = false;
+            }, 500);
+        }
+
+        function setupLightboxControls() {
+            document.getElementById("closeLightboxBtn").addEventListener("click", closeStreamingLightbox);
+            
+            document.getElementById("lightboxPrevBtn").addEventListener("click", () => {
+                activeVideoIndex = (activeVideoIndex - 1 + REDESIGNED_VIDEO_STORIES.length) % REDESIGNED_VIDEO_STORIES.length;
+                populateLightboxMetadata();
+                document.getElementById("lightboxVideoElement").play().catch(() => {});
+            });
+
+            document.getElementById("lightboxNextBtn").addEventListener("click", () => {
+                activeVideoIndex = (activeVideoIndex + 1) % REDESIGNED_VIDEO_STORIES.length;
+                populateLightboxMetadata();
+                document.getElementById("lightboxVideoElement").play().catch(() => {});
+            });
+
+            window.addEventListener("keydown", (e) => {
+                if (lightboxIsOpen && e.key === "Escape") closeStreamingLightbox();
+            });
+        }
+
+        // RANDOMIZED FLOATING COSMOS ENGINE (LOGO CLOUD STARFIELD DESIGN)
+        function generateLogoCosmosField() {
+            const spaceField = document.getElementById("cosmosField");
+            const fieldWidth = spaceField.offsetWidth;
+            const fieldHeight = spaceField.offsetHeight;
+
+            spaceField.innerHTML = COSMOS_LOGOS.map((logo) => {
+                const randomX = Math.floor(Math.random() * (fieldWidth - 180));
+                const randomY = Math.floor(Math.random() * (fieldHeight - 60));
+                const arbitraryOpacity = (Math.random() * 0.45) + 0.15;
+                const variableScale = (Math.random() * 0.3) + 0.8;
+
+                return `
+                    <div class="ms-cosmos-particle-node" style="top:${randomY}px; left:${randomX}px; opacity:${arbitraryOpacity}; transform: scale(${variableScale});">
+                        ${logo}
+                    </div>
+                `;
+            }).join('');
+
+            let frameCounter = 0;
+            function structuralFloatTicker() {
+                frameCounter += 0.02;
+                const particles = document.querySelectorAll(".ms-cosmos-particle-node");
+                particles.forEach((p, idx) => {
+                    const dynamicShiftY = Math.sin(frameCounter + idx) * 12;
+                    const originalTransform = p.style.transform.split(' ')[0] || 'scale(1)';
+                    p.style.transform = `${originalTransform} translateY(${dynamicShiftY}px)`;
+                });
+                requestAnimationFrame(structuralFloatTicker);
+            }
+            requestAnimationFrame(structuralFloatTicker);
+        }
+
+        // FULLSCREEN IMMERSIVE MAGAZINE OVERLAY SYSTEMS
+        function revealCaseStudyFullscreen(caseId) {
+            const project = MASTER_CASE_STUDIES.find(item => item.id === caseId);
+            if (!project) return;
+
+            const targetOverlay = document.getElementById("caseStudyOverlay");
+            const payloadContent = document.getElementById("overlayDynamicContent");
+
+            payloadContent.innerHTML = `
+                <span class="ms-editorial-label">${project.type} // PERFORMANCE LOGIC SPECIFICATION</span>
+                <h2 class="ms-display-text" style="font-size: clamp(2.5rem, 5vw, 5.5rem); margin-top:20px;">${project.brand} Architecture Evolution</h2>
+                
+                <div class="ms-case-hero-img-box">
+                    <img src="${project.img}" alt="${project.brand} Main Presentation Frame">
+                </div>
+
+                <div class="ms-case-meta-metrics-strip">
+                    <div>
+                        <span class="ms-editorial-label">TRACKED REALIZATION</span>
+                        <p style="font-size:1.8rem; font-weight:200; margin-top:10px;">${project.metric}</p>
+                    </div>
+                    <div>
+                        <span class="ms-editorial-label">MARKET SEGMENT</span>
+                        <p style="font-size:1.8rem; font-weight:200; margin-top:10px;">${project.industry}</p>
+                    </div>
+                    <div>
+                        <span class="ms-editorial-label">DEPLOYED CAPABILITY</span>
+                        <p style="font-size:1.2rem; font-weight:300; margin-top:10px;">${project.services}</p>
+                    </div>
+                </div>
+
+                <div class="ms-case-editorial-columns">
+                    <div>
+                        <h4>Structural Growth Inhibitor</h4>
+                        <p>${project.challenge}</p>
+                    </div>
+                    <div>
+                        <h4>System Design Action Strategy</h4>
+                        <p>${project.solution}</p>
+                    </div>
+                </div>
+
+                <div class="ms-case-testimonial-blockquote">
+                    "${project.testimonial}"
+                    <span class="ms-editorial-label" style="display:block; margin-top:15px; color:#FFF;">— Executive Operational Management Verification</span>
+                </div>
+
+                <div style="text-align:center; margin-top:80px;">
+                    <a href="${project.visitorUrl}" class="ms-outro-action-btn" style="color:#FFF; border-color:#FFF;">Launch Production Storefront Reference</a>
+                </div>
+            `;
+
+            targetOverlay.style.display = "block";
+            setTimeout(() => {
+                targetOverlay.classList.add("is-active");
+                document.body.style.overflow = "hidden"; 
+            }, 50);
+        }
+
+        // INTERACTIVE LUXURY MOUSE POINTER CONTROL ROUTINES
+        function bindLuxuryPointerTracking() {
+            const pointerNode = document.getElementById("luxuryPointer");
+            
+            window.addEventListener("mousemove", function(e) {
+                pointerNode.style.left = e.clientX + "px";
+                pointerNode.style.top = e.clientY + "px";
+            });
+
+            document.body.addEventListener("mouseenter", function(e) {
+                if (e.target.classList && (e.target.classList.contains("ms-asset-frame") || e.target.closest(".ms-streaming-video-card"))) {
+                    pointerNode.innerText = e.target.closest(".ms-streaming-video-card") ? "Play Story" : "View Case";
+                    pointerNode.style.transform = "translate(-50%, -50%) scale(1)";
+                }
+            }, true);
+
+            document.body.addEventListener("mouseleave", function(e) {
+                if (e.target.classList && (e.target.classList.contains("ms-asset-frame") || e.target.closest(".ms-streaming-video-card"))) {
+                    pointerNode.style.transform = "translate(-50%, -50%) scale(0)";
+                }
+            }, true);
+        }
+
+        // BOOT INTERACTIVE ENGINE LIFECYCLES
+        window.addEventListener("scroll", function() {
+            requestAnimationFrame(handleScrollStorytellingEngine);
+        });
+
+        document.getElementById("closeOverlayBtn").addEventListener("click", function() {
+            const overlay = document.getElementById("caseStudyOverlay");
+            overlay.classList.remove("is-active");
+            setTimeout(() => {
+                overlay.style.display = "none";
+                document.body.style.overflow = ""; 
+            }, 600);
+        });
+
+        // RUN DIRECT INITIALIZATIONS
+        composeEditorialGallery("ALL");
+        initFilterInteractionEngine();
+        initQuantitativeMetricsEngine();
+        buildStreamingPlatformTestimonials();
+        setupLightboxControls();
+        generateLogoCosmosField();
+        bindLuxuryPointerTracking();
+    </script>
+</body>
+</html>

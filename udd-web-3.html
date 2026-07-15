@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Udd Studio — Case Study</title>
+    <style>
+        :root {
+            --bg-dark: #070707;
+            --bg-light: #ffffff;
+            --bg-cream: #efede8;
+            --txt-primary: #ffffff;
+            --txt-dark: #111111;
+            --txt-muted: #8e8e8e;
+            --border-muted: #1a1a1a;
+            --border-light: #e0e0e0;
+            --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --ease-premium: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
+            color: var(--txt-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+        }
+
+        /* --- STAGE REVEAL ANIMATIONS --- */
+        .premium-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s var(--ease-premium), transform 1.2s var(--ease-premium);
+        }
+
+        .premium-reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background-color: var(--bg-dark);
+            padding: 100px 0 40px 0;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 300;
+            margin-bottom: 40px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-meta-grid { grid-template-columns: repeat(2, 1fr); gap: 30px; }
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            color: var(--txt-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+        }
+
+        .meta-value {
+            font-size: 0.95rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #e0e0e0;
+        }
+
+        .btn-visit {
+            display: inline-block;
+            background-color: var(--bg-light);
+            color: var(--txt-dark);
+            padding: 14px 28px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 2px;
+            margin-bottom: 80px;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-visit:hover {
+            opacity: 0.9;
+        }
+
+        /* Dynamic Scroll Scale Visual Wrapper */
+        .hero-visual-frame {
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            background-color: var(--bg-dark);
+        }
+
+        .hero-main-image {
+            width: 85%; /* Minimal starting profile size */
+            height: 75vh;
+            object-fit: cover;
+            display: block;
+            transition: width 0.1s linear;
+            will-change: width;
+        }
+
+        @media (max-width: 768px) {
+            .hero-main-image { height: 45vh; width: 95%; }
+        }
+
+        /* --- OVERVIEW & INTRO --- */
+        .intro-section {
+            background-color: var(--bg-light);
+            color: var(--txt-dark);
+            padding: 120px 0;
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 4fr 8fr;
+            gap: 40px;
+            margin-bottom: 100px;
+        }
+
+        @media (max-width: 992px) {
+            .intro-grid { grid-template-columns: 1fr; margin-bottom: 60px; }
+        }
+
+        .intro-text p {
+            font-size: 1.1rem;
+            line-height: 1.65;
+            color: #2b2b2b;
+            margin-bottom: 30px;
+        }
+
+        /* Metrics Row */
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid var(--border-light);
+            padding-top: 50px;
+            margin-bottom: 100px;
+            text-align: center;
+            gap: 20px;
+        }
+
+        .metric-item h3 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 200;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .metric-item p {
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* Twin Imagery Row */
+        .twin-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .twin-images { grid-template-columns: 1fr; gap: 20px; }
+        }
+
+        .twin-images img {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+            .twin-images img { height: 400px; }
+        }
+
+        /* --- OPTIMIZATION INITIATIVES HEADERS --- */
+        .initiatives-intro {
+            padding: 120px 0 40px 0;
+        }
+
+        .initiatives-intro h2 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+
+        .initiatives-intro h3 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--txt-muted);
+            margin-bottom: 40px;
+        }
+
+        .initiatives-intro p {
+            font-size: 1.05rem;
+            line-height: 1.65;
+            color: var(--txt-muted);
+            max-width: 850px;
+            margin-bottom: 24px;
+        }
+
+        /* --- INITIATIVES STREAM (NO BORDERS) --- */
+        .initiative-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: center;
+            padding: 60px 0;
+            border-top: none; /* Removed dividers as requested */
+        }
+
+        @media (max-width: 992px) {
+            .initiative-row {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 40px 0;
+            }
+            .initiative-row.reverse .info-panel { order: 2; }
+            .initiative-row.reverse .visual-panel { order: 1; }
+        }
+
+        .info-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .init-num {
+            font-size: 0.85rem;
+            border: 1px solid var(--txt-primary);
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-bottom: 24px;
+        }
+
+        .info-panel h4 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
+        }
+
+        .info-panel p {
+            font-size: 0.98rem;
+            line-height: 1.65;
+            color: var(--txt-muted);
+        }
+
+        /* Strict 1:1 Aspect Ratio Box styling */
+        .visual-panel {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1 / 1; /* Forced 1:1 square parameter */
+            overflow: hidden;
+            background-color: #111;
+            position: relative;
+        }
+
+        .visual-panel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures filling without distending proportions */
+            display: block;
+        }
+
+        /* Internal UI Components Layout */
+        .custom-card-mock {
+            width: 100%;
+            height: 100%;
+            background: white;
+            padding: 40px;
+            color: #111;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .currency-selector-mock {
+            width: 100%;
+            height: 100%;
+            background: white;
+            color: #111;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .currency-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .currency-item:last-child { border-bottom: none; }
+        .currency-item span { margin-left: 16px; }
+
+        .trust-badge-mock {
+            width: 100%;
+            height: 100%;
+            background: white;
+            color: #111;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 40px;
+            text-align: center;
+            align-content: center;
+        }
+        .badge-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: #555;
+        }
+        .badge-box strong {
+            color: #111;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            margin-bottom: 2px;
+        }
+        .badge-icon { font-size: 2rem; }
+
+        /* --- CONTINUOUS LOGO MARQUEE --- */
+        .marquee-section {
+            padding: 80px 0;
+            border-top: 1px solid var(--border-muted);
+            overflow: hidden;
+            width: 100%;
+            background-color: var(--bg-dark);
+        }
+
+        .marquee-wrapper {
+            display: flex;
+            width: max-content;
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 80px;
+            animation: infiniteMarqueeLoop 25s linear infinite;
+            padding-right: 80px;
+        }
+
+        .logo-item {
+            font-size: 1.25rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            color: var(--txt-primary);
+            opacity: 0.8;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        @keyframes infiniteMarqueeLoop {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* --- IMMERSIVE ASSET GRID --- */
+        .asset-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            width: 100%;
+        }
+        @media (max-width: 992px) {
+            .asset-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 576px) {
+            .asset-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        .asset-grid img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* --- FAQ SECTION --- */
+        .faq-section {
+            background-color: var(--bg-cream);
+            color: var(--txt-dark);
+            padding: 120px 0;
+        }
+        .faq-layout {
+            display: grid;
+            grid-template-columns: 4fr 8fr;
+            gap: 80px;
+        }
+        @media (max-width: 992px) {
+            .faq-layout { grid-template-columns: 1fr; gap: 50px; }
+        }
+        .faq-left h2 {
+            font-size: 2.2rem;
+            font-weight: 400;
+            line-height: 1.3;
+            margin-bottom: 40px;
+            letter-spacing: -0.01em;
+        }
+        .faq-profile {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 14px;
+        }
+        .faq-profile img {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .faq-profile p {
+            font-size: 0.9rem;
+            color: #444;
+            line-height: 1.4;
+        }
+        .btn-book {
+            display: inline-block;
+            background-color: var(--txt-dark);
+            color: var(--txt-primary);
+            padding: 12px 24px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-top: 6px;
+            transition: opacity 0.3s ease;
+        }
+        .btn-book:hover { opacity: 0.9; }
+
+        .faq-accordion {
+            display: flex;
+            flex-direction: column;
+        }
+        .faq-item {
+            border-bottom: 1px solid #dcdad4;
+            padding: 28px 0;
+        }
+        .faq-item:first-child { padding-top: 0; }
+        .faq-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .faq-header h4 {
+            font-size: 1.05rem;
+            font-weight: 400;
+        }
+        .faq-icon {
+            font-size: 1.2rem;
+            font-weight: 300;
+            transition: transform 0.4s var(--ease-premium);
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+        .faq-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s var(--ease-premium), margin-top 0.4s var(--ease-premium);
+            margin-top: 0;
+        }
+        .faq-item.active .faq-body {
+            max-height: 200px;
+            margin-top: 18px;
+        }
+        .faq-body p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="container premium-reveal">
+            <h1 class="hero-title">Udd Studio</h1>
+            
+            <div class="hero-meta-grid">
+                <div>
+                    <div class="meta-label">Year :</div>
+                    <div class="meta-value">2019</div>
+                </div>
+                <div>
+                    <div class="meta-label">Industry :</div>
+                    <div class="meta-value">Apparel</div>
+                </div>
+                <div style="grid-column: span 2;">
+                    <div class="meta-label">Project Scope :</div>
+                    <div class="meta-value">Website UI-UX, Website Designing and Development, Creative Designing, Marketing</div>
+                </div>
+            </div>
+
+            <a href="#" class="btn-visit">Visit Website &nbsp;➔</a>
+        </div>
+        
+        <div class="hero-visual-frame">
+            <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1600&q=80" alt="Udd Studio Editorial Banner" class="hero-main-image" id="scaleTargetImg">
+        </div>
+    </section>
+
+    <section class="intro-section">
+        <div class="container">
+            <div class="intro-grid premium-reveal">
+                <div></div>
+                <div class="intro-text">
+                    <p>Founded by designer and entrepreneur Yuti Edwards, Udd is an Indian ethnic wear brand that breathes life into the vibrant tapestry of India's folk art. Inspired by the kaleidoscope of rural India's traditions, Udd creates designs that celebrate Kalamkari, Rabari, Mughal, and other heritage art forms, bringing them into the wardrobes of modern, free-spirited women around the world. Udd is more than a fashion label — it's a platform for artisans. Rural, tribal, and urban craftspeople translate centuries-old techniques into wearable art, making each garment a piece of India's cultural soul. The brand embodies slow fashion, sustainability, and a deep respect for craftsmanship.</p>
+                    <p>By 2021, Udd had achieved recognition in India but struggled to break into the international market. While the quality and originality of its products were undeniable, the brand's digital presence wasn't delivering the results it needed. The website suffered from high bounce rates, low conversion rates, and an audience pool that was too small to support ambitious global growth.</p>
+                </div>
+            </div>
+
+            <div class="metrics-row premium-reveal">
+                <div class="metric-item">
+                    <h3>98/100</h3>
+                    <p>Google Lighthouse Score Achieved</p>
+                </div>
+                <div class="metric-item">
+                    <h3>&lt;2s</h3>
+                    <p>Load Speed Achieved</p>
+                </div>
+                <div class="metric-item">
+                    <h3>20</h3>
+                    <p>Days to Prototype Delivery</p>
+                </div>
+            </div>
+
+            <div class="twin-images premium-reveal">
+                <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=800&q=80" alt="Udd Collection Portrait 1">
+                <img src="https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&w=800&q=80" alt="Udd Collection Portrait 2">
+            </div>
+        </div>
+    </section>
+
+    <section class="initiatives-intro">
+        <div class="container premium-reveal">
+            <h2>Optimization Initiatives</h2>
+            <h3>That Drive Results</h3>
+            <p>Our focus was to refine the website's structure, visuals, and performance for a higher conversion rate. Every optimization was made to improve the user journey — from discovery to checkout — resulting in improved engagement and revenue.</p>
+            <p>We introduced key CRO-driven enhancements aimed at improving user retention, checkout completion, and sales. These initiatives were backed by analytics and real-time user insights for consistent performance uplift.</p>
+        </div>
+    </section>
+
+    <section class="initiatives-stream">
+        <div class="container">
+
+            <div class="initiative-row premium-reveal">
+                <div class="info-panel">
+                    <div class="init-num">1</div>
+                    <h4>Shoppable Videos</h4>
+                    <p>Shoppable videos transform storytelling into a seamless shopping experience. Customers can interact with products directly from the video — exploring details, prices, and add-to-cart options without leaving the frame. This creates an emotional connection and encourages impulse buying while enhancing session duration and overall engagement.</p>
+                </div>
+                <div class="visual-panel">
+                    <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=800&q=80" alt="Shoppable Video Layout">
+                </div>
+            </div>
+
+            <div class="initiative-row reverse premium-reveal">
+                <div class="visual-panel">
+                    <div class="custom-card-mock">
+                        <div style="font-weight:600; font-size: 0.85rem; letter-spacing:0.05em; text-transform:uppercase; margin-bottom:20px; color:#777;">Client Diaries</div>
+                        <div style="display:flex; flex-direction:column; gap:16px; font-size:0.85rem; line-height:1.5;">
+                            <div style="border-left: 2px solid #111; padding-left: 14px;">
+                                <div style="color:#f39c12; margin-bottom:4px; font-size:0.75rem;">★★★★★</div>
+                                "Beautiful design and perfect fit! Received so many compliments."<br><strong style="font-size:0.7rem; color:#666;">- NITI Y.</strong>
+                            </div>
+                            <div style="border-left: 2px solid #111; padding-left: 14px;">
+                                <div style="color:#f39c12; margin-bottom:4px; font-size:0.75rem;">★★★★★</div>
+                                "The fabric quality is outstanding. Truly wearable art!"<br><strong style="font-size:0.7rem; color:#666;">- NEHA P.</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-panel">
+                    <div class="init-num">2</div>
+                    <h4>Customer Testimonials</h4>
+                    <p>Authentic testimonials act as the most powerful form of social proof. Displaying real feedback and experiences from satisfied customers helps establish trust and reinforces purchase confidence. Strategically positioning testimonials across key touchpoints — like the homepage, product pages, and checkout — helps reduce hesitation and increases conversion rates significantly.</p>
+                </div>
+            </div>
+
+            <div class="initiative-row premium-reveal">
+                <div class="info-panel">
+                    <div class="init-num">3</div>
+                    <h4>Celebrity & Influencer Collaborations</h4>
+                    <p>Featuring recognized faces and relatable influencers bridges aspirational and emotional appeal. These collaborations bring authenticity and validation, influencing buyer perception and brand desirability. Highlighting influencer content, styling videos, and endorsements within the website enhances credibility, increases engagement, and drives social-driven conversions.</p>
+                </div>
+                <div class="visual-panel">
+                    <div class="custom-card-mock">
+                        <div style="font-weight:600; font-size: 0.85rem; letter-spacing:0.05em; text-transform:uppercase; text-align:center; margin-bottom:24px;">Celebrity Closet</div>
+                        <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; font-size:0.75rem; text-align:center; font-weight:500;">
+                            <div><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&h=300&q=80" style="width:100%; aspect-ratio:1/1; object-fit:cover; margin-bottom:6px;">Raveena T.</div>
+                            <div><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&h=300&q=80" style="width:100%; aspect-ratio:1/1; object-fit:cover; margin-bottom:6px;">Vidya B.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="initiative-row reverse premium-reveal">
+                <div class="visual-panel">
+                    <div class="custom-card-mock" style="font-size:0.85rem;">
+                        <div style="font-weight:600; text-transform:uppercase; margin-bottom:14px; font-size:0.85rem; border-bottom:1px solid #eee; padding-bottom:8px;">Shop By Heritage</div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px;">
+                            <div style="background:#f5f5f5; padding:6px 14px; border-radius:2px;">Shiv-Parvati</div>
+                            <div style="background:#f5f5f5; padding:6px 14px; border-radius:2px;">Kalamkari Collection</div>
+                            <div style="background:#f5f5f5; padding:6px 14px; border-radius:2px;">Radha-Krishna</div>
+                        </div>
+                        <div style="font-weight:600; text-transform:uppercase; margin-bottom:14px; font-size:0.85rem; border-bottom:1px solid #eee; padding-bottom:8px;">Shop By Occasion</div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                            <span style="border:1px solid #ccc; padding:6px 12px; border-radius:2px;">Festive Wear</span>
+                            <span style="border:1px solid #ccc; padding:6px 12px; border-radius:2px;">Weddings</span>
+                            <span style="border:1px solid #ccc; padding:6px 12px; border-radius:2px;">Navratri Special</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-panel">
+                    <div class="init-num">4</div>
+                    <h4>Smart Product Categorization</h4>
+                    <p>Well-defined product categorization ensures effortless discovery and improves the overall browsing experience. Sorting products by collection, category, fabric, color, or occasion helps customers find what they need faster. This structured navigation reduces decision fatigue, keeps users engaged longer, and ultimately increases the chances of checkout completion.</p>
+                </div>
+            </div>
+
+            <div class="initiative-row premium-reveal">
+                <div class="info-panel">
+                    <div class="init-num">5</div>
+                    <h4>Multilingual & Multi-Currency Support</h4>
+                    <p>Catering to global audiences requires localized experiences. Integrating multilingual support and currency conversion allows customers to shop in their preferred language and currency — removing friction and confusion during checkout. This feature not only improves inclusivity but also boosts international sales and user satisfaction.</p>
+                </div>
+                <div class="visual-panel">
+                    <div class="currency-selector-mock">
+                        <div class="currency-item" style="font-weight: 600;">🌐 <span>Auto-Detect Market Location</span></div>
+                        <div class="currency-item">🇺🇸 <span>US Dollar (USD)</span></div>
+                        <div class="currency-item">🇬🇧 <span>British Pound (GBP)</span></div>
+                        <div class="currency-item">🇮🇳 <span>Indian Rupee (INR)</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="initiative-row reverse premium-reveal">
+                <div class="visual-panel">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" alt="Chat UI Matrix Frame">
+                </div>
+                <div class="info-panel">
+                    <div class="init-num">6</div>
+                    <h4>WhatsApp Chat Integration</h4>
+                    <p>Integrating WhatsApp chat adds a direct, personal touchpoint for instant customer support. Visitors can easily resolve doubts, get personalized recommendations, or track orders in real time. This one-on-one conversational support improves brand reliability, reduces cart abandonment, and builds lasting relationships with customers.</p>
+                </div>
+            </div>
+
+            <div class="initiative-row premium-reveal">
+                <div class="info-panel">
+                    <div class="init-num">7</div>
+                    <h4>Blogs & Editorials</h4>
+                    <p>High-quality blog content strengthens brand credibility and drives organic traffic through SEO. Educational and storytelling-style blogs keep visitors engaged even beyond the product pages, creating authority and value. By addressing customer pain points, trends, and solutions, blogs nurture trust and build a stronger emotional bond with your audience.</p>
+                </div>
+                <div class="visual-panel">
+                    <div class="custom-card-mock" style="padding: 20px; justify-content: space-between;">
+                        <div style="font-weight:600; font-size: 0.85rem; text-transform:uppercase; tracking-spacing:0.05em; text-align:center; color:#555;">Udd Tribe Retrospective</div>
+                        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=400&h=250&q=80" style="width:100%; height:60%; object-fit:cover;">
+                        <div>
+                            <div style="font-size:0.9rem; font-weight:600; margin-bottom:4px;">The Inner Calling — Art Form Revival</div>
+                            <div style="font-size:0.75rem; color:#666; line-height:1.4;">How traditional motifs found home inside contemporary modern wardrobes...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="initiative-row reverse premium-reveal">
+                <div class="visual-panel">
+                    <div class="trust-badge-mock">
+                        <div class="badge-box">
+                            <span class="badge-icon">🚢</span>
+                            <strong>Global Shipping</strong>
+                            Worldwide Coverage
+                        </div>
+                        <div class="badge-box">
+                            <span class="badge-icon">🔒</span>
+                            <strong>Secure Gateway</strong>
+                            100% Verified Sales
+                        </div>
+                        <div class="badge-box">
+                            <span class="badge-icon">🎧</span>
+                            <strong>Direct Support</strong>
+                            24x7 Assistance
+                        </div>
+                        <div class="badge-box">
+                            <span class="badge-icon">✉</span>
+                            <strong>Contact Studio</strong>
+                            contact@uddstudio.com
+                        </div>
+                    </div>
+                </div>
+                <div class="info-panel">
+                    <div class="init-num">8</div>
+                    <h4>Trust Badges</h4>
+                    <p>Trust badges like "Secure Payment," "Authenticity Guaranteed," and "Easy Returns" reinforce safety and reliability at key buying moments. Strategically placing these on the product and checkout pages reduces uncertainty, boosts perceived trustworthiness, and helps overcome the last barrier before purchase completion.</p>
+                </div>
+            </div>
+
+            <div class="initiative-row premium-reveal">
+                <div class="info-panel">
+                    <div class="init-num">9</div>
+                    <h4>CRO-Optimized Product Page</h4>
+                    <p>Every product page is structured with conversion in mind — combining persuasive content, visual hierarchy, and strong CTAs. Elements like offer highlights, urgency triggers, and trust seals guide the user toward taking action. These optimizations reduce bounce rates, increase cart additions, and improve overall sales performance.</p>
+                </div>
+                <div class="visual-panel">
+                    <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=600&q=80" alt="Product Page Architecture Preview">
+                </div>
+            </div>
+
+            <div class="initiative-row reverse premium-reveal">
+                <div class="visual-panel">
+                    <div class="custom-card-mock" style="background:#fafafa; justify-content: center; gap:12px;">
+                        <div style="font-size:0.85rem; font-weight:600; border-bottom:1px solid #e5e5e5; padding-bottom:10px;">⚡ Swift Integrated Checkout</div>
+                        <div style="height:44px; background:#eee; border-radius:3px; display:flex; align-items:center; padding-left:14px; font-size:0.8rem; color:#444;">UPI / Instant Transfer</div>
+                        <div style="height:44px; background:#eee; border-radius:3px; display:flex; align-items:center; padding-left:14px; font-size:0.8rem; color:#444;">Credit / Debit Cards</div>
+                        <div style="height:44px; background:#111; color:white; border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:0.85rem; font-weight:500;">Complete Secure Order</div>
+                    </div>
+                </div>
+                <div class="info-panel">
+                    <div class="init-num">10</div>
+                    <h4>GoKwik Checkout</h4>
+                    <p>GoKwik Checkout offers a frictionless, secure, and mobile-optimized checkout experience designed to enhance customer confidence and reduce cart drop-offs. With built-in verification steps, it ensures authenticity in every transaction, helping minimize RTOs and fraudulent orders.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="marquee-section">
+        <div class="marquee-wrapper">
+            <div class="marquee-track">
+                <div class="logo-item">Cinepolis</div>
+                <div class="logo-item">Love A Lot</div>
+                <div class="logo-item">Skoda</div>
+                <div class="logo-item">Harpy's</div>
+                <div class="logo-item">Zada</div>
+                <div class="logo-item">Nitya</div>
+            </div>
+            <div class="marquee-track">
+                <div class="logo-item">Cinepolis</div>
+                <div class="logo-item">Love A Lot</div>
+                <div class="logo-item">Skoda</div>
+                <div class="logo-item">Harpy's</div>
+                <div class="logo-item">Zada</div>
+                <div class="logo-item">Nitya</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="asset-grid">
+        <img src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=400&q=80" alt="Asset 1">
+        <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=400&q=80" alt="Asset 2">
+        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=400&q=80" alt="Asset 3">
+        <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&w=400&q=80" alt="Asset 4">
+        <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=400&q=80" alt="Asset 5">
+        <img src="https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&w=400&q=80" alt="Asset 6">
+        <img src="https://images.unsplash.com/photo-1605518216992-0c3de2c40ed6?auto=format&fit=crop&w=400&q=80" alt="Asset 7">
+        <img src="https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=400&q=80" alt="Asset 8">
+        <img src="https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?auto=format&fit=crop&w=400&q=80" alt="Asset 9">
+        <img src="https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=400&q=80" alt="Asset 10">
+        <img src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&w=400&q=80" alt="Asset 11">
+        <img src="https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?auto=format&fit=crop&w=400&q=80" alt="Asset 12">
+    </section>
+
+    <section class="faq-section">
+        <div class="container">
+            <div class="faq-layout">
+                
+                <div class="faq-left premium-reveal">
+                    <h2>Frequent questions<br><span style="color:#777; font-weight:300;">with specific answers</span></h2>
+                    <div class="faq-profile">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" alt="Team Member Profile">
+                        <p>🗣 Speak to a member<br>of our team</p>
+                        <a href="#" class="btn-book">Book a Call ➔</a>
+                    </div>
+                </div>
+
+                <div class="faq-accordion premium-reveal">
+                    
+                    <div class="faq-item active">
+                        <div class="faq-header" onclick="toggleFaq(this)">
+                            <h4>What services do you offer?</h4>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-body">
+                            <p>We offer end-to-end marketing solutions including performance marketing, social media management, web development, design strategy, and comprehensive creative optimization execution ecosystems built under one cohesive studio space.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-header" onclick="toggleFaq(this)">
+                            <h4>How do you create a marketing strategy?</h4>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-body">
+                            <p>Our strategic deployment matrices track consumer demographic friction layers, engineering clean programmatic visibility frameworks built precisely around your conversion metrics.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-header" onclick="toggleFaq(this)">
+                            <h4>Will you handle social media content for us?</h4>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-body">
+                            <p>Yes, our design team produces tailored content structures matching native media layouts cleanly across major social acquisition systems.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-header" onclick="toggleFaq(this)">
+                            <h4>How long does it take to see results?</h4>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-body">
+                            <p>Initial performance parameters begin optimization visibility runs inside the prime weeks of framework activation, building continuous stability curves.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            initScrollAnimations();
+        });
+
+        function initScrollAnimations() {
+            const scaleTargetImg = document.getElementById("scaleTargetImg");
+            const revealElements = document.querySelectorAll(".premium-reveal");
+
+            // 1. Intersection Observer for standard element slide-reveals
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("is-visible");
+                    }
+                });
+            }, { threshold: 0.05, rootMargin: "0px 0px -40px 0px" });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // 2. High-performance Scroll event handler for main showcase image expansion
+            window.addEventListener("scroll", () => {
+                const scrolled = window.scrollY;
+                
+                // Track scrolling vectors inside the top hero viewport space only
+                if (scrolled < window.innerHeight * 1.2) {
+                    // Smooth calculation transitioning width linearly from 85% out to 100% full bleeding spread
+                    const targetWidth = 85 + (scrolled * 0.035); 
+                    scaleTargetImg.style.width = Math.min(100, targetWidth) + "%";
+                }
+            });
+        }
+
+        /* --- FAQ CORE MECHANICS --- */
+        function toggleFaq(element) {
+            const parent = element.parentElement;
+            const isActive = parent.classList.contains('active');
+            
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            if (!isActive) {
+                parent.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>

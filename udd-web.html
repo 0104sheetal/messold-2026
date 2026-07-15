@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: #000000; scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UDD Studio — Shopify Development Case Study | MESSOLD</title>
+    <style>
+        /* --- RESET & FOUNDATIONS --- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --c-bg-primary: #000000;
+            --c-bg-secondary: #0A0A0A;
+            --c-bg-transition: #121212;
+            --c-bg-light: #FAFAFA;
+            --c-txt-primary: #FFFFFF;
+            --c-txt-secondary: #A6A6A6;
+            --c-border: rgba(255, 255, 255, 0.08);
+            --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--c-bg-primary);
+            color: var(--c-txt-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.8s var(--ease-premium), color 0.8s var(--ease-premium);
+        }
+
+        /* --- THEME OVERRIDES --- */
+        body.theme-light {
+            background-color: var(--c-bg-light);
+            color: #121212;
+            --c-txt-primary: #121212;
+            --c-txt-secondary: #555555;
+            --c-border: rgba(0, 0, 0, 0.08);
+        }
+
+        body.theme-dark-secondary {
+            background-color: var(--c-bg-secondary);
+        }
+
+        /* --- TYPOGRAPHY & INTERACTION --- */
+        h1, h2, h3, h4 {
+            font-weight: 300;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+        }
+
+        p, span, li {
+            font-weight: 400;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--c-txt-secondary);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        img, video {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        .cs-container {
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 60px;
+        }
+
+        @media (max-width: 991px) {
+            .cs-container { padding: 0 40px; }
+        }
+        @media (max-width: 576px) {
+            .cs-container { padding: 0 20px; }
+        }
+
+        /* --- CUSTOM CURSOR --- */
+        .cs-cursor {
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .cs-cursor.hovered {
+            transform: translate(-50%, -50%) scale(6);
+        }
+
+        /* --- UTILITIES & ENHANCED SCROLL REVEALS --- */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s var(--ease-premium), transform 1.2s var(--ease-premium);
+            will-change: transform, opacity;
+        }
+        .reveal-element.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-header-meta {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            margin-bottom: 12px;
+            display: block;
+            color: var(--c-txt-secondary);
+            opacity: 0.5;
+        }
+
+        /* --- HERO --- */
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding-bottom: 60px;
+        }
+
+        .hero-bg-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.05);
+            transition: transform 0.1s ease-out;
+            will-change: transform;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.9) 100%);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            align-items: flex-end;
+            gap: 40px;
+        }
+
+        .hero-title-group h1 {
+            font-size: clamp(2.2rem, 4.5vw, 4rem);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(0.95rem, 1.4vw, 1.2rem);
+            max-width: 540px;
+            font-weight: 300;
+            color: #FFFFFF;
+        }
+
+        .hero-meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            border-left: 1px solid rgba(255,255,255,0.15);
+            padding-left: 30px;
+        }
+
+        .hero-meta-item span {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 2px;
+        }
+
+        .hero-meta-item p {
+            font-size: 0.9rem;
+            color: #FFFFFF;
+        }
+
+        .hero-scroll-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            opacity: 0.6;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, 0); }
+            50% { opacity: 0.8; transform: translate(-50%, 6px); }
+        }
+
+        @media (max-width: 991px) {
+            .hero-content { grid-template-columns: 1fr; gap: 30px; }
+            .hero-meta-grid { border-left: none; padding-left: 0; grid-template-columns: repeat(4, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .hero-meta-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+        }
+
+        /* --- COMPACT SNAPSHOT --- */
+        .snapshot-section {
+            padding: 40px 0;
+            border-bottom: 1px solid var(--c-border);
+        }
+
+        .snapshot-horizontal-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px 40px;
+        }
+
+        .snapshot-block {
+            border-bottom: 1px solid var(--c-border);
+            padding-bottom: 8px;
+            transition: border-color 0.4s ease;
+        }
+
+        .snapshot-block:hover {
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        body.theme-light .snapshot-block:hover {
+            border-color: rgba(0,0,0,0.4);
+        }
+
+        .snapshot-label {
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            color: var(--c-txt-secondary);
+            margin-bottom: 4px;
+        }
+
+        .snapshot-value {
+            font-size: 0.9rem;
+            color: var(--c-txt-primary);
+        }
+
+        @media (max-width: 991px) {
+            .snapshot-horizontal-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 576px) {
+            .snapshot-horizontal-grid { grid-template-columns: 1fr; }
+        }
+
+        /* --- THE BRAND (SCROLL REVEAL TEXT ENGINE) --- */
+        .brand-section {
+            padding: 60px 0;
+        }
+
+        .brand-scroll-trigger {
+            min-height: 180vh;
+            position: relative;
+        }
+
+        .brand-sticky-container {
+            position: sticky;
+            top: 15vh;
+            width: 100%;
+        }
+
+        .brand-scroll-text {
+            font-size: clamp(1.3rem, 2.5vw, 2.2rem);
+            line-height: 1.5;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.1);
+            max-width: 1100px;
+            margin-bottom: 40px;
+            transition: color 0.3s ease;
+        }
+
+        .brand-scroll-text span {
+            font-size: inherit;
+            font-weight: inherit;
+            color: rgba(255, 255, 255, 0.12);
+            transition: color 0.2s linear;
+        }
+
+        body.theme-light .brand-scroll-text span {
+            color: rgba(0, 0, 0, 0.12);
+        }
+
+        .brand-editorial-block {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .brand-image-frame {
+            overflow: hidden;
+            max-height: 400px;
+        }
+        
+        .brand-image-frame img {
+            transition: transform 1.2s var(--ease-premium);
+        }
+        
+        .brand-image-frame:hover img {
+            transform: scale(1.03);
+        }
+
+        @media (max-width: 768px) {
+            .brand-scroll-trigger { min-height: auto; }
+            .brand-sticky-container { position: relative; top: 0; }
+        }
+
+        /* --- THE CONFLICT --- */
+        .challenge-section {
+            padding: 60px 0;
+            border-top: 1px solid var(--c-border);
+        }
+
+        .conflict-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 60px;
+        }
+
+        .conflict-left h2 {
+            font-size: clamp(1.5rem, 2.5vw, 2.4rem);
+            position: sticky;
+            top: 40px;
+        }
+
+        .conflict-right {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .conflict-row {
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--c-border);
+            transition: padding-left 0.4s var(--ease-premium);
+        }
+        
+        .conflict-row:hover {
+            padding-left: 10px;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        body.theme-light .conflict-row:hover {
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .conflict-row-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+        }
+
+        .conflict-row-header h3 {
+            font-size: 1.1rem;
+            color: var(--c-txt-primary);
+        }
+
+        .conflict-num {
+            font-size: 0.75rem;
+            opacity: 0.4;
+            font-family: monospace;
+        }
+
+        .conflict-row p {
+            font-size: 0.9rem;
+            max-width: 680px;
+        }
+
+        @media (max-width: 768px) {
+            .conflict-grid { grid-template-columns: 1fr; gap: 40px; }
+            .conflict-left h2 { position: static; }
+        }
+
+        /* --- STRATEGIC ROADMAP --- */
+        .process-section {
+            padding: 60px 0;
+            border-top: 1px solid var(--c-border);
+        }
+
+        .process-pipeline {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .process-line-item {
+            display: grid;
+            grid-template-columns: 0.5fr 2fr 4fr;
+            padding: 25px 0;
+            border-top: 1px solid var(--c-border);
+            align-items: baseline;
+            gap: 20px;
+            transition: padding-left 0.4s var(--ease-premium), background-color 0.4s ease;
+        }
+
+        .process-line-item:last-child {
+            border-bottom: 1px solid var(--c-border);
+        }
+        
+        .process-line-item:hover {
+            padding-left: 15px;
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+        
+        body.theme-light .process-line-item:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .process-index {
+            font-family: monospace;
+            font-size: 0.8rem;
+            opacity: 0.4;
+        }
+
+        .process-line-item h3 {
+            font-size: 1.05rem;
+            color: var(--c-txt-primary);
+        }
+
+        .process-line-item p {
+            font-size: 0.88rem;
+        }
+
+        @media (max-width: 768px) {
+            .process-line-item {
+                grid-template-columns: 0.4fr 1.6fr;
+                gap: 10px 20px;
+                padding: 20px 0;
+            }
+            .process-line-item p {
+                grid-column: 1 / -1;
+                margin-top: 4px;
+            }
+        }
+
+        /* --- AESTHETIC CORE --- */
+        .design-section {
+            padding: 60px 0;
+            border-top: 1px solid var(--c-border);
+        }
+
+        .design-clean-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 1.9fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .design-text-block h2 {
+            font-size: clamp(1.5rem, 2.5vw, 2.4rem);
+            margin-bottom: 24px;
+        }
+
+        .design-manifesto {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .design-item-row {
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--c-border);
+        }
+
+        .design-item-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .design-item-row h4 {
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            color: var(--c-txt-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .design-item-row p {
+            font-size: 0.85rem;
+        }
+
+        .design-clean-image {
+            overflow: hidden;
+            max-height: 500px;
+        }
+        
+        .design-clean-image img {
+            transition: transform 1.2s var(--ease-premium);
+        }
+        
+        .design-clean-image:hover img {
+            transform: scale(1.04);
+        }
+
+        @media (max-width: 768px) {
+            .design-clean-layout { grid-template-columns: 1fr; gap: 40px; }
+        }
+
+        /* --- PREMIUM FEATURE SHOWCASE --- */
+        .features-section {
+            padding: 60px 0;
+            border-top: 1px solid var(--c-border);
+        }
+
+        .features-clean-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .feature-item-card {
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.4s var(--ease-premium);
+        }
+        
+        .feature-item-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .feature-img-wrapper {
+            overflow: hidden;
+            height: 220px;
+            margin-bottom: 16px;
+            background: #111;
+        }
+        
+        .feature-img-wrapper img {
+            transition: transform 0.8s ease;
+        }
+        
+        .feature-item-card:hover .feature-img-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .feature-item-card h3 {
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+            color: var(--c-txt-primary);
+        }
+
+        .feature-item-card p {
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 991px) {
+            .features-clean-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .features-clean-grid { grid-template-columns: 1fr; }
+        }
+
+        /* --- SYSTEM CHOREOGRAPHY --- */
+        .motion-section {
+            padding: 60px 0;
+            border-top: 1px solid var(--c-border);
+        }
+
+        .motion-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .motion-video-wrapper {
+            background: var(--c-bg-secondary);
+            height: 320px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .motion-video-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+        
+        .motion-video-wrapper:hover video {
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 768px) {
+            .motion-container { grid-template-columns: 1fr; gap: 30px; }
+        }
+
+        /* --- TECHNICAL VALIDATION --- */
+        .perf-section {
+            padding: 60px 0;
+            border-top: 1px solid var(--c-border);
+        }
+
+        .perf-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .perf-metric {
+            text-align: left;
+            border-top: 1px solid var(--c-border);
+            padding-top: 16px;
+        }
+
+        .perf-number {
+            font-size: clamp(2.2rem, 3.8vw, 3.8rem);
+            font-weight: 200;
+            line-height: 1;
+            margin-bottom: 8px;
+            color: var(--c-txt-primary);
+        }
+
+        .perf-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        @media (max-width: 768px) {
+            .perf-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* --- TECH STACK --- */
+        .tech-section {
+            padding: 60px 0;
+            border-top: 1px solid var(--c-border);
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .tech-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--c-txt-primary);
+        }
+
+        .tech-item p {
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .tech-grid { grid-template-columns: 1fr; gap: 24px; }
+        }
+
+        /* --- DRAMATIC RESULTS --- */
+        .results-section {
+            padding: 0;
+        }
+
+        .result-viewport {
+            height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-bottom: 1px solid var(--c-border);
+        }
+
+        .result-content {
+            text-align: center;
+        }
+
+        .result-huge-num {
+            font-size: clamp(3.5rem, 9vw, 9rem);
+            font-weight: 100;
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+            margin-bottom: 12px;
+            color: var(--c-txt-primary);
+        }
+
+        .result-meta {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        /* --- STAKEHOLDER VOICE --- */
+        .testimonial-section {
+            padding: 60px 0;
+            border-top: 1px solid var(--c-border);
+        }
+
+        .testimonial-editorial-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1.8fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .testimonial-media-block {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            background: #111;
+            height: 350px;
+        }
+
+        .testimonial-video-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+            transition: transform 0.8s var(--ease-premium);
+        }
+
+        .testimonial-media-block:hover .testimonial-video-bg {
+            transform: scale(1.03);
+        }
+
+        .testimonial-text-side {
+            padding-right: 40px;
+        }
+
+        .testimonial-quote {
+            font-size: clamp(1.15rem, 1.8vw, 1.6rem);
+            font-weight: 300;
+            line-height: 1.4;
+            color: var(--c-txt-primary);
+            margin-bottom: 24px;
+        }
+
+        .testimonial-author {
+            font-size: 0.9rem;
+            color: var(--c-txt-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .testimonial-author span {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--c-txt-secondary);
+            text-transform: none;
+            letter-spacing: 0;
+            margin-top: 2px;
+        }
+
+        /* Fullscreen Modal View */
+        .video-modal {
+            position: fixed;
+            top:0; left:0; width:100vw; height:100vh;
+            background: #000;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-modal.active { display: flex; }
+
+        .close-modal {
+            position: absolute;
+            top: 40px; right: 40px;
+            color: #fff;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            z-index: 10001;
+        }
+
+        @media (max-width: 991px) {
+            .testimonial-editorial-grid { grid-template-columns: 1fr; gap: 40px; }
+            .testimonial-text-side { padding-right: 0; }
+            .testimonial-media-block { height: 300px; }
+        }
+
+        /* --- GALLERY --- */
+        .gallery-section {
+            padding: 60px 0;
+            border-top: 1px solid var(--c-border);
+        }
+
+        .gallery-asymmetric {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 30px;
+            row-gap: 40px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            background: #111;
+        }
+        
+        .gallery-item img {
+            transition: transform 1.2s var(--ease-premium);
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gi-1 { grid-column: 1 / 8; height: 380px; }
+        .gi-2 { grid-column: 9 / 13; height: 300px; margin-top: 40px; }
+        .gi-3 { grid-column: 2 / 6; height: 300px; }
+        .gi-4 { grid-column: 7 / 13; height: 380px; }
+
+        @media (max-width: 768px) {
+            .gallery-asymmetric { grid-template-columns: 1fr; gap: 30px; }
+            .gi-1, .gi-2, .gi-3, .gi-4 { grid-column: span 1; height: 260px; margin-top: 0; }
+        }
+
+        /* --- DEVELOPMENT PROCESS --- */
+        .dev-process-section {
+            padding: 60px 0;
+            border-top: 1px solid var(--c-border);
+        }
+
+        .dev-story-flow {
+            max-width: 800px;
+            margin-top: 40px;
+        }
+
+        .dev-step {
+            margin-bottom: 30px;
+        }
+
+        .dev-step h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--c-txt-primary);
+        }
+
+        /* --- WHY THIS WORKED --- */
+        .why-worked-section {
+            padding: 60px 0;
+            background: var(--c-bg-secondary);
+            border-top: 1px solid var(--c-border);
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .why-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--c-txt-primary);
+        }
+
+        @media (max-width: 768px) {
+            .why-grid { grid-template-columns: 1fr; gap: 30px; }
+        }
+
+        /* --- DYNAMIC INFINITE SCROLL STRIP --- */
+        .related-section {
+            padding: 60px 0;
+            overflow: hidden;
+            border-top: 1px solid var(--c-border);
+            background: #000;
+        }
+
+        .marquee-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            margin-top: 24px;
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marquee 25s linear infinite;
+        }
+
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        .strip-item {
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            position: relative;
+        }
+
+        .strip-link {
+            font-size: clamp(1.8rem, 3.5vw, 4rem);
+            font-weight: 200;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.25);
+            transition: color 0.3s ease;
+        }
+
+        .strip-link:hover {
+            color: #ffffff;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* --- FINAL CTA --- */
+        .cta-section {
+            padding: 90px 0;
+            background-color: #000000;
+            text-align: center;
+            border-top: 1px solid var(--c-border);
+        }
+
+        .cta-container h2 {
+            font-size: clamp(2rem, 4.5vw, 4rem);
+            font-weight: 100;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            color: #ffffff;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .cta-btn {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            padding: 12px 32px;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.4s ease;
+        }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffffff;
+            transform: translateY(100%);
+            transition: transform 0.4s var(--ease-premium);
+            z-index: -1;
+        }
+
+        .cta-btn:hover {
+            color: #000000;
+            border-color: #ffffff;
+        }
+
+        .cta-btn:hover::before {
+            transform: translateY(0);
+        }
+
+        .cta-btn-secondary {
+            border: none;
+            opacity: 0.6;
+            transition: opacity 0.4s ease;
+        }
+        .cta-btn-secondary:hover {
+            opacity: 1;
+            color: #fff;
+            background: transparent;
+        }
+
+        @media (max-width: 576px) {
+            .cta-buttons { flex-direction: column; gap: 16px; align-items: center; }
+            .cta-btn { width: 100%; max-width: 260px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cs-cursor" id="customCursor"></div>
+
+    <section class="hero-section" id="hero">
+        <div class="hero-bg-wrapper">
+            <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=2000&q=80" alt="UDD Studio Visual" class="hero-image" id="heroImg">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="cs-container hero-content">
+            <div class="hero-title-group">
+                <h1 class="reveal-element">UDD Studio</h1>
+                <p class="hero-subtitle reveal-element">Designing a luxury Shopify experience structured around bold typography, architectural layouts, and seamless performance.</p>
+            </div>
+            <div class="hero-meta-grid reveal-element">
+                <div class="hero-meta-item">
+                    <span>Platform</span>
+                    <p>Shopify Standard</p>
+                </div>
+                <div class="hero-meta-item">
+                    <span>Industry</span>
+                    <p>Luxury Fashion</p>
+                </div>
+                <div class="hero-meta-item">
+                    <span>Focus</span>
+                    <p>Custom Architecture</p>
+                </div>
+                <div class="hero-meta-item">
+                    <span>Speed</span>
+                    <p>High Performance</p>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">Scroll to Explore</div>
+    </section>
+
+    <section class="snapshot-section" id="snapshot">
+        <div class="cs-container">
+            <div class="snapshot-horizontal-grid" id="snapshotGrid">
+                </div>
+        </div>
+    </section>
+
+    <section class="brand-section" id="brand">
+        <div class="cs-container">
+            <div class="brand-scroll-trigger" id="brandScrollTrigger">
+                <div class="brand-sticky-container">
+                    <h2 class="brand-scroll-text" id="brandDynamicText">
+                        UDD Studio crafts high-end conceptual garments. Their online destination needed to feel less like an eCommerce listing, and more like a permanent digital retrospective. We worked directly with their creative directors to discard standard catalog layout parameters entirely, moving instead toward a spacious structural layout that prioritizes high-resolution editorial format assets.
+                    </h2>
+                    
+                    <div class="brand-editorial-block">
+                        <div class="brand-image-frame reveal-element" style="grid-column: 1 / -1;">
+                            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1600&q=80" alt="Luxury Editorial presentation">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="challenge-section" id="challenge">
+        <div class="cs-container">
+            <span class="section-header-meta reveal-element">The Conflict</span>
+            <div class="conflict-grid">
+                <div class="conflict-left">
+                    <h2 class="reveal-element">Identifying the barriers holding back a premier global fashion house.</h2>
+                </div>
+                <div class="conflict-right">
+                    <div class="conflict-row reveal-element">
+                        <div class="conflict-row-header">
+                            <h3>Fragile Mobile Scaling</h3>
+                            <span class="conflict-num">01</span>
+                        </div>
+                        <p>High-end fashion decisions happen on mobile viewports. The legacy framework forced high-resolution visuals into compressed grids, destroying detail visibility.</p>
+                    </div>
+                    <div class="conflict-row reveal-element">
+                        <div class="conflict-row-header">
+                            <h3>Narrative Fragmentation</h3>
+                            <span class="conflict-num">02</span>
+                        </div>
+                        <p>The collection storytelling narrative stopped completely at the Product Detail Page (PDP), dropping consumers into cold transactional tables rather than rich storytelling.</p>
+                    </div>
+                    <div class="conflict-row reveal-element">
+                        <div class="conflict-row-header">
+                            <h3>Core Web Vitals Decay</h3>
+                            <span class="conflict-num">03</span>
+                        </div>
+                        <p>Unoptimized application scripts, unmanaged asset handling, and layout shifts resulted in an aggregate mobile performance score of 32.</p>
+                    </div>
+                    <div class="conflict-row reveal-element">
+                        <div class="conflict-row-header">
+                            <h3>Cart Checkout Abandonment</h3>
+                            <span class="conflict-num">04</span>
+                        </div>
+                        <p>A multi-step legacy checkout path generated significant drop-offs during high-intent conversion moments.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process-section" id="process">
+        <div class="cs-container">
+            <span class="section-header-meta reveal-element">Strategic Roadmap</span>
+            <h2 class="reveal-element" style="margin-bottom: 20px;">Architectural Execution Chapters</h2>
+            <div class="process-pipeline" id="processContainer">
+                </div>
+        </div>
+    </section>
+
+    <section class="design-section" id="design">
+        <div class="cs-container">
+            <div class="design-clean-layout">
+                <div class="design-text-block">
+                    <span class="section-header-meta reveal-element">Aesthetic Core</span>
+                    <h2 class="reveal-element">Design Philosophy</h2>
+                    <div class="design-manifesto">
+                        <div class="design-item-row reveal-element">
+                            <h4>Luxury Typography Hierarchy</h4>
+                            <p>Utilizing high-contrast editorial font sizing scales paired with spacious, non-standard line-height variables.</p>
+                        </div>
+                        <div class="design-item-row reveal-element">
+                            <h4>Whitespace as Luxury</h4>
+                            <p>Intentional breathing room designed to let full-bleed product assets command absolute authority over viewport spaces.</p>
+                        </div>
+                        <div class="design-item-row reveal-element">
+                            <h4>Product-First Interactive Modules</h4>
+                            <p>Hover triggers expose clean secondary variant details rather than disruptive overlays or modals.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="design-clean-image reveal-element">
+                    <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1000&q=80" alt="Clean Design Philosophy Presentation">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section" id="featuresContainer">
+        <div class="cs-container">
+            <span class="section-header-meta reveal-element">System Execution</span>
+            <h2 class="reveal-element">Platform Feature Architectures</h2>
+            <div class="features-clean-grid" id="featuresCleanGrid">
+                </div>
+        </div>
+    </section>
+
+    <section class="motion-section" id="motion">
+        <div class="cs-container">
+            <div class="motion-container">
+                <div>
+                    <span class="section-header-meta reveal-element">System Choreography</span>
+                    <h2 class="reveal-element" style="margin-bottom:16px;">Micro Interactions & Physics-based Flows</h2>
+                    <p class="reveal-element">Every transition utilizes custom Bezier curves matching real structural momentum. Interface interactions don't snap into view—they unfold elegantly, preserving context while minimizing unexpected layout shifts.</p>
+                </div>
+                <div class="motion-video-wrapper reveal-element">
+                    <video autoplay loop muted playsinline poster="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=600&q=80">
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-fashion-woman-with-silver-glitter-makeup-40196-large.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="perf-section" id="performance">
+        <div class="cs-container">
+            <span class="section-header-meta reveal-element">Technical Validation</span>
+            <h2 class="reveal-element">Engineered for Ultimate Execution Speed</h2>
+            <div class="perf-grid" id="perfGrid">
+                </div>
+        </div>
+    </section>
+
+    <section class="tech-section" id="technology">
+        <div class="cs-container">
+            <span class="section-header-meta reveal-element">Infrastructure Core</span>
+            <h2>The Technology Stack</h2>
+            <div class="tech-grid">
+                <div class="tech-item reveal-element">
+                    <h4>Shopify Ecosystem</h4>
+                    <p>Leveraging high-tier basic infrastructure parameters, advanced webhooks, and secure API configurations.</p>
+                </div>
+                <div class="tech-item reveal-element">
+                    <h4>Shopify Metaobjects</h4>
+                    <p>Decoupled multi-dimensional data models enabling complex editorial layouts across localized collection frameworks.</p>
+                </div>
+                <div class="tech-item reveal-element">
+                    <h4>Vanilla ES6+ Modules</h4>
+                    <p>Zero dependency client-side architecture script executing completely without blocking standard parallel thread renders.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="results-section" id="resultsContainer">
+        </section>
+
+    <section class="testimonial-section" id="testimonial">
+        <div class="cs-container">
+            <span class="section-header-meta reveal-element">Stakeholder Voice</span>
+            <div class="testimonial-editorial-grid">
+                <div class="testimonial-media-block reveal-element" id="videoTrigger">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80" alt="UDD Creative Executive" class="testimonial-video-bg">
+                </div>
+                <div class="testimonial-text-side reveal-element">
+                    <p class="testimonial-quote">"MESSOLD reconstructed how our brand connects globally. We didn't receive an interactive template—we gained a custom operational framework."</p>
+                    <p class="testimonial-author">Elena Vladi <span>Creative Director & Founder, UDD Studio</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="video-modal" id="videoModal">
+        <div class="close-modal" id="closeModal">Close Experience</div>
+        <div style="color: #fff; font-size: 1.2rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: center;">
+            [ Cinematic Video Case Study Stream Overlay ]
+            <p style="font-size: 0.8rem; margin-top:20px; color: #666;">Press Close to Return to Narrative Flow</p>
+        </div>
+    </div>
+
+    <section class="gallery-section" id="gallery">
+        <div class="cs-container">
+            <span class="section-header-meta reveal-element">Asymmetric Retrospective</span>
+            <div class="gallery-asymmetric" id="galleryGrid">
+                </div>
+        </div>
+    </section>
+
+    <section class="dev-process-section" id="devProcess">
+        <div class="cs-container">
+            <div class="conflict-grid">
+                <div class="conflict-left">
+                    <span class="section-header-meta reveal-element">Operational Strategy</span>
+                    <h2 class="reveal-element">Methodology Behind Delivery</h2>
+                </div>
+                <div class="dev-story-flow">
+                    <div class="dev-step reveal-element">
+                        <h3>Scoping & Extraction Architecture</h3>
+                        <p>We began by mapping metadata structures out of the legacy site architecture, establishing a complete data model mapping layer to avoid losing complex historical catalog attributes.</p>
+                    </div>
+                    <div class="dev-step reveal-element">
+                        <h3>Parallel Production Cycles</h3>
+                        <p>Frontend structural assets were developed in standalone pristine sandbox repositories while platform migration architecture specialists handled core transactional data pipelines simultaneously.</p>
+                    </div>
+                    <div class="dev-step reveal-element">
+                        <h3>Stress Verification Matrix</h3>
+                        <p>Automated deployment routines subjected the checkout configurations to high-intensity automated runs, guaranteeing reliability during extreme user spikes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="why-worked-section" id="whyWorked">
+        <div class="cs-container">
+            <span class="section-header-meta reveal-element">Commercial Analysis</span>
+            <h2 class="reveal-element">Why These Technical Strategies Generated Exponential Returns</h2>
+            <div class="why-grid">
+                <div class="why-card reveal-element">
+                    <h3>Reduced Frictional Lag</h3>
+                    <p>Optimizing Liquid queries and caching logic eliminated visual paint delays. Shoppers remained in an uninterrupted browsing flow that directly translated into increased item exploration per session.</p>
+                </div>
+                <div class="why-card reveal-element">
+                    <h3>Tactile Responsive Logic</h3>
+                    <p>By scaling UI elements using fluid typography formulas, mobile configurations scaled precisely without creating micro-truncation text errors or horizontal overflow bugs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="related-section" id="related">
+        <div class="cs-container">
+            <span class="section-header-meta reveal-element">Explore Further Transitions</span>
+        </div>
+        <div class="marquee-container">
+            <div class="marquee-track" id="projectsMarqueeTrack">
+                </div>
+        </div>
+    </section>
+
+    <section class="cta-section" id="cta">
+        <div class="cs-container cta-container">
+            <h2 class="reveal-element">Ready to Build<br>Your Success Story?</h2>
+            <div class="cta-buttons reveal-element">
+                <a href="#contact" class="cta-btn">Start Your Project</a>
+                <a href="#cases" class="cta-btn cta-btn-secondary">View Case Studies</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const CaseStudyData = {
+            snapshot: [
+                { label: "Client", value: "UDD Studio International" },
+                { label: "Industry", value: "Avant-Garde Luxury" },
+                { label: "Platform", value: "Shopify Engine" },
+                { label: "Timeline", value: "14 Weeks Production" },
+                { label: "Services", value: "Creative Direction & Architecture" },
+                { label: "Technology", value: "Liquid, ES6 JS, Metaobjects" },
+                { label: "Project Status", value: "Live & Revenue Optimizing" },
+                { label: "Website URL", value: "uddstudio.store" }
+            ],
+            process: [
+                { num: "01", name: "Audit & Exploration", desc: "Analyzing high-resolution parameters and isolating historical bottlenecks." },
+                { num: "02", name: "Structural Wireframing", desc: "Formulating structural layouts out of traditional constraints." },
+                { num: "03", name: "UI & Visual Rhythm", desc: "Setting clean typographical grids and fine brand limits." },
+                { num: "04", name: "Functional Prototyping", desc: "Testing interactive physics modules inside pristine environments." },
+                { num: "05", name: "Engine Integration", desc: "Connecting unified Metaobject frameworks for flawless layout adjustments." },
+                { num: "06", name: "Optimization Execution", desc: "Advanced asset minification to reach true enterprise speeds." }
+            ],
+            features: [
+                { title: "Luxury Contextual Navigation", text: "An overlay structure responding smoothly to pointer acceleration vectors, fading background parameters gracefully.", img: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=600&q=80" },
+                { title: "Immersive Collection Spaces", text: "Asymmetric catalog spaces alternating visual sizing arrays dynamically according to strategic art direction priorities.", img: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=600&q=80" },
+                { title: "Storytelling Product Pages", text: "Full viewport asset structures integrating descriptive technical garment blueprints directly alongside interaction buy forms.", img: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80" }
+            ],
+            performance: [
+                { num: 98, suffix: "", label: "Performance Audit Score" },
+                { num: 0.8, suffix: "s", label: "Largest Contentful Paint" },
+                { num: 95, suffix: "+", label: "Mobile Efficiency" },
+                { num: 100, suffix: "", label: "Accessibility Target Matrix" }
+            ],
+            results: [
+                { num: "+214%", label: "Conversion Rate Surge" },
+                { num: "+38%", label: "Average Order Value Growth" },
+                { num: "+56%", label: "Engaged Session Extension" },
+                { num: "+82%", label: "Mobile Session Scalability" }
+            ],
+            gallery: [
+                { class: "gi-1", img: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1000&q=80" },
+                { class: "gi-2", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80" },
+                { class: "gi-3", img: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=800&q=80" },
+                { class: "gi-4", img: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=1200&q=80" }
+            ],
+            related: [
+                { name: "Leaf Studios" },
+                { name: "Craftsmith" },
+                { name: "Power Sutra" },
+                { name: "Silk Berry" }
+            ]
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            hydrateSnapshot();
+            hydrateProcess();
+            hydrateFeatures();
+            hydratePerformance();
+            hydrateResults();
+            hydrateGallery();
+            hydrateRelatedMarquee();
+            
+            initCursor();
+            initScrollEffects();
+            initTestimonialModal();
+        });
+
+        function hydrateSnapshot() {
+            const container = document.getElementById("snapshotGrid");
+            container.innerHTML = CaseStudyData.snapshot.map(item => `
+                <div class="snapshot-block reveal-element">
+                    <div class="snapshot-label">${item.label}</div>
+                    <div class="snapshot-value">${item.value}</div>
+                </div>
+            `).join('');
+        }
+
+        function hydrateProcess() {
+            const container = document.getElementById("processContainer");
+            container.innerHTML = CaseStudyData.process.map(step => `
+                <div class="process-line-item reveal-element">
+                    <div class="process-index">${step.num}</div>
+                    <h3>${step.name}</h3>
+                    <p>${step.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        function hydrateFeatures() {
+            const container = document.getElementById("featuresCleanGrid");
+            container.innerHTML = CaseStudyData.features.map(f => `
+                <div class="feature-item-card reveal-element">
+                    <div class="feature-img-wrapper">
+                        <img src="${f.img}" alt="${f.title}">
+                    </div>
+                    <h3>${f.title}</h3>
+                    <p>${f.text}</p>
+                </div>
+            `).join('');
+        }
+
+        function hydratePerformance() {
+            const container = document.getElementById("perfGrid");
+            container.innerHTML = CaseStudyData.performance.map(p => `
+                <div class="perf-metric reveal-element" data-target="${p.num}">
+                    <div class="perf-number" data-suffix="${p.suffix}">0</div>
+                    <div class="perf-label">${p.label}</div>
+                </div>
+            `).join('');
+        }
+
+        function hydrateResults() {
+            const container = document.getElementById("resultsContainer");
+            container.innerHTML = CaseStudyData.results.map(r => `
+                <div class="result-viewport">
+                    <div class="result-content">
+                        <div class="result-huge-num reveal-element">${r.num}</div>
+                        <div class="result-meta reveal-element">${r.label}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function hydrateGallery() {
+            const container = document.getElementById("galleryGrid");
+            container.innerHTML = CaseStudyData.gallery.map(g => `
+                <div class="gallery-item ${g.class} reveal-element">
+                    <img src="${g.img}" alt="Gallery Architecture" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+            `).join('');
+        }
+
+        function hydrateRelatedMarquee() {
+            const track = document.getElementById("projectsMarqueeTrack");
+            const itemsList = [...CaseStudyData.related, ...CaseStudyData.related, ...CaseStudyData.related, ...CaseStudyData.related];
+            track.innerHTML = itemsList.map(p => `
+                <div class="strip-item">
+                    <a href="#related" class="strip-link">${p.name}</a>
+                </div>
+            `).join('');
+        }
+
+        function initCursor() {
+            const cursor = document.getElementById("customCursor");
+            document.addEventListener("mousemove", (e) => {
+                cursor.style.left = e.clientX + "px";
+                cursor.style.top = e.clientY + "px";
+            });
+
+            const targetLinks = document.querySelectorAll('a, .testimonial-media-block, .feature-img-wrapper, .process-line-item');
+            targetLinks.forEach(item => {
+                item.addEventListener("mouseenter", () => cursor.classList.add("hovered"));
+                item.addEventListener("mouseleave", () => cursor.classList.remove("hovered"));
+            });
+        }
+
+        function initScrollEffects() {
+            const revealOptions = { threshold: 0.05, rootMargin: "0px 0px -30px 0px" };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        entry.target.classList.add("active");
+                        if(entry.target.classList.contains("perf-metric")) {
+                            triggerNumberCounter(entry.target);
+                        }
+                    }
+                });
+            }, revealOptions);
+
+            setTimeout(() => {
+                document.querySelectorAll(".reveal-element").forEach(el => observer.observe(el));
+            }, 100);
+
+            const heroImg = document.getElementById("heroImg");
+            const brandTrigger = document.getElementById("brandScrollTrigger");
+            
+            const originalText = "UDD Studio crafts high-end conceptual garments. Their online destination needed to feel less like an eCommerce listing, and more like a permanent digital retrospective. We worked directly with their creative directors to discard standard catalog layout parameters entirely, moving instead toward a spacious structural layout that prioritizes high-resolution editorial format assets.";
+            const words = originalText.split(" ");
+            const brandDynamicText = document.getElementById("brandDynamicText");
+            brandDynamicText.innerHTML = words.map(w => `<span>${w} </span>`).join("");
+            const wordSpans = brandDynamicText.querySelectorAll("span");
+
+            window.addEventListener("scroll", () => {
+                let scrollPos = window.scrollY;
+
+                if(scrollPos < window.innerHeight) {
+                    heroImg.style.transform = `scale(${1.05 + (scrollPos * 0.0002)})`;
+                }
+
+                const triggerTop = brandTrigger.offsetTop;
+                const triggerHeight = brandTrigger.offsetHeight;
+                if (scrollPos >= triggerTop && scrollPos <= triggerTop + triggerHeight) {
+                    const progress = (scrollPos - triggerTop) / (triggerHeight * 0.6);
+                    const totalWordsToShow = Math.floor(progress * wordSpans.length);
+                    
+                    wordSpans.forEach((span, idx) => {
+                        if (idx <= totalWordsToShow) {
+                            span.style.color = document.body.classList.contains("theme-light") ? "#121212" : "#ffffff";
+                        } else {
+                            span.style.color = "";
+                        }
+                    });
+                }
+
+                const challengePos = document.getElementById("challenge").offsetTop;
+                const resultsPos = document.getElementById("resultsContainer").offsetTop;
+                const ctaPos = document.getElementById("cta").offsetTop;
+
+                if (scrollPos >= ctaPos - 300) {
+                    document.body.className = "";
+                } else if (scrollPos >= challengePos - 200 && scrollPos < resultsPos - 300) {
+                    document.body.className = "theme-light";
+                } else if (scrollPos >= resultsPos - 300 && scrollPos < ctaPos - 300) {
+                    document.body.className = "theme-dark-secondary";
+                } else {
+                    document.body.className = "";
+                }
+            });
+        }
+
+        function triggerNumberCounter(element) {
+            if (element.classList.contains("counted")) return;
+            element.classList.add("counted");
+
+            const target = parseFloat(element.getAttribute("data-target"));
+            const numDisplay = element.querySelector(".perf-number");
+            const suffix = numDisplay.getAttribute("data-suffix") || "";
+            let current = 0;
+            const duration = 1200;
+            const stepTime = 30;
+            const increments = target / (duration / stepTime);
+
+            const timer = setInterval(() => {
+                current += increments;
+                if(current >= target) {
+                    numDisplay.textContent = target + suffix;
+                    clearInterval(timer);
+                } else {
+                    numDisplay.textContent = (target % 1 === 0 ? Math.floor(current) : current.toFixed(1)) + suffix;
+                }
+            }, stepTime);
+        }
+
+        function initTestimonialModal() {
+            const trigger = document.getElementById("videoTrigger");
+            const modal = document.getElementById("videoModal");
+            const closeBtn = document.getElementById("closeModal");
+
+            if(!trigger) return;
+
+            trigger.addEventListener("click", () => {
+                modal.classList.add("active");
+                document.body.style.overflow = "hidden";
+            });
+
+            closeBtn.addEventListener("click", () => {
+                modal.classList.remove("active");
+                document.body.style.overflow = "";
+            });
+        }
+    </script>
+</body>
+</html>

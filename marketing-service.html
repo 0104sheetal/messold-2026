@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MESSOLD — Engineered Shopify Performance Architecture</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist-sans@1.0.1/dist/geist-sans.css">
+    <style>
+        :root {
+            --b-white: #FFFFFF;
+            --b-black: #000000;
+            --c-muted: #666666;
+            --c-light-gray: #F6F6F6;
+            --c-border: #E8E8E8;
+            --f-sans: 'Geist Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --e-fluid: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        html, body {
+            background-color: var(--b-white);
+            color: var(--b-black);
+            font-family: var(--f-sans);
+            letter-spacing: -0.02em;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .e-container {
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 4%;
+        }
+
+        section {
+            position: relative;
+            padding: 140px 0;
+            background-color: var(--b-white);
+            color: var(--b-black);
+            overflow: hidden;
+        }
+
+        .section-dark {
+            background-color: var(--b-black) !important;
+            color: var(--b-white) !important;
+        }
+
+        .e-eyebrow {
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--c-muted);
+            margin-bottom: 32px;
+            display: block;
+        }
+        .section-dark .e-eyebrow { color: #555555; }
+
+        h1, h2, h3, h4 {
+            font-weight: 300;
+            line-height: 1.05;
+            text-transform: uppercase;
+            letter-spacing: -0.04em;
+        }
+
+        p {
+            font-weight: 300;
+            font-size: 17px;
+            line-height: 1.6;
+            color: #333333;
+        }
+        .section-dark p { color: #AAAAAA; }
+
+        .e-btn-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 48px;
+        }
+        .e-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 16px 32px;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            border: 1px solid var(--b-black);
+            background: transparent;
+            color: var(--b-black);
+            cursor: pointer;
+            transition: all 0.5s var(--e-fluid);
+        }
+        .e-btn-fill {
+            background: var(--b-black);
+            color: var(--b-white);
+        }
+        .e-btn-fill:hover {
+            background: transparent;
+            color: var(--b-black);
+        }
+        .e-btn-line:hover {
+            background: var(--b-black);
+            color: var(--b-white);
+        }
+        .section-dark .e-btn { border-color: var(--b-white); color: var(--b-white); }
+        .section-dark .e-btn-fill { background: var(--b-white); color: var(--b-black); }
+        .section-dark .e-btn-fill:hover { background: transparent; color: var(--b-white); }
+        .section-dark .e-btn-line:hover { background: var(--b-white); color: var(--b-black); }
+
+        /* Scroll Reveal System */
+        .e-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s var(--e-fluid), transform 1.2s var(--e-fluid);
+        }
+        .e-reveal.e-active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 1. HERO VIEWPORT COMPOSITION */
+        .hero-viewport {
+            min-height: 95vh;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            align-items: center;
+            padding: 80px 0;
+            border-bottom: 1px solid var(--c-border);
+        }
+        .hero-viewport h1 {
+            font-size: clamp(2.5rem, 5.5vw, 5rem);
+            max-width: 800px;
+            margin-bottom: 24px;
+        }
+        .hero-viewport p {
+            max-width: 480px;
+            color: var(--c-muted);
+        }
+        .hero-collage {
+            position: relative;
+            height: 600px;
+            width: 100%;
+        }
+        .hc-card {
+            position: absolute;
+            background: #FFF;
+            border: 1px solid var(--c-border);
+            padding: 16px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.03);
+            will-change: transform;
+            transition: transform 0.1s ease-out;
+        }
+        .hc-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: grayscale(100%);
+        }
+        .hc-1 { top: 10%; left: 5%; width: 240px; transform: rotate(-3deg); z-index: 3; }
+        .hc-2 { top: 5%; right: 5%; width: 280px; transform: rotate(2deg); z-index: 1; }
+        .hc-3 { top: 45%; left: 25%; width: 320px; transform: rotate(-1deg); z-index: 4; }
+        .hc-4 { bottom: 5%; left: 5%; width: 220px; transform: rotate(4deg); z-index: 2; }
+        .hc-5 { bottom: 10%; right: 2%; width: 260px; transform: rotate(-2deg); z-index: 5; }
+
+        @media (max-width: 1024px) {
+            .hero-viewport { grid-template-columns: 1fr; gap: 60px; }
+            .hero-collage { height: 450px; }
+            .hc-1 { width: 160px; } .hc-2 { width: 180px; } .hc-3 { width: 220px; } .hc-4 { width: 150px; } .hc-5 { width: 180px; }
+        }
+
+        /* 2. THE MATRIX DIAGRAM SYSTEM */
+        .matrix-layout {
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: 80px;
+            align-items: flex-start;
+        }
+        .matrix-text h2 { font-size: clamp(2rem, 3.5vw, 3.5rem); margin-bottom: 24px; }
+        .matrix-diagram-wrapper {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            border: 1px solid var(--c-border);
+            background: var(--c-light-gray);
+        }
+        .md-grid {
+            position: absolute;
+            width: 100%; height: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+        }
+        .md-cell {
+            border: 1px solid rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px;
+            background: var(--b-white);
+            transition: all 0.4s var(--e-fluid);
+        }
+        .md-cell:hover {
+            background: var(--b-black);
+            color: var(--b-white);
+        }
+        .md-cell span { font-size: 12px; color: var(--c-muted); text-transform: uppercase; }
+        .md-cell h4 { font-size: 18px; font-weight: 400; margin-top: 40px; }
+        @media (max-width: 768px) {
+            .matrix-layout { grid-template-columns: 1fr; gap: 40px; }
+            .md-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+            .matrix-diagram-wrapper { height: auto; }
+            .md-cell { padding: 32px 24px; }
+        }
+
+        /* 3. INTERACTIVE SYSTEM TOPOLOGY */
+        .topology-container {
+            position: relative;
+            height: 600px;
+            border: 1px solid var(--c-border);
+            margin-top: 48px;
+        }
+        #topology-canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+        }
+        .tp-node {
+            position: absolute;
+            background: var(--b-white);
+            border: 1px solid var(--b-black);
+            padding: 12px 24px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            z-index: 10;
+            transition: background 0.3s, color 0.3s, transform 0.3s;
+        }
+        .tp-node:hover {
+            background: var(--b-black);
+            color: var(--b-white);
+            transform: scale(1.05);
+        }
+        .tp-center {
+            background: var(--b-black);
+            color: var(--b-white);
+            padding: 18px 36px;
+            font-weight: 500;
+        }
+        @media (max-width: 768px) {
+            .topology-container { height: 500px; }
+            .tp-node { padding: 8px 16px; font-size: 10px; }
+        }
+
+        /* 4. ASYMMETRIC CASE NARRATIVES */
+        .story-container {
+            display: flex;
+            flex-direction: column;
+            gap: 160px;
+            margin-top: 80px;
+        }
+        .story-row {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 40px;
+            align-items: center;
+        }
+        .sr-image {
+            grid-column: span 7;
+            height: 600px;
+            overflow: hidden;
+            border: 1px solid var(--c-border);
+        }
+        .sr-image img {
+            width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%);
+            transition: transform 1.2s var(--e-fluid), filter 0.8s;
+        }
+        .story-row:hover .sr-image img {
+            transform: scale(1.03);
+            filter: grayscale(0%);
+        }
+        .sr-content {
+            grid-column: span 5;
+            padding-left: 20px;
+        }
+        .sr-alt .sr-image { grid-column: 6 / span 7; grid-row: 1; }
+        .sr-alt .sr-content { grid-column: 1 / span 5; grid-row: 1; padding-left: 0; padding-right: 40px; }
+        
+        .sr-content h3 { font-size: 36px; margin-bottom: 20px; }
+        .sr-metrics {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--c-border);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .sr-num { font-size: 48px; font-weight: 300; letter-spacing: -0.04em; }
+        .sr-lbl { font-size: 11px; text-transform: uppercase; color: var(--c-muted); margin-top: 4px; }
+
+        @media (max-width: 1024px) {
+            .story-row { grid-template-columns: 1fr; gap: 32px; }
+            .sr-image { grid-column: span 1 !important; height: 400px; }
+            .sr-content { grid-column: span 1 !important; padding: 0 !important; }
+        }
+
+        /* 5. VERTICAL TRACK TO HORIZONTAL ENGINE */
+        .hz-scroll-container {
+            position: relative;
+            height: 400vh; /* Track length multiplier */
+            background: var(--c-light-gray);
+        }
+        .hz-sticky-viewport {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        .hz-track {
+            display: flex;
+            padding-left: 10%;
+            will-change: transform;
+        }
+        .hz-slide {
+            width: 450px;
+            flex-shrink: 0;
+            margin-right: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0.2;
+            transition: opacity 0.4s;
+        }
+        .hz-slide.active { opacity: 1; }
+        .hz-slide .step-num { font-size: 14px; color: var(--c-muted); margin-bottom: 24px; }
+        .hz-slide h3 { font-size: 40px; margin-bottom: 20px; }
+        @media(max-width: 768px) {
+            .hz-slide { width: 280px; margin-right: 60px; }
+            .hz-slide h3 { font-size: 28px; }
+        }
+
+        /* 6. EDITORIAL COLLAGE */
+        .magazine-layout {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+            margin-top: 60px;
+        }
+        .mag-cell {
+            overflow: hidden;
+            border: 1px solid var(--c-border);
+            transition: transform 0.8s var(--e-fluid);
+        }
+        .mag-cell img {
+            width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%);
+            transition: transform 0.8s var(--e-fluid), filter 0.4s;
+        }
+        .mag-cell:hover img { transform: scale(1.05); filter: grayscale(0%); }
+        .mc-1 { grid-column: span 4; height: 500px; transform: translateY(40px); }
+        .mc-2 { grid-column: span 5; height: 380px; }
+        .mc-3 { grid-column: span 3; height: 460px; transform: translateY(-20px); }
+        .mc-4 { grid-column: 2 / span 5; height: 400px; transform: translateY(-40px); }
+        .mc-5 { grid-column: span 5; height: 480px; }
+        @media(max-width: 768px) {
+            .magazine-layout { grid-template-columns: 1fr; gap: 16px; }
+            .mag-cell { grid-column: span 1 !important; height: 300px !important; transform: none !important; }
+        }
+
+        /* 7. BLACKED OUT DATA INTELLIGENCE ROW */
+        .intelligence-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            margin-top: 60px;
+            align-items: center;
+        }
+        .intel-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            border-left: 1px solid #222;
+            padding-left: 48px;
+        }
+        .im-box {
+            display: flex;
+            flex-direction: column;
+        }
+        .im-num {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 300;
+            letter-spacing: -0.05em;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+        .im-lbl { font-size: 11px; text-transform: uppercase; color: #555555; letter-spacing: 0.1em; }
+        @media(max-width: 968px) {
+            .intelligence-grid { grid-template-columns: 1fr; gap: 48px; }
+            .intel-metrics { padding-left: 0; border-left: none; gap: 32px; }
+        }
+
+        /* 8. TESTIMONIAL VIEWPORT CAROUSEL */
+        .video-strip-outer {
+            width: 100%;
+            overflow: hidden;
+            margin-top: 60px;
+            position: relative;
+        }
+        .video-strip-track {
+            display: flex;
+            gap: 32px;
+            transition: transform 0.6s var(--e-fluid);
+        }
+        .video-card {
+            width: 380px;
+            flex-shrink: 0;
+            border: 1px solid var(--c-border);
+            background: var(--c-light-gray);
+            overflow: hidden;
+            transition: transform 0.4s var(--e-fluid);
+        }
+        .video-card:hover { transform: scale(1.02); }
+        .vc-media { height: 420px; background: #000; position: relative; }
+        .vc-media video { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
+        .vc-info { padding: 24px; background: #FFF; border-top: 1px solid var(--c-border); }
+        .vc-info h4 { font-size: 18px; margin-bottom: 4px; font-weight: 400;}
+        .vc-info p { font-size: 13px; color: var(--c-muted); }
+        .vc-nav { display: flex; gap: 12px; margin-top: 32px; }
+        .vc-arrow {
+            width: 48px; height: 48px; border: 1px solid var(--b-black);
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+        }
+        .vc-arrow:hover { background: var(--b-black); color: var(--b-white); }
+        @media(max-width: 768px) {
+            .video-card { width: 290px; }
+            .vc-media { height: 320px; }
+        }
+
+        /* 9. BRAND DRIFT ENGINE */
+        .marquee-container {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .marquee-row { display: flex; width: 200%; overflow: hidden; white-space: nowrap; }
+        .marquee-track { display: flex; gap: 80px; width: 50%; animation: drift 30s linear infinite; }
+        .mq-rev .marquee-track { animation-direction: reverse; }
+        .marquee-container:hover .marquee-track { animation-play-state: paused; }
+        .marquee-item { font-size: 24px; font-weight: 300; color: #CCCCCC; transition: color 0.3s; cursor: default;}
+        .marquee-item:hover { color: #000; }
+        @keyframes drift {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* 10. MANIFESTO TEXT */
+        .manifesto-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 100px;
+            margin-top: 60px;
+        }
+        .manifesto-layout h3 { font-size: clamp(1.8rem, 3vw, 2.8rem); line-height: 1.2; }
+        .manifesto-list { display: flex; flex-direction: column; gap: 40px; }
+        .m-item h4 { font-size: 16px; font-weight: 400; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .m-item p { font-size: 14px; color: var(--c-muted); }
+        @media(max-width: 968px) {
+            .manifesto-layout { grid-template-columns: 1fr; gap: 48px; }
+        }
+
+        /* 11. DOCUMENTATION FAQ SYSTEM */
+        .faq-layout {
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: 80px;
+            margin-top: 60px;
+        }
+        .faq-nav { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 100px; }
+        .faq-nav-btn {
+            font-size: 14px; text-transform: uppercase; color: var(--c-muted); cursor: pointer;
+            transition: color 0.3s, padding-left 0.3s; padding-left: 0;
+        }
+        .faq-nav-btn.active { color: #000; padding-left: 8px; font-weight: 500; }
+        .faq-display { border-left: 1px solid var(--c-border); padding-left: 48px; min-height: 240px; }
+        .faq-pane { display: none; animation: paneIn 0.5s var(--e-fluid) forwards; }
+        .faq-pane.active { display: block; }
+        .faq-pane h4 { font-size: 22px; margin-bottom: 16px; }
+        @keyframes paneIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Mobile specific Accordion fallback styling rule overrides natively */
+        @media(max-width: 768px) {
+            .faq-layout { grid-template-columns: 1fr; gap: 32px; }
+            .faq-nav { display: none; }
+            .faq-display { border-left: none; padding-left: 0; }
+            .faq-pane { display: block; margin-bottom: 32px; border-bottom: 1px solid var(--c-border); padding-bottom: 24px; }
+        }
+
+        /* 12. BRUSHED OUT MINIMAL TERMINATION ARCHITECTURE */
+        .termination-viewport {
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-top: 1px solid var(--c-border);
+        }
+        .termination-viewport h2 { font-size: clamp(2.5rem, 6vw, 5rem); margin-bottom: 32px; }
+        .term-meta {
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid var(--c-border);
+            display: flex;
+            gap: 48px;
+            flex-wrap: wrap;
+            font-size: 14px;
+        }
+        .term-meta a { color: var(--b-black); text-decoration: none; }
+        .term-meta span { color: var(--c-muted); margin-left: auto; }
+        @media(max-width: 768px) { .term-meta span { margin-left: 0; width: 100%; } }
+    </style>
+</head>
+<body>
+
+    <!-- 1. HERO VIEWPORT COMPOSITION -->
+    <section class="hero-viewport">
+        <div class="e-container">
+            <span class="e-eyebrow e-reveal">Performance Marketing Framework</span>
+            <h1 class="e-reveal">Scale Shopify Brands With Data, Creative & Conversion Science.</h1>
+            <p class="e-reveal">We replace speculative media buying with precision programmatic infrastructure designed exclusively for high-growth enterprise commerce.</p>
+            <div class="e-btn-row e-reveal">
+                <a href="#audit" class="e-btn e-btn-fill">Book Growth Audit</a>
+                <a href="#cases" class="e-btn e-btn-line">View Case Studies</a>
+            </div>
+        </div>
+        <div class="hero-collage" id="hero-parallax-zone">
+            <div class="hc-card hc-1" data-depth="0.15"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80" alt="Analytics Summary"></div>
+            <div class="hc-card hc-2" data-depth="-0.1"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80" alt="Ads Interface Map"></div>
+            <div class="hc-card hc-3" data-depth="0.25"><img src="https://images.unsplash.com/photo-1543286386-7a39e65f0b71?auto=format&fit=crop&w=400&q=80" alt="Attribution Log"></div>
+            <div class="hc-card hc-4" data-depth="-0.2"><img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=400&q=80" alt="Growth Matrix Sheet"></div>
+            <div class="hc-card hc-5" data-depth="0.08"><img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=400&q=80" alt="Creative Analytics Frame"></div>
+        </div>
+    </section>
+
+    <!-- 2. THE MATRIX DIAGRAM SYSTEM -->
+    <section>
+        <div class="e-container matrix-layout">
+            <div class="matrix-text e-reveal">
+                <span class="e-eyebrow">Structural Strategy</span>
+                <h2>Growth Isn't Luck. It's Infrastructure.</h2>
+                <p>Isolated tactics decay. Scalable acquisition requires a unified engineering pipeline where tracking loops instantly feed creative generation engine directives.</p>
+            </div>
+            <div class="matrix-diagram-wrapper e-reveal">
+                <div class="md-grid">
+                    <div class="md-cell"><span>01 / Content</span><h4>Creative Engine</h4></div>
+                    <div class="md-cell"><span>02 / Allocation</span><h4>Media Buying</h4></div>
+                    <div class="md-cell"><span>03 / Processing</span><h4>Data Analytics</h4></div>
+                    <div class="md-cell"><span>04 / Infrastructure</span><h4>Server Tracking</h4></div>
+                    <div class="md-cell"><span>05 / Lifetime Value</span><h4>Cohort Retention</h4></div>
+                    <div class="md-cell"><span>06 / UX Systems</span><h4>Conversion Optimization</h4></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. INTERACTIVE SYSTEM TOPOLOGY -->
+    <section>
+        <div class="e-container">
+            <span class="e-eyebrow">Ecosystem Map</span>
+            <h2>Integrated Growth Architecture</h2>
+            <div class="topology-container" id="topography-boundary">
+                <canvas id="topology-canvas"></canvas>
+                <div class="tp-node tp-center" id="tp-center-node">Growth Engine</div>
+                <div class="tp-node" data-x="18%" data-y="25%">Meta Ads</div>
+                <div class="tp-node" data-x="82%" data-y="20%">Google Scale</div>
+                <div class="tp-node" data-x="78%" data-y="75%">TikTok Matrix</div>
+                <div class="tp-node" data-x="22%" data-y="70%">WhatsApp Retention</div>
+                <div class="tp-node" data-x="48%" data-y="15%">Email Engines</div>
+                <div class="tp-node" data-x="85%" data-y="48%">Server Track CAPI</div>
+                <div class="tp-node" data-x="12%" data-y="45%">Analytics Processing</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. ASYMMETRIC CASE NARRATIVES -->
+    <section id="cases">
+        <div class="e-container">
+            <span class="e-eyebrow">Validated Proof Vectors</span>
+            <h2>Selected Campaign Narratives</h2>
+            
+            <div class="story-container">
+                <!-- Case 1 -->
+                <div class="story-row e-reveal">
+                    <div class="sr-image"><img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=80" alt="PowerSutra Case Study Illustration"></div>
+                    <div class="sr-content">
+                        <span class="e-eyebrow">PowerSutra</span>
+                        <h3>Bypassing Auction Satiation Rules</h3>
+                        <p>We systematically expanded PowerSutra's acquisition profile by creating friction-aligned customer creative variations, escaping standard bidding auction performance caps entirely.</p>
+                        <div class="sr-metrics">
+                            <div class="im-box"><div class="sr-num">6.4x</div><div class="sr-lbl">Blended ROAS Yield</div></div>
+                            <div class="im-box"><div class="sr-num">+320%</div><div class="sr-lbl">Volume Growth Scale</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="story-row sr-alt e-reveal">
+                    <div class="sr-image"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80" alt="Weaving Cult Case Study Illustration"></div>
+                    <div class="sr-content">
+                        <span class="e-eyebrow">Weaving Cult</span>
+                        <h3>Resolving Signal Loss Faults</h3>
+                        <p>Standard data architectures missed over 30% of conversions. Implementing our native, server-to-server tracking network restored optimization loop performance models.</p>
+                        <div class="sr-metrics">
+                            <div class="im-box"><div class="sr-num">42%</div><div class="sr-lbl">CPA Compression Reduction</div></div>
+                            <div class="im-box"><div class="sr-num">8.1x</div><div class="sr-lbl">Attributed Return Engine</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 3 -->
+                <div class="story-row e-reveal">
+                    <div class="sr-image"><img src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=1200&q=80" alt="Leaf Studios Case Study Illustration"></div>
+                    <div class="sr-content">
+                        <span class="e-eyebrow">Leaf Studios</span>
+                        <h3>Algorithmic Target Acquisition Scaling</h3>
+                        <p>Leveraging continuous dynamic pricing creative frameworks allowed real-time margins matching scale adjustments without breaking internal ROI bounds.</p>
+                        <div class="sr-metrics">
+                            <div class="im-box"><div class="sr-num">14.2M</div><div class="sr-lbl">New Pipeline Scaling Yield</div></div>
+                            <div class="im-box"><div class="sr-num">3.4x</div><div class="sr-lbl">First Click CAC Scale</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. VERTICAL TRACK TO HORIZONTAL ENGINE -->
+    <div class="hz-scroll-container" id="hz-trigger-zone">
+        <div class="hz-sticky-viewport">
+            <div class="hz-track" id="hz-horizontal-track">
+                <div class="hz-slide">
+                    <div class="step-num">01 / DISCOVERY</div>
+                    <h3>Forensic Audit Vectors</h3>
+                    <p>Deconstructing active tracking framework breaks, attribution anomalies, and budget leaks before planning investment profiles.</p>
+                </div>
+                <div class="hz-slide">
+                    <div class="step-num">02 / MAPS</div>
+                    <h3>Architecture Strategy</h3>
+                    <p>Structuring custom user pathways and baseline efficiency bounds directly configured around unit economic models.</p>
+                </div>
+                <div class="hz-slide">
+                    <div class="step-num">03 / CONTENT</div>
+                    <h3>Creative Production</h3>
+                    <p>Writing and engineering conversion-focused audio-visual iterations built directly to tackle specific buying hesitations.</p>
+                </div>
+                <div class="hz-slide">
+                    <div class="step-num">04 / DEPLOY</div>
+                    <h3>Programmatic Launch</h3>
+                    <p>Injecting robust asset architectures straight into algorithmic buying engines with clear performance bounds.</p>
+                </div>
+                <div class="hz-slide">
+                    <div class="step-num">05 / DEEP METRICS</div>
+                    <h3>Attribution Optimization</h3>
+                    <p>Analyzing raw backend data models alongside frontend dashboards to properly evaluate actual scale velocity boundaries.</p>
+                </div>
+                <div class="hz-slide">
+                    <div class="step-num">06 / ENGINE ACCELERATION</div>
+                    <h3>Velocity Scale Expansion</h3>
+                    <p>Scaling high-yield performance nodes aggressively while setting automated protective cohort lifetime parameters.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. EDITORIAL GALLERY COLLAGE -->
+    <section>
+        <div class="e-container">
+            <span class="e-eyebrow">Creative Assets Laboratory</span>
+            <h2>Visual Synthesis Array</h2>
+            <div class="magazine-layout">
+                <div class="mag-cell mc-1 e-reveal"><img src="https://images.unsplash.com/photo-1542744094-3a31f103e35f?auto=format&fit=crop&w=600&q=80" alt="Laboratory Dynamic Content Capture Studio"></div>
+                <div class="mag-cell mc-2 e-reveal"><img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80" alt="Attribution Matrix Map"></div>
+                <div class="mag-cell mc-3 e-reveal"><img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=600&q=80" alt="Studio Production Output View"></div>
+                <div class="mag-cell mc-4 e-reveal"><img src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=600&q=80" alt="Engineered Performance Testing Control"></div>
+                <div class="mag-cell mc-5 e-reveal"><img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=600&q=80" alt="Shopify Analytical Console View"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. BLACKED OUT DATA INTELLIGENCE ROW -->
+    <section class="section-dark scroll-dark-trigger">
+        <div class="e-container intelligence-grid">
+            <div class="intel-text">
+                <span class="e-eyebrow">Aggregated Performance Output</span>
+                <h2 style="color: #FFF; font-size: clamp(2rem, 4vw, 3.8rem);">Engineered System Yield.</h2>
+            </div>
+            <div class="intel-metrics">
+                <div class="im-box">
+                    <div class="im-num" data-target="140">0</div>
+                    <div class="im-lbl">Managed Revenue (Cr+)</div>
+                </div>
+                <div class="im-box">
+                    <div class="im-num" data-target="5.8">0</div>
+                    <div class="im-lbl">Mean Account ROAS (x)</div>
+                </div>
+                <div class="im-box">
+                    <div class="im-num" data-target="38">0</div>
+                    <div class="im-lbl">CAC Compression Shift (%)</div>
+                </div>
+                <div class="im-box">
+                    <div class="im-num" data-target="920">0</div>
+                    <div class="im-lbl">Average Scale Multiplier (%)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. TESTIMONIAL VIEWPORT CAROUSEL -->
+    <section class="section-dark" style="padding-top: 0;">
+        <div class="e-container">
+            <span class="e-eyebrow">Executive Debriefings</span>
+            <h2 style="color: #FFF;">Direct Operator Validation</h2>
+            
+            <div class="video-strip-outer">
+                <div class="video-strip-track" id="v-carousel-track">
+                    <!-- Video Card 1 -->
+                    <div class="video-card">
+                        <div class="vc-media">
+                            <video src="https://assets.mixkit.co/videos/preview/mixkit-data-screens-of-a-system-computer-in-a-server-room-41984-large.mp4" loop muted playsinline></video>
+                        </div>
+                        <div class="vc-info">
+                            <h4>Ankit B.</h4>
+                            <p>Founder, PowerSutra — +320% Scale Yield</p>
+                        </div>
+                    </div>
+                    <!-- Video Card 2 -->
+                    <div class="video-card">
+                        <div class="vc-media">
+                            <video src="https://assets.mixkit.co/videos/preview/mixkit-working-with-data-on-a-tablet-computer-42004-large.mp4" loop muted playsinline></video>
+                        </div>
+                        <div class="vc-info">
+                            <h4>Devendra S.</h4>
+                            <p>Director, Weaving Cult — 42% CAC Compression</p>
+                        </div>
+                    </div>
+                    <!-- Video Card 3 -->
+                    <div class="video-card">
+                        <div class="vc-media">
+                            <video src="https://assets.mixkit.co/videos/preview/mixkit-holding-a-smartphone-with-a-financial-app-open-42006-large.mp4" loop muted playsinline></video>
+                        </div>
+                        <div class="vc-info">
+                            <h4>Rohan M.</h4>
+                            <p>Growth Lead, Leaf Studios — 3.4x Scale ROAS</p>
+                        </div>
+                    </div>
+                    <!-- Video Card 4 -->
+                    <div class="video-card">
+                        <div class="vc-media">
+                            <video src="https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-developer-typing-on-a-computer-keyboard-41998-large.mp4" loop muted playsinline></video>
+                        </div>
+                        <div class="vc-info">
+                            <h4>Megha G.</h4>
+                            <p>VP Commerce, Craftsmith — 5.2x Attribution Yield</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="vc-nav">
+                <div class="vc-arrow" id="vc-prev">←</div>
+                <div class="vc-arrow" id="vc-next">→</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. BRAND DRIFT ENGINE -->
+    <section style="padding: 80px 0;">
+        <div class="marquee-container">
+            <div class="marquee-row">
+                <div class="marquee-track">
+                    <span class="marquee-item">POWERSUTRA</span><span class="marquee-item">WEAVING CULT</span><span class="marquee-item">LEAF STUDIOS</span><span class="marquee-item">CRAFTSMITH</span><span class="marquee-item">JANASYA</span>
+                </div>
+                <div class="marquee-track">
+                    <span class="marquee-item">POWERSUTRA</span><span class="marquee-item">WEAVING CULT</span><span class="marquee-item">LEAF STUDIOS</span><span class="marquee-item">CRAFTSMITH</span><span class="marquee-item">JANASYA</span>
+                </div>
+            </div>
+            <div class="marquee-row mq-rev">
+                <div class="marquee-track">
+                    <span class="marquee-item">NOISE</span><span class="marquee-item">KIND SOUL</span><span class="marquee-item">AMARA HERBS</span><span class="marquee-item">MESSOLD SCALE</span><span class="marquee-item">SHOPIFY FLOW</span>
+                </div>
+                <div class="marquee-track">
+                    <span class="marquee-item">NOISE</span><span class="marquee-item">KIND SOUL</span><span class="marquee-item">AMARA HERBS</span><span class="marquee-item">MESSOLD SCALE</span><span class="marquee-item">SHOPIFY FLOW</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. MANIFESTO TEXT -->
+    <section>
+        <div class="e-container">
+            <span class="e-eyebrow">Operational Manifesto</span>
+            <div class="manifesto-layout">
+                <h3 class="e-reveal">"We do not build speculative marketing funnels. We deploy performance pipelines designed for absolute transparency."</h3>
+                <div class="manifesto-list">
+                    <div class="m-item e-reveal">
+                        <h4>01 / Creative As Performance</h4>
+                        <p>Creative formatting is the ultimate target driver. We build specific visual scripts targeted directly at counteracting buying objections.</p>
+                    </div>
+                    <div class="m-item e-reveal">
+                        <h4>02 / Testing Prior to Scaling</h4>
+                        <p>We validate every creative variations concept with tight statistical controls before assigning core capital arrays.</p>
+                    </div>
+                    <div class="m-item e-reveal">
+                        <h4>03 / Context Over Raw Clicks</h4>
+                        <p>Every digital interaction carries specific intent. Scaling means adjusting targeting logic to reflect the user's specific state of awareness.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. DOCUMENTATION FAQ SYSTEM -->
+    <section style="border-bottom: 1px solid var(--c-border);">
+        <div class="e-container">
+            <span class="e-eyebrow">System Architecture Docs</span>
+            <h2>Frequently Analyzed Metrics</h2>
+            
+            <div class="faq-layout">
+                <div class="faq-nav">
+                    <div class="faq-nav-btn active" data-pane="pane-1">Onboarding Operations Pipeline</div>
+                    <div class="faq-nav-btn" data-pane="pane-2">Asset Integration Sprints</div>
+                    <div class="faq-nav-btn" data-pane="pane-3">Attribution Verification Setup</div>
+                    <div class="faq-nav-btn" data-pane="pane-4">Agreements Logic</div>
+                </div>
+                <div class="faq-display">
+                    <div class="faq-pane active" id="pane-1">
+                        <h4>How fast do core frameworks deploy?</h4>
+                        <p>Complete execution requires exactly 14 operational sprints. This covers setup of internal tracking layers, configuration of server webhooks, and launch of initial high-intent asset libraries before full network budget routing begins.</p>
+                    </div>
+                    <div class="faq-pane" id="pane-2">
+                        <h4>Do you build creative assets internally?</h4>
+                        <p>Yes. Our complete creative facility plans, scripts, captures, formats, and updates every required asset iteration. Each design vector focus centers squarely on eliminating specific user purchase hurdles.</p>
+                    </div>
+                    <div class="faq-pane" id="pane-3">
+                        <h4>How do custom tracking engines work?</h4>
+                        <p>We avoid brittle web browser cookie implementations. By linking server-to-server data streams directly into your transaction framework, MESSOLD charts conversions cleanly, bypassing standard ad blocker limitations.</p>
+                    </div>
+                    <div class="faq-pane" id="pane-4">
+                        <h4>What structure do operational agreements take?</h4>
+                        <p>We operate using agile performance sprint phases. We avoid locking fast-moving Shopify operators into restrictive, long-term contracts; our ongoing performance indicators maintain clear working alignment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. BRUSHED OUT MINIMAL TERMINATION ARCHITECTURE -->
+    <section class="termination-viewport" id="audit">
+        <div class="e-container">
+            <span class="e-eyebrow">System Termination Block</span>
+            <h2>Ready to Scale Smarter?</h2>
+            <p style="max-width: 580px; color: var(--c-muted);">Initiate a direct pipeline inspection. We will map operational leak profiles across your current setup completely free of charge.</p>
+            
+            <div class="e-btn-row">
+                <a href="mailto:growth@messold.com" class="e-btn e-btn-fill">Initiate Performance Audit</a>
+                <a href="#cases" class="e-btn e-btn-line">Review Systems Output</a>
+            </div>
+            
+            <div class="term-meta">
+                <a href="mailto:growth@messold.com">growth@messold.com</a>
+                <a href="tel:+919876543210">+91 98765 43210</a>
+                <span>MESSOLD © 2026. ALL RIGHTS ARCHITECTED.</span>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            // 1. HERO PARALLAX COLLAGE DRIFT
+            const heroZone = document.getElementById("hero-parallax-zone");
+            const hcCards = document.querySelectorAll(".hc-card");
+            
+            window.addEventListener("scroll", () => {
+                const sTop = window.scrollY;
+                hcCards.forEach(card => {
+                    const depth = parseFloat(card.getAttribute("data-depth"));
+                    card.style.transform = `translateY(${sTop * depth * 0.4}px) rotate(${depth * 15}deg)`;
+                });
+            });
+
+            // 2. DYNAMIC CANVAS NETWORK TOPOLOGY ROUTER
+            const boundary = document.getElementById("topography-boundary");
+            const canvas = document.getElementById("topology-canvas");
+            const centerNode = document.getElementById("tp-center-node");
+            const nodes = boundary.querySelectorAll(".tp-node:not(.tp-center)");
+
+            function configureTopology() {
+                const w = boundary.offsetWidth;
+                const h = boundary.offsetHeight;
+                canvas.width = w;
+                canvas.height = h;
+
+                centerNode.style.left = `${(w / 2) - (centerNode.offsetWidth / 2)}px`;
+                centerNode.style.top = `${(h / 2) - (centerNode.offsetHeight / 2)}px`;
+
+                nodes.forEach(n => {
+                    const rx = n.getAttribute("data-x");
+                    const ry = n.getAttribute("data-y");
+                    n.style.left = `calc(${rx} - ${n.offsetWidth / 2}px)`;
+                    n.style.top = `calc(${ry} - ${n.offsetHeight / 2}px)`;
+                });
+            }
+
+            function renderingConnections() {
+                const ctx = canvas.getContext("2d");
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const cx = centerNode.offsetLeft + (centerNode.offsetWidth / 2);
+                const cy = centerNode.offsetTop + (centerNode.offsetHeight / 2);
+
+                nodes.forEach(n => {
+                    const nx = n.offsetLeft + (n.offsetWidth / 2);
+                    const ny = n.offsetTop + (n.offsetHeight / 2);
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy);
+                    ctx.lineTo(nx, ny);
+                    ctx.strokeStyle = "#E8E8E8";
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                });
+            }
+
+            window.addEventListener("resize", () => { configureTopology(); renderingConnections(); });
+            configureTopology();
+            setTimeout(renderingConnections, 200);
+
+            // 3. VERTICAL DURATION TO HORIZONTAL TRANSFORM TRACK
+            const hzTrigger = document.getElementById("hz-trigger-zone");
+            const hzTrack = document.getElementById("hz-horizontal-track");
+            const hzSlides = document.querySelectorAll(".hz-slide");
+
+            window.addEventListener("scroll", () => {
+                const rect = hzTrigger.getBoundingClientRect();
+                const totalScrollable = hzTrigger.offsetHeight - window.innerHeight;
+                
+                if (rect.top <= 0 && rect.bottom >= window.innerHeight) {
+                    const progress = Math.abs(rect.top) / totalScrollable;
+                    const maxTranslate = hzTrack.offsetWidth - (window.innerWidth * 0.8);
+                    hzTrack.style.transform = `translateX(-${progress * maxTranslate}px)`;
+                    
+                    // Highlight internal active nodes based on progression mapping
+                    const activeIndex = Math.floor(progress * hzSlides.length);
+                    hzSlides.forEach((s, idx) => {
+                        if(idx === activeIndex) s.classList.add("active");
+                        else s.classList.remove("active");
+                    });
+                }
+            });
+
+            // 4. METRIC NUMERICAL ANIMATION ENGINE
+            const intelTrigger = document.querySelector(".scroll-dark-trigger");
+            const intelNums = document.querySelectorAll(".im-num");
+            let countFired = false;
+
+            const runCounters = () => {
+                intelNums.forEach(num => {
+                    const target = parseFloat(num.getAttribute("data-target"));
+                    let current = 0;
+                    const step = target / 40;
+                    const isFloat = target % 1 !== 0;
+
+                    const loop = setInterval(() => {
+                        current += step;
+                        if (current >= target) {
+                            num.textContent = target;
+                            clearInterval(loop);
+                        } else {
+                            num.textContent = isFloat ? current.toFixed(1) : Math.floor(current);
+                        }
+                    }, 20);
+                });
+            };
+
+            // 5. TESTIMONIAL VIDEO STRIP ACCELERATOR CAROUSEL
+            const vTrack = document.getElementById("v-carousel-track");
+            const vNext = document.getElementById("vc-next");
+            const vPrev = document.getElementById("vc-prev");
+            let carouselIndex = 0;
+
+            function updateCarouselPosition() {
+                const cardWidth = document.querySelector(".video-card").offsetWidth + 32;
+                vTrack.style.transform = `translateX(-${carouselIndex * cardWidth}px)`;
+                
+                // Mute and trigger contextual auto playback logic cleanly
+                const cards = document.querySelectorAll(".video-card");
+                cards.forEach((card, i) => {
+                    const video = card.querySelector("video");
+                    if (video) {
+                        if (i === carouselIndex || i === carouselIndex + 1) {
+                            video.play().catch(()=>{});
+                        } else {
+                            video.pause();
+                        }
+                    }
+                });
+            }
+
+            vNext.addEventListener("click", () => {
+                if (carouselIndex < 2) { carouselIndex++; updateCarouselPosition(); }
+            });
+            vPrev.addEventListener("click", () => {
+                if (carouselIndex > 0) { carouselIndex--; updateCarouselPosition(); }
+            });
+
+            // 6. STICKY DOCUMENTATION COMPONENT PANE ROUTER
+            const faqNavBtns = document.querySelectorAll(".faq-nav-btn");
+            const faqPanes = document.querySelectorAll(".faq-pane");
+
+            faqNavBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    faqNavBtns.forEach(b => b.classList.remove("active"));
+                    faqPanes.forEach(p => p.classList.remove("active"));
+
+                    btn.classList.add("active");
+                    const targetPane = btn.getAttribute("data-pane");
+                    document.getElementById(targetPane).classList.add("active");
+                });
+            });
+
+            // 7. MULTI-AXIS GENERAL SCROLL OBSERVER REVEALS
+            const reveals = document.querySelectorAll(".e-reveal");
+            const scrollMonitor = () => {
+                reveals.forEach(r => {
+                    const box = r.getBoundingClientRect();
+                    if (box.top < window.innerHeight * 0.88) {
+                        r.classList.add("e-active");
+                    }
+                });
+
+                if (intelTrigger) {
+                    const intelBox = intelTrigger.getBoundingClientRect();
+                    if (intelBox.top < window.innerHeight * 0.75 && !countFired) {
+                        runCounters();
+                        countFired = true;
+                    }
+                }
+            };
+
+            window.addEventListener("scroll", scrollMonitor);
+            scrollMonitor(); // Initialize triggers instantly
+            setTimeout(updateCarouselPosition, 600);
+        });
+    </script>
+</body>
+</html>

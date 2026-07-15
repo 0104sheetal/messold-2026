@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About MESSOLD — IIT Alumni Founded Shopify & Performance Agency</title>
+    <style>
+        /* --- DESIGN SYSTEM & ROOT VARIABLES --- */
+        :root {
+            --clr-black: #000000;
+            --clr-charcoal: #111111;
+            --clr-darkgray: #1A1A1A;
+            --clr-white: #FFFFFF;
+            --clr-warmwhite: #F8F8F8;
+            
+            --txt-primary-dark: #FFFFFF;
+            --txt-secondary-dark: #A0A0A0;
+            --txt-primary-light: #111111;
+            --txt-secondary-light: #666666;
+
+            --border-dark: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(0, 0, 0, 0.08);
+
+            --font-editorial: "General Sans", "Geist", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+            --ease-custom: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* --- GLOBAL APPLICATION BASE --- */
+        .ms-app-frame {
+            font-family: var(--font-editorial);
+            background-color: var(--clr-black);
+            color: var(--txt-primary-dark);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 1.2s var(--ease-custom), color 1.2s var(--ease-custom);
+        }
+
+        /* --- THEME INTERPOLATION CLASSIFICATIONS --- */
+        .ms-app-frame.theme-black { background-color: var(--clr-black); color: var(--txt-primary-dark); }
+        .ms-app-frame.theme-charcoal { background-color: var(--clr-charcoal); color: var(--txt-primary-dark); }
+        .ms-app-frame.theme-white { background-color: var(--clr-white); color: var(--txt-primary-light); }
+        .ms-app-frame.theme-warmwhite { background-color: var(--clr-warmwhite); color: var(--txt-primary-light); }
+
+        /* --- TYPOGRAPHY --- */
+        .ms-eyebrow {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-weight: 500;
+            opacity: 0.6;
+            display: block;
+            margin-bottom: 1.5rem;
+        }
+
+        .ms-hero-heading {
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-weight: 300;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin: 0 0 1.5rem 0;
+        }
+
+        .ms-section-heading {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 300;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin: 0 0 2rem 0;
+        }
+
+        .ms-body-lead {
+            font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+            font-weight: 300;
+            line-height: 1.6;
+            opacity: 0.85;
+            margin-bottom: 2.5rem;
+        }
+
+        .ms-body-standard {
+            font-size: 0.95rem;
+            font-weight: 400;
+            line-height: 1.7;
+            opacity: 0.75;
+        }
+
+        /* --- STRUCTURAL BUTTON ARCHITECTURE --- */
+        .ms-btn-group {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .ms-btn-action {
+            font-family: var(--font-editorial);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: inherit;
+            background: transparent;
+            border: 1px solid currentColor;
+            padding: 1rem 2rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.4s var(--ease-custom), color 0.4s var(--ease-custom), transform 0.2s ease;
+        }
+
+        .ms-btn-action:hover {
+            transform: translateY(-2px);
+            background: currentColor;
+            color: var(--clr-black);
+        }
+
+        .ms-btn-link {
+            font-family: var(--font-editorial);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: inherit;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .ms-btn-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: currentColor;
+            transform: scaleX(0.3);
+            transform-origin: left;
+            transition: transform 0.4s var(--ease-custom);
+        }
+
+        .ms-btn-link:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* --- GLOBAL STRUCTURAL CONTAINERS --- */
+        .ms-grid-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 6%;
+            box-sizing: border-box;
+        }
+
+        .ms-story-block {
+            padding: 12vh 0;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        /* --- KINETIC REVEAL ELEMENTS --- */
+        .ms-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            filter: blur(4px);
+            transition: opacity 1.2s var(--ease-custom), transform 1.2s var(--ease-custom), filter 1.2s var(--ease-custom);
+        }
+
+        .ms-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+
+        /* --- HERO SPLIT EDITORIAL COMPOSITION --- */
+        .ms-hero-split {
+            display: grid;
+            grid-template-columns: 5.5fr 6.5fr;
+            min-height: 90vh;
+            align-items: center;
+            gap: 6%;
+        }
+
+        @media (max-width: 968px) {
+            .ms-hero-split {
+                grid-template-columns: 1fr;
+                padding-top: 100px;
+                gap: 4rem;
+            }
+        }
+
+        .ms-hero-content-panel {
+            position: relative;
+            z-index: 10;
+        }
+
+        .ms-hero-collage-stage {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: repeat(12, 1fr);
+        }
+
+        @media (max-width: 968px) {
+            .ms-hero-collage-stage { height: 45vh; }
+        }
+
+        .ms-collage-element {
+            position: relative;
+            background-color: var(--clr-darkgray);
+            border: 1px solid var(--border-dark);
+            overflow: hidden;
+            transition: transform 0.1s linear;
+        }
+
+        .ms-collage-element img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(40%);
+            transition: filter 0.4s ease;
+        }
+
+        .ms-collage-element:hover img {
+            filter: grayscale(0%);
+        }
+
+        .el-1 { grid-column: 2 / 7; grid-row: 1 / 6; z-index: 3; }
+        .el-2 { grid-column: 6 / 12; grid-row: 3 / 8; z-index: 2; }
+        .el-3 { grid-column: 1 / 5; grid-row: 6 / 11; z-index: 4; }
+        .el-4 { grid-column: 5 / 9; grid-row: 8 / 13; z-index: 5; }
+        .el-5 { grid-column: 9 / 13; grid-row: 1 / 5; z-index: 1; }
+
+        /* --- WHO WE ARE SECTION (STORYTELLING) --- */
+        .ms-storytelling-chapter {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .ms-dominant-quote {
+            font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+            font-weight: 300;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            margin-bottom: 3.5rem;
+            border-left: 2px solid var(--clr-white);
+            padding-left: 2rem;
+        }
+
+        .ms-editorial-split-text {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .ms-editorial-split-text { grid-template-columns: 1fr; gap: 2rem; }
+        }
+
+        /* --- MISSION & VALUES SCATTERED PATH --- */
+        .ms-values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3.5rem 2.5rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 968px) {
+            .ms-values-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 568px) {
+            .ms-values-grid { grid-template-columns: 1fr; }
+        }
+
+        .ms-value-card {
+            border-top: 1px solid currentColor;
+            padding-top: 1.5rem;
+        }
+
+        .ms-value-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* --- MISSION SPLIT ILLUSTRATION --- */
+        .ms-mission-split {
+            display: grid;
+            grid-template-columns: 5fr 7fr;
+            gap: 6%;
+            align-items: center;
+            margin-top: 6vh;
+        }
+
+        @media (max-width: 768px) {
+            .ms-mission-split { grid-template-columns: 1fr; gap: 3rem; }
+        }
+
+        .ms-mission-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .ms-mission-item {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .ms-mission-item:last-child {
+            border-bottom: none;
+        }
+
+        /* --- INTERACTIVE 6-STEP PROCESS JOURNEY --- */
+        .ms-process-layout {
+            display: grid;
+            grid-template-columns: 4fr 8fr;
+            gap: 5%;
+        }
+
+        @media (max-width: 768px) {
+            .ms-process-layout { grid-template-columns: 1fr; }
+        }
+
+        .ms-process-sticky-left {
+            position: sticky;
+            top: 15vh;
+            height: fit-content;
+        }
+
+        .ms-process-nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .ms-process-nav-item {
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            padding: 0.8rem 0;
+            cursor: pointer;
+            opacity: 0.35;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .ms-process-nav-item.active {
+            opacity: 1;
+            transform: translateX(10px);
+            font-weight: 500;
+        }
+
+        .ms-process-pane-stream {
+            display: flex;
+            flex-direction: column;
+            gap: 12vh;
+        }
+
+        .ms-process-pane {
+            padding-bottom: 4vh;
+            border-bottom: 1px solid currentColor;
+            opacity: 0.25;
+            transition: opacity 0.6s ease;
+        }
+
+        .ms-process-pane.active-pane {
+            opacity: 1;
+        }
+
+        /* --- WHY CHOOSE US EDITORIAL LIST --- */
+        .ms-benefits-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem 4rem;
+            margin-top: 3.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .ms-benefits-grid { grid-template-columns: 1fr; gap: 2rem; }
+        }
+
+        .ms-benefit-item {
+            border-left: 1px solid currentColor;
+            padding-left: 1.5rem;
+        }
+
+        /* --- CINEMATIC TEAM SECTOR --- */
+        .ms-team-wall-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 1024px) {
+            .ms-team-wall-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .ms-team-wall-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+            .ms-team-wall-grid { grid-template-columns: 1fr; }
+        }
+
+        .ms-team-card {
+            position: relative;
+            background-color: var(--clr-darkgray);
+            border: 1px solid var(--border-dark);
+            aspect-ratio: 3/4;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.4s var(--ease-custom);
+        }
+
+        .ms-team-card:hover {
+            transform: scale(1.02);
+        }
+
+        .ms-team-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: filter 0.5s ease, transform 0.8s var(--ease-custom);
+        }
+
+        .ms-team-card:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.04);
+        }
+
+        .ms-team-profile-snippet {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 1.5rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            color: var(--clr-white);
+            z-index: 10;
+        }
+
+        /* --- FULLSCREEN TEAM DETAIL MODAL --- */
+        .ms-modal-backdrop {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s var(--ease-custom);
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        .ms-modal-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .ms-modal-container {
+            max-width: 850px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 4.5fr 7.5fr;
+            gap: 3.5rem;
+            position: relative;
+            color: var(--clr-white);
+        }
+
+        @media (max-width: 768px) {
+            .ms-modal-container { grid-template-columns: 1fr; gap: 2rem; max-height: 80vh; overflow-y: auto; }
+        }
+
+        .ms-modal-img-wrap {
+            aspect-ratio: 3/4;
+            background-color: var(--clr-darkgray);
+            overflow: hidden;
+        }
+
+        .ms-modal-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .ms-modal-close {
+            position: absolute;
+            top: -40px; right: 0;
+            background: transparent;
+            border: none;
+            color: var(--clr-white);
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* --- FINAL BLACKOUT ANCHOR --- */
+        .ms-final-blackout-anchor {
+            padding: 20vh 0;
+            text-align: center;
+        }
+        
+        .ms-jumbo-statement {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 300;
+            line-height: 1.15;
+            letter-spacing: -0.04em;
+            margin-bottom: 3.5rem;
+        }
+    </style>
+</head>
+<body class="ms-app-frame" id="msAppGlobalWrapper">
+
+    <!-- HERO SPLIT SECTION -->
+    <header class="ms-story-block" data-theme="black">
+        <div class="ms-grid-container ms-hero-split">
+            <div class="ms-hero-content-panel ms-reveal active">
+                <span class="ms-eyebrow">About MESSOLD Technologies</span>
+                <h1 class="ms-hero-heading">Reinventing commerce with human-driven performance.</h1>
+                <p class="ms-body-lead">Founded in 2016 by passionate IIT alumni, we empower e-commerce brands with clean Shopify architecture and unified performance marketing.</p>
+                <div class="ms-btn-group">
+                    <a href="#who-we-are" class="ms-btn-action">Who We Are</a>
+                    <a href="#contact" class="ms-btn-link">Partner With Us</a>
+                </div>
+            </div>
+            <div class="ms-hero-collage-stage" id="heroCollageContainer">
+                <!-- Dynamically populated editorial images -->
+            </div>
+        </div>
+    </header>
+
+    <!-- WHO WE ARE STORYTELLING CHAPTER -->
+    <section id="who-we-are" class="ms-story-block" data-theme="charcoal">
+        <div class="ms-grid-container">
+            <div class="ms-storytelling-chapter ms-reveal">
+                <span class="ms-eyebrow">Our Origin Story</span>
+                <blockquote class="ms-dominant-quote">"Nothing short of a revolution in the advertising and marketing realm."</blockquote>
+                <div class="ms-editorial-split-text">
+                    <p class="ms-body-standard">In 2016, a dynamic collective of passionate IIT alumni joined forces to birth Messold Technologies. Our visionaries envisioned a world where targeted advertising wasn't just a numbers game, but a performance-driven symphony, with Messold as the maestro conducting the show.</p>
+                    <p class="ms-body-standard">At the heart of Messold's inception was a commitment to reinventing the advertising landscape. Equipped with academic rigor and pure digital curiosity, we introduced a performance-based strategy that set ablaze the traditional norms of the industry, empowering brands to scale limitlessly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VALUES & MISSION -->
+    <section class="ms-story-block" data-theme="white">
+        <div class="ms-grid-container">
+            <span class="ms-eyebrow">Core Values</span>
+            <h2 class="ms-section-heading" style="color: inherit;">The principles that shape our focus.</h2>
+            <div class="ms-values-grid" id="valuesGridTarget">
+                <!-- Dynamically populated from Values Array -->
+            </div>
+
+            <div class="ms-mission-split ms-reveal">
+                <div>
+                    <span class="ms-eyebrow">Our Focus</span>
+                    <h2 class="ms-section-heading" style="color: inherit; margin-bottom: 1rem;">Our Mission</h2>
+                    <p class="ms-body-standard">We inject warmth and authenticity into a digital world that often feels cold and impersonal. We foster meaningful and lasting connections in the ever-evolving landscape of the digital age.</p>
+                </div>
+                <div>
+                    <ul class="ms-mission-list" id="missionListTarget">
+                        <!-- Dynamically populated from Mission Array -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OUR 6-STEP PROCESS -->
+    <section class="ms-story-block" data-theme="warmwhite">
+        <div class="ms-grid-container">
+            <span class="ms-eyebrow">Operational Methodology</span>
+            <h2 class="ms-section-heading">Our 6-Step Process</h2>
+            <div class="ms-process-layout">
+                <div class="ms-process-sticky-left">
+                    <ul class="ms-process-nav-list" id="processNavTarget">
+                        <!-- Dynamically populated process links -->
+                    </ul>
+                </div>
+                <div class="ms-process-pane-stream" id="processPanesTarget">
+                    <!-- Dynamically populated process details -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section class="ms-story-block" data-theme="warmwhite">
+        <div class="ms-grid-container">
+            <span class="ms-eyebrow">The Messold Advantage</span>
+            <h2 class="ms-section-heading">Why Choose Us?</h2>
+            <p class="ms-body-lead">What sets Messold apart is a relentless focus on goals, forecasting, innovative strategy, and customer success.</p>
+            <div class="ms-benefits-grid" id="benefitsTarget">
+                <!-- Dynamically populated list of advantages -->
+            </div>
+        </div>
+    </section>
+
+    <!-- MEET THE TEAM -->
+    <section class="ms-story-block" data-theme="black">
+        <div class="ms-grid-container">
+            <span class="ms-eyebrow">Core Minds</span>
+            <h2 class="ms-section-heading">Meet Our Team</h2>
+            <div class="ms-team-wall-grid" id="teamTarget">
+                <!-- Dynamically populated team cards -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CONVERSION ANCHOR -->
+    <footer class="ms-story-block ms-final-blackout-anchor" data-theme="black" id="contact">
+        <div class="ms-grid-container ms-reveal">
+            <span class="ms-eyebrow">Begin Your Adventure</span>
+            <h2 class="ms-jumbo-statement">Ready to craft a digital narrative that leaves an indelible mark?</h2>
+            <div class="ms-btn-group" style="justify-content: center;">
+                <button class="ms-btn-action">Book Strategy Call</button>
+                <button class="ms-btn-link">Dive Into Case Studies</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE TEAM MODAL BACKDROP -->
+    <div class="ms-modal-backdrop" id="teamModal">
+        <div class="ms-modal-container">
+            <button class="ms-modal-close" id="modalCloseBtn">&times;</button>
+            <div class="ms-modal-img-wrap">
+                <img src="" alt="" id="modalImg">
+            </div>
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <span class="ms-eyebrow" id="modalRole" style="margin-bottom:0.5rem; color:var(--clr-white);">Role</span>
+                <h3 id="modalName" style="font-size:2rem; font-weight:300; margin:0 0 1.5rem 0;">Name</h3>
+                <p class="ms-body-standard" id="modalBio" style="color:var(--txt-secondary-dark); margin-bottom:2rem;"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CORE LOGICAL ARCHITECTURE PLATFORM ENGINE SCRIPT -->
+    <script>
+        // --- REAL SYSTEM DATABASE COMPONENT ARRAYS ---
+        const MESSOLD_DATABASE = {
+            heroCollage: [
+                { src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80", cls: "el-1", depth: 0.1 },
+                { src: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=400&q=80", cls: "el-2", depth: -0.15 },
+                { src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80", cls: "el-3", depth: 0.2 },
+                { src: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=400&q=80", cls: "el-4", depth: -0.05 },
+                { src: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&w=400&q=80", cls: "el-5", depth: 0.25 }
+            ],
+            values: [
+                { title: "Innovation", text: "We never stop exploring, ensuring exceptional outcomes for every brand." },
+                { title: "Collaboration", text: "Together, we coordinate skills and operational strategies to achieve remarkable results." },
+                { title: "Creativity", text: "We think outside legacy templates, setting our storefronts and pipelines apart." },
+                { title: "Agility", text: "We adapt dynamically to shifting network variables, offering fast solutions." },
+                { title: "Data-driven Decisions", text: "Advanced, clean telemetry and analytics architecture power our long-term growth metrics." },
+                { title: "Transparency", text: "Completely open, clean communication pathways across all client integrations." }
+            ],
+            mission: [
+                { title: "Empowering businesses through digital solutions", text: "We deliver extreme value at every system node." },
+                { title: "Working smarter with modern tools", text: "We elevate physical brand operations with modular modern code layouts." },
+                { title: "Leading the way in dynamic e-commerce", text: "A constant drive to explore, deploy, and scale system innovations." },
+                { title: "Exceptional results, every time", text: "Unwavering commitment ensures consistent quality standards." }
+            ],
+            process: [
+                { step: "Research", title: "Specialized Research Methods", desc: "Our research methodologies provide profound insights into your industry and customer dynamics. We lay out target audiences, precise brand positioning maps, and structural user flows early." },
+                { step: "Discovery", title: "Technology and Context Analysis", desc: "Different business models require unique application layers. Our engineering team evaluates competitor landscapes to align effective baseline strategies." },
+                { step: "Design", title: "Conversion-Focused High-Fidelity Design", desc: "We construct modern layouts guaranteed to minimize friction, enhance conversion, and deliver visually distinctive editorial identities." },
+                { step: "Content", title: "Compelling Narrative Infrastructure", desc: "We shape clean, strategic messaging that immediately builds customer engagement, highlighting clear brand propositions." },
+                { step: "Development", title: "Accurate Architecture Engineering", desc: "Converting custom assets into clean, performant, pixel-perfect Liquid components using robust development practices." },
+                { step: "Optimization", title: "Deployment and Performance Scale", desc: "We optimize all files and assets for lightning-fast speeds and configure precise tracking pixels for multi-channel scaling." }
+            ],
+            benefits: [
+                { title: "Cross-Channel Strategy", desc: "One unified marketing strategy driven by class-leading creative production." },
+                { title: "Systemic Thought Leadership", desc: "Deep industry research keeping your storefront on the cutting edge of modern trends." },
+                { title: "Custom Forecasting Modules", desc: "Proprietary software-driven forecasting models built on historical and competitive data." },
+                { title: "Total Channel Integration", desc: "Real-time communication lines directly synced with your core team via Slack." },
+                { title: "Transparent Dashboards", desc: "Clean budgets and tracking metrics linked directly to absolute conversion goals." },
+                { title: "Iterative Optimization Loops", desc: "A constant cycle of testing variables, scaling winners, and celebrating success." }
+            ],
+            team: [
+                { name: "Anuj Agarwal", role: "Founder • CMO • CTO", bio: "Guides the high-level technological vision and marketing strategies of MESSOLD, shaping the architecture that transforms e-commerce operations.", src: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" },
+                { name: "Christina Castillo", role: "Founder • CEO • CTO", bio: "Orchestrates systemic company scale while overseeing core technical infrastructure to ensure exceptional performance engineering.", src: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=500&q=80" },
+                { name: "Shikha Singhal", role: "Founder • CEO", bio: "Architects client growth operations and agency expansion, establishing authentic, long-term partnerships across global brands.", src: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=500&q=80" },
+                { name: "Amanda Davis", role: "SEM Director", bio: "Directs complex search engine marketing campaigns, utilizing sophisticated analytics to optimize customer acquisition performance.", src: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=500&q=80" },
+                { name: "David Wilson", role: "Social Media Advertising Specialist", bio: "Deploys targeted paid acquisition campaigns that match creative messaging with high-intent audience funnels.", src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=80" },
+                { name: "Leena Fernandes", role: "Human Resource Associate", bio: "Fosters the culture of collaboration, ensuring MESSOLD attracts talent aligned with our standard of execution.", src: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=500&q=80" },
+                { name: "Nidhi Doshi", role: "Digital Marketing Manager", bio: "Coordinates multi-channel performance loops and optimizes communication setups to keep growth targets on schedule.", src: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=500&q=80" },
+                { name: "Meherunnisha Begum", role: "Business Development Specialist", bio: "Develops initial custom blueprints for brands, ensuring seamless transition pipelines into our operational ecosystem.", src: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=500&q=80" }
+            ]
+        };
+
+        // --- DYNAMIC RENDERING & INITIALIZATION ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const wrapper = document.getElementById("msAppGlobalWrapper");
+
+            // Populate Hero Collage
+            const collageContainer = document.getElementById("heroCollageContainer");
+            MESSOLD_DATABASE.heroCollage.forEach(item => {
+                const el = document.createElement("div");
+                el.className = `ms-collage-element ${item.cls}`;
+                el.setAttribute("data-depth", item.depth);
+                el.innerHTML = `<img src="${item.src}" alt="Messold Snapshot">`;
+                collageContainer.appendChild(el);
+            });
+
+            // Populate Values Grid
+            const valuesGrid = document.getElementById("valuesGridTarget");
+            MESSOLD_DATABASE.values.forEach(v => {
+                const card = document.createElement("div");
+                card.className = "ms-value-card ms-reveal";
+                card.innerHTML = `
+                    <div class="ms-value-title"><span>✦</span> ${v.title}</div>
+                    <p class="ms-body-standard">${v.text}</p>
+                `;
+                valuesGrid.appendChild(card);
+            });
+
+            // Populate Mission List
+            const missionList = document.getElementById("missionListTarget");
+            MESSOLD_DATABASE.mission.forEach(m => {
+                const li = document.createElement("li");
+                li.className = "ms-mission-item";
+                li.innerHTML = `
+                    <strong style="display:block; margin-bottom:0.4rem; font-weight:500;">${m.title}</strong>
+                    <span style="font-size:0.9rem; opacity:0.75;">${m.text}</span>
+                `;
+                missionList.appendChild(li);
+            });
+
+            // Populate 6-Step Process
+            const processNav = document.getElementById("processNavTarget");
+            const processPanes = document.getElementById("processPanesTarget");
+            MESSOLD_DATABASE.process.forEach((p, idx) => {
+                const navItem = document.createElement("li");
+                navItem.className = `ms-process-nav-item ${idx === 0 ? 'active' : ''}`;
+                navItem.textContent = `${idx + 1}. ${p.step}`;
+                processNav.appendChild(navItem);
+
+                const pane = document.createElement("div");
+                pane.className = `ms-process-pane ${idx === 0 ? 'active-pane' : ''}`;
+                pane.innerHTML = `
+                    <h3 style="font-size:1.4rem; font-weight:400; margin-bottom:1rem; color:inherit;">${p.title}</h3>
+                    <p class="ms-body-standard" style="color:inherit;">${p.desc}</p>
+                `;
+                processPanes.appendChild(pane);
+            });
+
+            // Populate Why Choose Us
+            const benefitsGrid = document.getElementById("benefitsTarget");
+            MESSOLD_DATABASE.benefits.forEach(b => {
+                const el = document.createElement("div");
+                el.className = "ms-benefit-item ms-reveal";
+                el.innerHTML = `
+                    <h4 style="font-size:1.1rem; font-weight:500; margin-bottom:0.5rem; color:inherit;">${b.title}</h4>
+                    <p class="ms-body-standard" style="color:inherit;">${b.desc}</p>
+                `;
+                benefitsGrid.appendChild(el);
+            });
+
+            // Populate Team Grid
+            const teamTarget = document.getElementById("teamTarget");
+            MESSOLD_DATABASE.team.forEach((member, i) => {
+                const card = document.createElement("div");
+                card.className = "ms-team-card ms-reveal";
+                card.setAttribute("data-index", i);
+                card.innerHTML = `
+                    <img src="${member.src}" alt="${member.name}">
+                    <div class="ms-team-profile-snippet">
+                        <h4 style="margin:0 0 0.2rem 0; font-size:1.1rem; font-weight:500;">${member.name}</h4>
+                        <span style="font-size:0.75rem; opacity:0.7; display:block;">${member.role}</span>
+                    </div>
+                `;
+                teamTarget.appendChild(card);
+            });
+
+            // Setup Observers & Dynamic Scroll Interactions
+            const reveals = document.querySelectorAll(".ms-reveal");
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) e.target.classList.add("active");
+                });
+            }, { threshold: 0.05 });
+            reveals.forEach(r => observer.observe(r));
+
+            // Scroll Handler
+            window.addEventListener("scroll", () => {
+                const topOffset = window.scrollY;
+                const winHeight = window.innerHeight;
+
+                // Theme Transitions
+                document.querySelectorAll("header, section, footer").forEach(sec => {
+                    const rect = sec.getBoundingClientRect();
+                    if (rect.top <= winHeight * 0.4 && rect.bottom >= winHeight * 0.4) {
+                        const targetTheme = sec.getAttribute("data-theme");
+                        if (targetTheme) wrapper.className = "ms-app-frame theme-" + targetTheme;
+                    }
+                });
+
+                // Parallax Hero Collage
+                document.querySelectorAll(".ms-collage-element").forEach(el => {
+                    const depth = parseFloat(el.getAttribute("data-depth")) || 0;
+                    el.style.transform = `translateY(${(topOffset * depth) * 0.15}px)`;
+                });
+
+                // Sticky 6-Step Process Highlight
+                const panes = document.querySelectorAll(".ms-process-pane");
+                const navs = document.querySelectorAll(".ms-process-nav-item");
+                panes.forEach((pane, idx) => {
+                    const box = pane.getBoundingClientRect();
+                    if (box.top <= winHeight * 0.5 && box.bottom >= winHeight * 0.5) {
+                        navs.forEach(n => n.classList.remove("active"));
+                        panes.forEach(p => p.classList.remove("active-pane"));
+                        if(navs[idx]) navs[idx].classList.add("active");
+                        pane.classList.add("active-pane");
+                    }
+                });
+            }, { passive: true });
+
+            // Process Navigation Clicks
+            document.querySelectorAll(".ms-process-nav-item").forEach((item, index) => {
+                item.addEventListener("click", () => {
+                    const targetPane = document.querySelectorAll(".ms-process-pane")[index];
+                    if(targetPane) targetPane.scrollIntoView({ behavior: "smooth", block: "center" });
+                });
+            });
+
+            // Modal Drilldown Handlers
+            const modal = document.getElementById("teamModal");
+            const modalClose = document.getElementById("modalCloseBtn");
+            document.querySelectorAll(".ms-team-card").forEach(card => {
+                card.addEventListener("click", () => {
+                    const idx = card.getAttribute("data-index");
+                    const data = MESSOLD_DATABASE.team[idx];
+                    document.getElementById("modalImg").src = data.src;
+                    document.getElementById("modalName").textContent = data.name;
+                    document.getElementById("modalRole").textContent = data.role;
+                    document.getElementById("modalBio").textContent = data.bio;
+                    modal.classList.add("active");
+                });
+            });
+            modalClose.addEventListener("click", () => modal.classList.remove("active"));
+            modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("active"); });
+        });
+    </script>
+</body>
+</html>
